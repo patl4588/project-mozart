@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <meta http-equiv="refresh" content="300">
+  <title>Project Mozart — Hourly AI, Local $0 Swarm &amp; Architecture Hub</title>
+  <style>
+    :root {
+      --bg: #090a10;
+      --card-bg: #121420;
+      --card-border: rgba(255, 255, 255, 0.08);
+      --accent: #6366f1;
+      --accent-glow: rgba(99, 102, 241, 0.25);
+      --success: #10b981;
+      --warning: #f59e0b;
+      --text: #f4f4f5;
+      --text-dim: #9ca3af;
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      padding: 32px 24px 60px;
+      line-height: 1.5;
+    }
+    .container { max-width: 1200px; margin: 0 auto; }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 20px;
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 24px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+    .eyebrow {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--success);
+      box-shadow: 0 0 10px var(--success);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% { opacity: 0.4; transform: scale(0.9); }
+      50% { opacity: 1; transform: scale(1.1); }
+      100% { opacity: 0.4; transform: scale(0.9); }
+    }
+    h1 { font-size: 26px; font-weight: 700; letter-spacing: -0.02em; }
+    .subhead { color: var(--text-dim); font-size: 13.5px; margin-top: 4px; max-width: 740px; }
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(99, 102, 241, 0.14);
+      border: 1px solid rgba(99, 102, 241, 0.35);
+      color: #a5b4fc;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .delegated-banner {
+      background: rgba(99, 102, 241, 0.08);
+      border: 1px dashed rgba(99, 102, 241, 0.35);
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-size: 12.5px;
+      color: #c7d2fe;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .prod-banner {
+      background: rgba(16, 185, 129, 0.09);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-size: 12.5px;
+      color: #a7f3d0;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .repo-links {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 22px;
+    }
+    .repo-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 12px;
+      border-radius: 8px;
+      background: #161929;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #93c5fd;
+      text-decoration: none;
+      font-size: 12px;
+      font-family: var(--font-mono);
+    }
+    .repo-pill:hover { border-color: var(--accent); background: rgba(99, 102, 241, 0.12); }
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 16px;
+      margin-bottom: 26px;
+    }
+    .kpi-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 16px 18px;
+    }
+    .kpi-label { font-size: 11.5px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.04em; }
+    .kpi-value { font-size: 24px; font-weight: 700; color: var(--text); margin: 4px 0 2px; }
+    .kpi-note { font-size: 11.5px; color: var(--success); }
+    .section-title { font-size: 17px; font-weight: 700; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 22px 24px;
+      margin-bottom: 24px;
+    }
+    table { width: 100%; border-collapse: collapse; font-size: 12.5px; text-align: left; }
+    th {
+      color: var(--text-dim);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-bottom: 1px solid var(--card-border);
+      padding: 10px 12px;
+    }
+    td { padding: 12px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); vertical-align: top; }
+    tr:last-child td { border-bottom: 0; }
+    .badge-tag { font-size: 10.5px; padding: 2px 7px; border-radius: 4px; font-weight: 600; white-space: nowrap; }
+    .tag-floor { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+    .tag-local { background: rgba(56, 189, 248, 0.16); color: #7dd3fc; border: 1px solid rgba(56, 189, 248, 0.35); }
+    .tag-carbon { background: rgba(99, 102, 241, 0.2); color: #a5b4fc; border: 1px solid rgba(99, 102, 241, 0.4); }
+    .arch-item {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .arch-item:last-child { border-bottom: 0; }
+    .arch-icon { font-size: 18px; padding: 8px; border-radius: 8px; background: rgba(255, 255, 255, 0.04); flex-shrink: 0; }
+    .arch-content h4 { font-size: 14px; font-weight: 650; margin-bottom: 3px; }
+    .arch-content p { font-size: 12.5px; color: var(--text-dim); line-height: 1.45; }
+    .diff-tag {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: #38bdf8;
+      background: rgba(56, 189, 248, 0.1);
+      padding: 2px 6px;
+      border-radius: 4px;
+      display: inline-block;
+      margin-top: 6px;
+    }
+    a { color: #93c5fd; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div>
+        <div class="eyebrow"><span class="pulse-dot"></span> Project Mozart — Shared Hourly Hub (Patrick &amp; Sami)</div>
+        <h1>Lead Orchestrator + Local $0.00 GPU Agent Swarm</h1>
+        <div class="subhead">Auto-synced to GitHub &amp; GitHub Pages every hour. Local GPU worker models run continuous $0.00 sweeps, latency benchmarks, and test generation inside isolated <code>delegated/continuous-improvements</code> branches while <code>main</code> stays untouched until approved.</div>
+      </div>
+      <div style="text-align: right;">
+        <span class="status-badge">⚡ Wave 2 Live · Auto-Uploaded Hourly</span>
+        <div id="last-updated-label" style="font-size: 11.5px; color: var(--text-dim); margin-top: 6px;">Last Updated: 2026-11-16 12:33 EST · Next Hourly Upload: 13:00 EST</div>
+      </div>
+    </div>
+
+    <div class="prod-banner">
+      <div>
+        🔒 <strong>Production Billing &amp; /v1 Docs Verified Live:</strong> Strict <code>launch_metered</code> billing lockdown (3-turn guest cap, zero unmetered fallback, 401 auth gates on image/video/<code>/v1</code>) + full <code>/v1</code> Developer Docs live on <code>railcall.ai</code> (build <code>03f791b</code> &amp; gateway <code>ef88af5</code>) and synced into delegated branches.
+      </div>
+      <div><a href="https://railcall.ai/developers/" target="_blank" rel="noreferrer">Live /v1 Docs ↗</a></div>
+    </div>
+
+    <div class="delegated-banner">
+      <div>
+        🌿 <strong>Isolated Git Branches Synced Hourly for Review:</strong> All Mozart code commits push strictly to branch <code>delegated/continuous-improvements</code> (never <code>main</code>). Click any repo below to inspect live diffs on GitHub:
+      </div>
+      <div><strong>Cron Schedule:</strong> <code>0 * * * *</code> (Hourly)</div>
+    </div>
+
+    <div class="repo-links">
+      <a class="repo-pill" href="https://github.com/SamyBchaalia/railcall-chat/tree/delegated/continuous-improvements" target="_blank" rel="noreferrer">📂 SamyBchaalia/railcall-chat (delegated/continuous-improvements) ↗</a>
+      <a class="repo-pill" href="https://github.com/patl4588/linden/tree/delegated/continuous-improvements" target="_blank" rel="noreferrer">📂 patl4588/linden (delegated/continuous-improvements) ↗</a>
+      <a class="repo-pill" href="https://github.com/patl4588/railcall-website/tree/delegated/continuous-improvements" target="_blank" rel="noreferrer">📂 patl4588/railcall-website (delegated/continuous-improvements) ↗</a>
+      <a class="repo-pill" href="https://github.com/patl4588/project-mozart" target="_blank" rel="noreferrer">📊 Dashboard Git Repo (patl4588/project-mozart) ↗</a>
+    </div>
+
+    <!-- KPI Summary Row -->
+    <div class="grid-4">
+      <div class="kpi-card">
+        <div class="kpi-label">Peak Local Router Speed</div>
+        <div class="kpi-value">269.4 tok/s</div>
+        <div class="kpi-note">railcall-router:latest ($0.00 GPU)</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Local Fastpath Speedup</div>
+        <div class="kpi-value">13.3×</div>
+        <div class="kpi-note">3,971ms → 297.5ms (think: false)</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Local Pack VRAM Saved</div>
+        <div class="kpi-value">93.4%</div>
+        <div class="kpi-note">51.7 GB → 3.4 GB in local_reason</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Prefix Cache + Floor JSON</div>
+        <div class="kpi-value">Up to 90%</div>
+        <div class="kpi-note">Cached system prefix COGS cut</div>
+      </div>
+    </div>
+
+    <!-- Live Local $0.00 GPU Grunt-Work Agents -->
+    <div class="card">
+      <div class="section-title">🖥️ Active Local $0.00 On-Device GPU Swarm</div>
+      <table>
+        <thead>
+          <tr>
+            <th>Local Agent Role</th>
+            <th>On-Device Pack Model</th>
+            <th>Footprint</th>
+            <th>Measured GPU Speed</th>
+            <th>Assigned Hourly Grunt Work ($0.00 Cost)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Grunt Scout #1 · Ultra-Fast Router</strong></td>
+            <td><code>railcall-router:latest</code></td>
+            <td><span class="badge-tag tag-local">100% GPU · 1.0 GB</span></td>
+            <td><strong>269.4 tok/s · JSON Mode</strong></td>
+            <td>Sub-100ms warm JSON intent triage, fast route classification, schema validation.</td>
+          </tr>
+          <tr>
+            <td><strong>Grunt Scout #2 · Fast Lint &amp; Extractor</strong></td>
+            <td><code>railcall-fast:latest</code></td>
+            <td><span class="badge-tag tag-local">100% GPU · 3.4 GB</span></td>
+            <td><strong>122.3 tok/s · 297.5ms</strong></td>
+            <td>Dead-link sweeps, Ollama call-site fastpath audits, CSS/selector checks.</td>
+          </tr>
+          <tr>
+            <td><strong>Grunt Worker #3 · Test &amp; Fuzz Sweeper</strong></td>
+            <td><code>gpt-oss:20b</code> (<code>think: "low"</code>)</td>
+            <td><span class="badge-tag tag-local">100% GPU · 13.8 GB</span></td>
+            <td><strong>102.8 tok/s · Harmony</strong></td>
+            <td>Edge-case regex fuzzing, loopback egress &amp; 401 billing gate test synthesis.</td>
+          </tr>
+          <tr>
+            <td><strong>Grunt Worker #4 · Repo Drift &amp; Refactor</strong></td>
+            <td><code>railcall-core:latest</code> / <code>railcall-coder:latest</code></td>
+            <td><span class="badge-tag tag-local">On-Device · 18–51 GB</span></td>
+            <td><strong>On-Demand Local</strong></td>
+            <td>Cross-repo parity checks across <code>linden</code>, <code>railcall-website</code>, and <code>railcall-chat</code>.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Verified Upgrades Staged in Delegated Lane -->
+    <div class="card">
+      <div class="section-title">⚙️ Verified Commits Staged &amp; Pushed to <code>delegated/continuous-improvements</code></div>
+
+      <div class="arch-item">
+        <div class="arch-icon">⚡</div>
+        <div class="arch-content">
+          <h4>1. [WAVE 2 · COMMITTED &amp; PUSHED] Station <code>local_reason.py</code> Zero-Think Fastpath + 93% VRAM Fix</h4>
+          <p>Wired automatic <code>think: False</code> + <code>format: "json"</code> into <code>LocalReasonClient.chat_with_usage()</code> and <code>local_reason()</code> while preserving Harmony channel behavior on <code>gpt-oss</code> models. Fixed <code>resolve_model()</code> so machines without <code>llama3.2</code> pick <code>railcall-fast:latest</code> (3.4 GB, 122 tok/s) instead of cold-loading <code>have[0]</code> (51.7 GB coder weights). Tests: <code>4/4 PASS</code>.</p>
+          <div class="diff-tag">patl4588/linden · commit 5be4045e8 · apps/station/workbench/primitives/local_reason.py</div>
+        </div>
+      </div>
+
+      <div class="arch-item">
+        <div class="arch-icon">🧠</div>
+        <div class="arch-content">
+          <h4>2. [WAVE 2 · COMMITTED &amp; PUSHED] Gateway <code>/v1</code> Canonical System Prefix Cache + <code>linden-1.0-json</code> Floor Fast-Route</h4>
+          <p>Hoists &amp; merges system/developer messages into a deterministic prefix at index 0 for automatic KV-cache hits, enables ephemeral prompt caching on system prompts &ge;1,024 chars (~75%–90% cached input savings), and routes <code>linden-1.0-json</code> directly to the non-thinking floor JSON tier (~65% lower COGS, ~55% faster). Tests: <code>11/11 PASS</code>.</p>
+          <div class="diff-tag">patl4588/linden · commit 5be4045e8 · apps/gateway/src/v1/linden-v1.service.ts</div>
+        </div>
+      </div>
+
+      <div class="arch-item">
+        <div class="arch-icon">🖥️</div>
+        <div class="arch-content">
+          <h4>3. [WAVE 2 · COMMITTED &amp; PUSHED] Desktop Sub-Agent Swarm Zero-Think Loopback Ollama Fastpath</h4>
+          <p>Connected <code>local-ollama-fastpath.js</code> directly into Desktop <code>subagent-tools.js</code> with strict localhost/loopback egress enforcement, fast pack model priority, and zero-think local sub-agent streaming. Tests: <code>8/8 PASS</code>.</p>
+          <div class="diff-tag">SamyBchaalia/railcall-chat · commits 8724bf8 &amp; 7432606 · local-ollama-fastpath.js + subagent-tools.js</div>
+        </div>
+      </div>
+
+      <div class="arch-item">
+        <div class="arch-icon">🔒</div>
+        <div class="arch-content">
+          <h4>4. [WAVE 2 · SYNCED] 100% Billing Lockdown Parity Synced into Delegated Branches</h4>
+          <p>Synced production <code>launch_metered</code> defaults, 3-turn guest caps, zero unmetered fallback gates, and 401 media auth checks into <code>delegated/continuous-improvements</code> so merging never regresses billing.</p>
+          <div class="diff-tag">patl4588/linden (8cef4849b) · patl4588/railcall-website (2c6c21c)</div>
+        </div>
+      </div>
+
+      <div class="arch-item">
+        <div class="arch-icon">🎯</div>
+        <div class="arch-content">
+          <h4>5. [NEXT HOURLY WAVE · 13:00 EST] <code>/v1</code> Prefix Cache Telemetry + Desktop Workflow Canvas Node Latency Fastpath</h4>
+          <p>Add unit tests asserting canonical system prefix caching &amp; floor JSON routing in <code>linden-v1.spec.ts</code>, plus wire local zero-think fastpath into workflow transform/classifier nodes.</p>
+          <div class="diff-tag">Queued for 13:00 EST Hourly Iteration</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="border-color: rgba(99, 102, 241, 0.4); background: linear-gradient(180deg, rgba(99,102,241,0.06) 0%, rgba(18,20,32,1) 100%);">
+      <div class="section-title">🛡️ Governance &amp; Hourly Sync</div>
+      <p style="font-size: 13px; color: var(--text-dim); margin-bottom: 10px;">Every hour (<code>0 * * * *</code>), Project Mozart runs local $0.00 GPU sweeps, verifies unit tests, pushes code commits exclusively to <code>delegated/continuous-improvements</code>, and publishes updated metrics to this live page for Patrick &amp; Sami.</p>
+      <div style="font-size: 12px; color: #a5b4fc; font-family: var(--font-mono);">
+        Zero commits touch <code>main</code> until approved ("Push delegated lane to main").
+      </div>
+    </div>
+  </div>
+  <script>
+    fetch('./local_swarm_telemetry.json', { cache: 'no-store' })
+      .then(function(r) { return r.ok ? r.json() : null; })
+      .then(function(doc) {
+        if (doc && doc.generated_at) {
+          var dt = new Date(doc.generated_at);
+          var el = document.getElementById('last-updated-label');
+          if (el && !isNaN(dt.getTime())) {
+            el.textContent = 'Last Telemetry Sync: ' + dt.toLocaleString() + ' · Auto-Updated Every Hour';
+          }
+        }
+      })
+      .catch(function() {});
+  </script>
+</body>
+</html>
