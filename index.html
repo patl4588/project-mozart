@@ -191,14 +191,64 @@
   <div class="container">
     <div class="header">
       <div>
-        <div class="eyebrow"><span class="pulse-dot"></span> Project Mozart — Shared Hourly Hub (Patrick &amp; Sami)</div>
-        <h1>Lead Orchestrator + Local $0.00 GPU Agent Swarm</h1>
-        <div class="subhead">Auto-synced to GitHub &amp; GitHub Pages every hour. Local GPU worker models run continuous $0.00 sweeps, latency benchmarks, and test generation inside isolated <code>delegated/continuous-improvements</code> branches while <code>main</code> stays untouched until approved.</div>
+        <div class="eyebrow"><span class="pulse-dot"></span> Operation Mozart — Infrastructure, Architecture &amp; QA Gatekeeper Hub</div>
+        <h1>Core Reliability Lanes + Adversarial QA Department</h1>
+        <div class="subhead">Strict isolated lane execution inside <code>delegated/continuous-improvements</code> (zero touches to <code>main</code> or live servers). Every commit must pass the 5-Squad QA Release Gate (2-Instance Split-Brain, 32-Slot DB Lock Stress, 502 Chaos Swap, Stateful Browser E2E, &amp; Cost/Ledger Parity) before any push is authorized.</div>
       </div>
       <div style="text-align: right;">
-        <span class="status-badge">⚡ Wave 2 Live · Auto-Uploaded Hourly</span>
-        <div id="last-updated-label" style="font-size: 11.5px; color: var(--text-dim); margin-top: 6px;">Last Updated: 2026-11-16 12:33 EST · Next Hourly Upload: 13:00 EST</div>
+        <span id="top-gate-pill" class="status-badge">🛡️ QA Gatekeeper Active · Standby for Sami Sync</span>
+        <div id="last-updated-label" style="font-size: 11.5px; color: var(--text-dim); margin-top: 6px;">Last Updated: 2026-11-16 15:24 EST · Fail-Closed QA Gate Armed</div>
       </div>
+    </div>
+
+    <!-- Live Fail-Closed QA Release Gatekeeper Scorecard -->
+    <div class="card" id="qa-gate-card" style="border-color: rgba(16, 185, 129, 0.35); background: linear-gradient(180deg, rgba(16,185,129,0.06) 0%, rgba(18,20,32,1) 100%);">
+      <div class="section-title">🛡️ Mozart Large QA Department — Release Gatekeeper Scorecard</div>
+      <div id="qa-gate-banner" style="padding: 10px 14px; border-radius: 8px; background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.35); color: #fcd34d; font-size: 12.5px; margin-bottom: 14px;">
+        ⏳ <strong>STANDBY FOR SAMI BASELINE SYNC:</strong> 5-Squad Deep Forensic Audit complete (zero source files touched to prevent merge conflicts). Ready to rebase onto Sami's push, run full 5-tier QA stress suite, and stage verified infrastructure fixes.
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>QA Squad</th>
+            <th>Real-World Adversarial Harness (No Fake Mocks)</th>
+            <th>Hard Production Invariant</th>
+            <th>Gate Status</th>
+          </tr>
+        </thead>
+        <tbody id="qa-scorecard-rows">
+          <tr>
+            <td><strong>QA Squad 1 · Split-Brain</strong></td>
+            <td>2× Web + 2× Gateway behind strict round-robin non-sticky proxy</td>
+            <td><code>0× HTTP 404 / 401 / 504</code> across A↔B hops</td>
+            <td><span class="badge-tag tag-carbon">SPEC READY · AWAITING SYNC</span></td>
+          </tr>
+          <tr>
+            <td><strong>QA Squad 2 · DB Lock &amp; Queue</strong></td>
+            <td>36 concurrent sends + 32-slot worker delta burst + mid-run <code>SIGTERM</code></td>
+            <td><code>0× Deadlock (40P01)</code> · <code>p95 &lt; 120ms</code> · <code>0 Stranded Credits</code></td>
+            <td><span class="badge-tag tag-carbon">SPEC READY · AWAITING SYNC</span></td>
+          </tr>
+          <tr>
+            <td><strong>QA Squad 3 · Stream &amp; Chaos</strong></td>
+            <td>8.5s <code>502</code> container swap + TCP reset + 20s TTFT stall + Desktop liveness</td>
+            <td><code>0× 8s Loop</code> · <code>1 Conversation</code> · <code>0× 140s execution_unknown</code></td>
+            <td><span class="badge-tag tag-carbon">SPEC READY · AWAITING SYNC</span></td>
+          </tr>
+          <tr>
+            <td><strong>QA Squad 4 · Routing &amp; Cost</strong></td>
+            <td>Sub-second provider TTFT circuit-breaker + double-entry cost/receipt parity</td>
+            <td><code>Fast-Lane TTFT &lt; 2s</code> · <code>100% Ledger &amp; Receipt Match</code></td>
+            <td><span class="badge-tag tag-carbon">SPEC READY · AWAITING SYNC</span></td>
+          </tr>
+          <tr>
+            <td><strong>QA Squad 5 · Stateful Browser E2E</strong></td>
+            <td>Real Playwright Chromium (<code>rc_ws</code> cookies, mid-stream reload, $5 cap)</td>
+            <td><code>1× Message POST</code> · <code>Monotonic Timer</code> · <code>SHA-Pinned Push</code></td>
+            <td><span class="badge-tag tag-floor">FAIL-CLOSED HOOK ARMED</span></td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 
     <div class="prod-banner">
@@ -360,6 +410,40 @@
           if (el && !isNaN(dt.getTime())) {
             el.textContent = 'Last Telemetry Sync: ' + dt.toLocaleString() + ' · Auto-Updated Every Hour';
           }
+        }
+      })
+      .catch(function() {});
+
+    fetch('./qa_gate_scorecard.json', { cache: 'no-store' })
+      .then(function(r) { return r.ok ? r.json() : null; })
+      .then(function(sc) {
+        if (!sc || !Array.isArray(sc.suites)) return;
+        var banner = document.getElementById('qa-gate-banner');
+        var pill = document.getElementById('top-gate-pill');
+        var tbody = document.getElementById('qa-scorecard-rows');
+        if (banner) {
+          if (sc.gate_passed) {
+            banner.style.background = 'rgba(16, 185, 129, 0.12)';
+            banner.style.borderColor = 'rgba(16, 185, 129, 0.4)';
+            banner.style.color = '#a7f3d0';
+            banner.innerHTML = '✅ <strong>QA RELEASE GATE PASSED (' + (sc.duration_sec || 0) + 's):</strong> All 5 real-world QA suites verified on exact HEAD SHAs — Push to <code>delegated/continuous-improvements</code> authorized.';
+          } else {
+            banner.style.background = 'rgba(239, 68, 68, 0.14)';
+            banner.style.borderColor = 'rgba(239, 68, 68, 0.45)';
+            banner.style.color = '#fca5a5';
+            banner.innerHTML = '🚨 <strong>QA RELEASE GATE BLOCKED:</strong> Push to <code>delegated/continuous-improvements</code> halted automatically due to failing production invariant.';
+          }
+        }
+        if (pill) {
+          pill.textContent = sc.gate_passed ? '✅ QA Gate Passed · Push Authorized' : '🚨 QA Gate Blocked · Holding Push';
+        }
+        if (tbody && sc.suites.length > 0) {
+          tbody.innerHTML = sc.suites.map(function(s) {
+            var ok = s.status === 'PASS';
+            var cls = ok ? 'tag-floor' : 'tag-carbon';
+            var style = ok ? '' : 'background:rgba(239,68,68,0.2);color:#fca5a5;border-color:rgba(239,68,68,0.45);';
+            return '<tr><td><strong>' + (s.id || '') + '</strong></td><td>' + (s.label || '') + '</td><td><code>' + (s.passed || 0) + ' pass / ' + (s.failed || 0) + ' fail (' + (s.ms || 0) + 'ms)</code></td><td><span class="badge-tag ' + cls + '" style="' + style + '">' + (s.status || 'UNKNOWN') + '</span></td></tr>';
+          }).join('');
         }
       })
       .catch(function() {});
