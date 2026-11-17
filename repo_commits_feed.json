@@ -1,9 +1,9 @@
 {
   "schema": "mozart.repo_commits_feed.v1",
-  "generated_at": "2026-11-17T14:57:13.995Z",
+  "generated_at": "2026-11-17T14:59:50.784Z",
   "lane_branch": "delegated/continuous-improvements",
   "repo_count": 4,
-  "total_commits_ahead_of_main": 23,
+  "total_commits_ahead_of_main": 24,
   "all_ff_ready": false,
   "private_repo_explanation": "All 4 RailCall code repositories are private on GitHub (unauthenticated browsers show GitHub's standard 404 page). Every commit SHA, git log --stat -n 5 summary, code diff preview, and 1-command fast-forward merge instruction is rendered inline here so Patrick and Sami never hit a 404 dead-end.",
   "repos": [
@@ -33,7 +33,7 @@
           "sha": "12e98fb6b60e468f5d418a18cafdef138e4af69e",
           "short_sha": "12e98fb",
           "author_date_iso": "2026-11-17T09:14:54-05:00",
-          "relative_time": "42 minutes ago",
+          "relative_time": "45 minutes ago",
           "subject": "perf(workspace): route Band-1 useFastLane chats to Rung 0 fast tier and emit style.css before index.html",
           "stat_summary": "4 files changed, 42 insertions(+), 18 deletions(-)",
           "changed_files": [
@@ -123,24 +123,37 @@
       "private_repo_notice": "Private GitHub Repo — sign in to GitHub to open external links, or inspect full commits, file stats & diffs inline below.",
       "available": true,
       "branch": "delegated/continuous-improvements",
-      "head_sha": "940f5196085cf42d2130d05e802d9e9d1c83ca80",
-      "head_short": "940f519",
+      "head_sha": "3fd0eff76ad9b87389c48e0fd0ca03aa0cf1f02b",
+      "head_short": "3fd0eff",
       "main_ref": "origin/main",
       "main_sha": "26bd0a5c675136369e94439c4f5c44bbca8e26ab",
       "main_short": "26bd0a5",
-      "ahead_count": 5,
+      "ahead_count": 6,
       "behind_count": 1,
       "ff_ready": false,
       "github_branch_url": "https://github.com/patl4588/railcall-website/tree/delegated/continuous-improvements",
       "github_compare_url": "https://github.com/patl4588/railcall-website/compare/main...delegated/continuous-improvements",
       "sami_one_liner": "cd railcall-website && git fetch origin main delegated/continuous-improvements && git checkout main && git pull --ff-only origin main && git merge --no-ff origin/delegated/continuous-improvements && git push origin main",
-      "git_log_stat_5": "commit 940f5196085cf42d2130d05e802d9e9d1c83ca80\nAuthor: Antigravity-UI <patrickjameslinden@gmail.com>\nDate:   Tue Nov 17 09:50:47 2026 -0500\n\n    feat(web): exact Desktop UI parity, Local $0 bridge & popups, HTML style-ready preview gate, and 1-click installer download\n\n app/api/download/chat/route.ts                      | 156 ++++++\n app/chat/[id]/ChatClient.tsx                        | 504 +++++++++++++----\n app/components/chat/LiveArtifactWorkbench.tsx       |  24 +-\n app/components/home/HomeHero.tsx                    |  65 ++-\n app/components/home/hero.module.css                 |  92 ++++\n app/components/workspace/BuildWorkspace.tsx         |   3 +-\n app/components/workspace/Composer.tsx               | 181 +++++--\n app/components/workspace/DesktopSplitStudioDock.tsx | 359 +++++++++++++\n app/components/workspace/LocalEngineBridge.tsx      | 925 ++++++++++++++++++++++++++++++++\n app/components/workspace/MessageList.tsx            |  32 +-\n app/components/workspace/RoutingControlsBar.tsx     | 245 +++++----\n app/components/workspace/WorkspaceShell.tsx         | 721 +++++++++++++++++++++----\n app/components/workspace/workspace.module.css       | 727 ++++++++++++++++++++++++-\n app/lib/direct-download-os.ts                       | 132 +++++\n app/lib/live-artifact-workbench.ts                  | 325 ++++++++++-\n app/page.tsx                                        |   8 +-\n tests/desktop-exact-ui-and-local-popup.test.ts      | 690 ++++++++++++++++++++++++\n 17 files changed, 4804 insertions(+), 385 deletions(-)\n\ncommit 7e187a611596fc7d16343dc0f55b556566af1f77\nAuthor: Antigravity-UI <patrickjameslinden@gmail.com>\nDate:   Tue Nov 17 08:32:54 2026 -0500\n\n    fix(web): unlock zero-downtime Render deploys, add 502 swap-retry JSON parser, and harden ProjectsHome\n\n app/api/keys/route.ts                             |  65 +++-\n app/chat/[id]/ChatClient.tsx                      |  98 +++--\n app/chat/projects/ProjectsHome.tsx                | 670 ++++++++++++++++++++++++++++++----\n app/components/workspace/AgentChatPicker.tsx      |  11 +-\n app/components/workspace/BuildWorkspace.tsx       |  71 +++-\n app/components/workspace/ProjectChatPicker.tsx    |  22 +-\n app/components/workspace/WorkspaceShell.tsx       |  37 +-\n app/components/workspace/useWorkspace.ts          |  84 +++--\n app/lib/chat-history.ts                           |   6 +-\n app/lib/fetch-with-swap-retry.ts                  | 328 +++++++++++++++++\n lib/openApiKeys.ts                                |  22 +-\n render.yaml                                       |  11 +-\n tests/webapp-swap-resilience-and-projects.test.ts | 316 ++++++++++++++++\n 13 files changed, 1579 insertions(+), 162 deletions(-)\n\ncommit 8ec8794cc5a12056dde131efc4350a328a981d6d\nMerge: b163e46 cd7ce66\nAuthor: Antigravity-UI <patrickjameslinden@gmail.com>\nDate:   Tue Nov 17 08:19:44 2026 -0500\n\n    merge: sync origin/main cd7ce66 while preserving full-site serene editorial cohesion\n\ncommit b163e463f7961dc3a5f19c93ca05f45dcad295e3\nAuthor: Antigravity-UI <patrickjameslinden@gmail.com>\nDate:   Tue Nov 17 08:10:40 2026 -0500\n\n    feat(home): harmonize full-site serene editorial palette and fix 856px workflow canvas clipping\n\n app/components/home/WorkflowCanvasShowcase.tsx |  37 +--\n app/components/home/animated-agents.module.css |  92 +++----\n app/components/home/hero.module.css            | 124 +++++-----\n app/components/home/reference-home.module.css  | 482 ++++++++++++++++++++-----------------\n app/page.tsx                                   |  18 +-\n tests/serene-editorial-home-and-canvas.test.ts |  67 ++++++\n 6 files changed, 473 insertions(+), 347 deletions(-)\n\ncommit b9ae1ef94ec645cdf457c85c28fa08d069e7b2b2\nMerge: 090c428 158f673\nAuthor: Antigravity-UI <patrickjameslinden@gmail.com>\nDate:   Tue Nov 17 07:55:50 2026 -0500\n\n    merge: sync origin/main marine tides, session recovery, research routing, and $5.00 IP allowance",
+      "git_log_stat_5": "commit 3fd0eff76ad9b87389c48e0fd0ca03aa0cf1f02b\nAuthor: Antigravity-UI <patrickjameslinden@gmail.com>\nDate:   Tue Nov 17 09:58:33 2026 -0500\n\n    fix(hero): enforce white label contrast on direct-download primary CTA button\n\n app/components/home/hero.module.css | 8 +++++++-\n 1 file changed, 7 insertions(+), 1 deletion(-)\n\ncommit 940f5196085cf42d2130d05e802d9e9d1c83ca80\nAuthor: Antigravity-UI <patrickjameslinden@gmail.com>\nDate:   Tue Nov 17 09:50:47 2026 -0500\n\n    feat(web): exact Desktop UI parity, Local $0 bridge & popups, HTML style-ready preview gate, and 1-click installer download\n\n app/api/download/chat/route.ts                      | 156 ++++++\n app/chat/[id]/ChatClient.tsx                        | 504 +++++++++++++----\n app/components/chat/LiveArtifactWorkbench.tsx       |  24 +-\n app/components/home/HomeHero.tsx                    |  65 ++-\n app/components/home/hero.module.css                 |  92 ++++\n app/components/workspace/BuildWorkspace.tsx         |   3 +-\n app/components/workspace/Composer.tsx               | 181 +++++--\n app/components/workspace/DesktopSplitStudioDock.tsx | 359 +++++++++++++\n app/components/workspace/LocalEngineBridge.tsx      | 925 ++++++++++++++++++++++++++++++++\n app/components/workspace/MessageList.tsx            |  32 +-\n app/components/workspace/RoutingControlsBar.tsx     | 245 +++++----\n app/components/workspace/WorkspaceShell.tsx         | 721 +++++++++++++++++++++----\n app/components/workspace/workspace.module.css       | 727 ++++++++++++++++++++++++-\n app/lib/direct-download-os.ts                       | 132 +++++\n app/lib/live-artifact-workbench.ts                  | 325 ++++++++++-\n app/page.tsx                                        |   8 +-\n tests/desktop-exact-ui-and-local-popup.test.ts      | 690 ++++++++++++++++++++++++\n 17 files changed, 4804 insertions(+), 385 deletions(-)\n\ncommit 7e187a611596fc7d16343dc0f55b556566af1f77\nAuthor: Antigravity-UI <patrickjameslinden@gmail.com>\nDate:   Tue Nov 17 08:32:54 2026 -0500\n\n    fix(web): unlock zero-downtime Render deploys, add 502 swap-retry JSON parser, and harden ProjectsHome\n\n app/api/keys/route.ts                             |  65 +++-\n app/chat/[id]/ChatClient.tsx                      |  98 +++--\n app/chat/projects/ProjectsHome.tsx                | 670 ++++++++++++++++++++++++++++++----\n app/components/workspace/AgentChatPicker.tsx      |  11 +-\n app/components/workspace/BuildWorkspace.tsx       |  71 +++-\n app/components/workspace/ProjectChatPicker.tsx    |  22 +-\n app/components/workspace/WorkspaceShell.tsx       |  37 +-\n app/components/workspace/useWorkspace.ts          |  84 +++--\n app/lib/chat-history.ts                           |   6 +-\n app/lib/fetch-with-swap-retry.ts                  | 328 +++++++++++++++++\n lib/openApiKeys.ts                                |  22 +-\n render.yaml                                       |  11 +-\n tests/webapp-swap-resilience-and-projects.test.ts | 316 ++++++++++++++++\n 13 files changed, 1579 insertions(+), 162 deletions(-)\n\ncommit 8ec8794cc5a12056dde131efc4350a328a981d6d\nMerge: b163e46 cd7ce66\nAuthor: Antigravity-UI <patrickjameslinden@gmail.com>\nDate:   Tue Nov 17 08:19:44 2026 -0500\n\n    merge: sync origin/main cd7ce66 while preserving full-site serene editorial cohesion\n\ncommit b163e463f7961dc3a5f19c93ca05f45dcad295e3\nAuthor: Antigravity-UI <patrickjameslinden@gmail.com>\nDate:   Tue Nov 17 08:10:40 2026 -0500\n\n    feat(home): harmonize full-site serene editorial palette and fix 856px workflow canvas clipping\n\n app/components/home/WorkflowCanvasShowcase.tsx |  37 +--\n app/components/home/animated-agents.module.css |  92 +++----\n app/components/home/hero.module.css            | 124 +++++-----\n app/components/home/reference-home.module.css  | 482 ++++++++++++++++++++-----------------\n app/page.tsx                                   |  18 +-\n tests/serene-editorial-home-and-canvas.test.ts |  67 ++++++\n 6 files changed, 473 insertions(+), 347 deletions(-)",
       "commits": [
+        {
+          "sha": "3fd0eff76ad9b87389c48e0fd0ca03aa0cf1f02b",
+          "short_sha": "3fd0eff",
+          "author_date_iso": "2026-11-17T09:58:33-05:00",
+          "relative_time": "77 seconds ago",
+          "subject": "fix(hero): enforce white label contrast on direct-download primary CTA button",
+          "stat_summary": "1 file changed, 7 insertions(+), 1 deletion(-)",
+          "changed_files": [
+            "app/components/home/hero.module.css | 8 +++++++-"
+          ],
+          "patch_preview": "",
+          "github_commit_url": "https://github.com/patl4588/railcall-website/commit/3fd0eff76ad9b87389c48e0fd0ca03aa0cf1f02b"
+        },
         {
           "sha": "940f5196085cf42d2130d05e802d9e9d1c83ca80",
           "short_sha": "940f519",
           "author_date_iso": "2026-11-17T09:50:47-05:00",
-          "relative_time": "6 minutes ago",
+          "relative_time": "9 minutes ago",
           "subject": "feat(web): exact Desktop UI parity, Local $0 bridge & popups, HTML style-ready preview gate, and 1-click installer download",
           "stat_summary": "17 files changed, 4804 insertions(+), 385 deletions(-)",
           "changed_files": [
@@ -169,7 +182,7 @@
           "sha": "7e187a611596fc7d16343dc0f55b556566af1f77",
           "short_sha": "7e187a6",
           "author_date_iso": "2026-11-17T08:32:54-05:00",
-          "relative_time": "84 minutes ago",
+          "relative_time": "87 minutes ago",
           "subject": "fix(web): unlock zero-downtime Render deploys, add 502 swap-retry JSON parser, and harden ProjectsHome",
           "stat_summary": "13 files changed, 1579 insertions(+), 162 deletions(-)",
           "changed_files": [
@@ -224,34 +237,6 @@
           ],
           "patch_preview": "",
           "github_commit_url": "https://github.com/patl4588/railcall-website/commit/b163e463f7961dc3a5f19c93ca05f45dcad295e3"
-        },
-        {
-          "sha": "b9ae1ef94ec645cdf457c85c28fa08d069e7b2b2",
-          "short_sha": "b9ae1ef",
-          "author_date_iso": "2026-11-17T07:56:01-05:00",
-          "relative_time": "2 hours ago",
-          "subject": "merge: sync origin/main marine tides, session recovery, research routing, and $5.00 IP allowance",
-          "stat_summary": "16 files changed, 851 insertions(+), 76 deletions(-)",
-          "changed_files": [
-            "app/api/workspace/session/route.ts            |  22 +++",
-            "app/chat/[id]/ChatClient.tsx                  | 155 +++++++++++++--------",
-            "app/components/home/HomeHero.tsx              |   2 +-",
-            "app/components/home/HomePrompt.tsx            |   2 +-",
-            "app/components/workspace/ConversionCard.tsx   |  16 +--",
-            "app/components/workspace/WorkspaceShell.tsx   |  43 ++++--",
-            "app/components/workspace/types.ts             |   5 +-",
-            "app/components/workspace/workspace.module.css |   6 +",
-            "app/lib/chat-history.ts                       | 102 ++++++++++++++",
-            "app/lib/server/workspace-free-fallback.ts     | 244 +++++++++++++++++++++++++++++++++-",
-            "app/lib/server/workspace-session.ts           |  32 +++++",
-            "package.json                                  |   2 +-",
-            "tests/chat-first-submit.cjs                   |  14 ++",
-            "tests/chat-history-load.test.ts               | 127 ++++++++++++++++++",
-            "tests/guest-ip-5usd-no-signup.test.ts         |  55 ++++++++",
-            "tests/tide-marine-resolution.test.ts          | 100 ++++++++++++++"
-          ],
-          "patch_preview": "",
-          "github_commit_url": "https://github.com/patl4588/railcall-website/commit/b9ae1ef94ec645cdf457c85c28fa08d069e7b2b2"
         }
       ]
     },
@@ -281,7 +266,7 @@
           "sha": "83518dba195d87b5a2f8dde562777e7826c7d765",
           "short_sha": "83518db",
           "author_date_iso": "2026-11-17T08:43:27-05:00",
-          "relative_time": "74 minutes ago",
+          "relative_time": "76 minutes ago",
           "subject": "fix(desktop): eliminate false-positive chat guard blocks, unlock reopened threads, and harden offline/PDF/DOCX artifact previews",
           "stat_summary": "8 files changed, 2598 insertions(+), 190 deletions(-)",
           "changed_files": [
@@ -301,7 +286,7 @@
           "sha": "765e3ce0d999c9cee23ba2f23fabbd6799087984",
           "short_sha": "765e3ce",
           "author_date_iso": "2026-11-16T17:28:59-05:00",
-          "relative_time": "16 hours ago",
+          "relative_time": "17 hours ago",
           "subject": "fix(docs): prevent anaphoric PDF context wipeout and add native .docx Word export",
           "stat_summary": "9 files changed, 1449 insertions(+), 28 deletions(-)",
           "changed_files": [
@@ -399,7 +384,7 @@
           "sha": "e822ba805da360be20f7248f5997f92c16ab4ddd",
           "short_sha": "e822ba805",
           "author_date_iso": "2026-11-17T09:14:56-05:00",
-          "relative_time": "42 minutes ago",
+          "relative_time": "45 minutes ago",
           "subject": "perf(station,cloud-router): disable hidden reasoning on fast SSE streams, fix binary preload crash, and wire Tier-0 Dedicated GPU pool",
           "stat_summary": "22 files changed, 1279 insertions(+), 85 deletions(-)",
           "changed_files": [
