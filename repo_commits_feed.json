@@ -1,6 +1,6 @@
 {
   "schema": "mozart.repo_commits_feed.v1",
-  "generated_at": "2026-11-17T17:45:09.961Z",
+  "generated_at": "2026-11-17T17:47:51.276Z",
   "lane_branch": "delegated/continuous-improvements",
   "repo_count": 4,
   "total_commits_ahead_of_main": 17,
@@ -33,7 +33,7 @@
           "sha": "d81173a06a32acb16e5d4c800b68e7845ae8cbaa",
           "short_sha": "d81173a",
           "author_date_iso": "2026-11-17T12:43:39-05:00",
-          "relative_time": "2 minutes ago",
+          "relative_time": "4 minutes ago",
           "subject": "feat(workspace,v1): wire 48-group Direct-First Task x Speed x Quality x Cost scoring into PredictiveRoutingIndex and LindenV1Service",
           "stat_summary": "4 files changed, 328 insertions(+), 55 deletions(-)",
           "changed_files": [
@@ -49,7 +49,7 @@
           "sha": "1199d69bbe0b5d91964d017ce9a795af2b076ab7",
           "short_sha": "1199d69",
           "author_date_iso": "2026-11-17T17:58:20+01:00",
-          "relative_time": "47 minutes ago",
+          "relative_time": "50 minutes ago",
           "subject": "perf(workflow): route simple workflow drafts to Rung-0 fast-lane without planning roundtrip",
           "stat_summary": "3 files changed, 77 insertions(+), 6 deletions(-)",
           "changed_files": [
@@ -146,7 +146,7 @@
           "sha": "2b1f3edcf0470ce10f13d88bc3aaaaab14e24c60",
           "short_sha": "2b1f3ed",
           "author_date_iso": "2026-11-17T12:43:39-05:00",
-          "relative_time": "2 minutes ago",
+          "relative_time": "4 minutes ago",
           "subject": "feat(v1): add task-profile Speed x Quality x Cost Direct routing on /v1/chat/completions with OpenRouter backup",
           "stat_summary": "2 files changed, 213 insertions(+), 30 deletions(-)",
           "changed_files": [
@@ -160,7 +160,7 @@
           "sha": "b1a4b8e6d09507bb2bc924a75b4946ea010edbc7",
           "short_sha": "b1a4b8e",
           "author_date_iso": "2026-11-17T17:58:20+01:00",
-          "relative_time": "47 minutes ago",
+          "relative_time": "50 minutes ago",
           "subject": "ux(thinking): display instant workflow fast-lane & architect labels on workflow prompts",
           "stat_summary": "1 file changed, 52 insertions(+), 31 deletions(-)",
           "changed_files": [
@@ -173,7 +173,7 @@
           "sha": "e85fa4bd467aa86de09ee57187a21e11f6ce2d6d",
           "short_sha": "e85fa4b",
           "author_date_iso": "2026-11-17T11:20:13-05:00",
-          "relative_time": "85 minutes ago",
+          "relative_time": "88 minutes ago",
           "subject": "feat(webchat): log caller IP per WebChat/guest turn to the usage events log (#14)",
           "stat_summary": "1 file changed, 11 insertions(+)",
           "changed_files": [
@@ -372,7 +372,7 @@
           "sha": "4f06b83ae111692bc2cd18c339d662effa11015e",
           "short_sha": "4f06b83ae",
           "author_date_iso": "2026-11-17T12:43:39-05:00",
-          "relative_time": "2 minutes ago",
+          "relative_time": "4 minutes ago",
           "subject": "feat(cloud-router,station): implement 48-group 14D Task x Speed x Quality x Cost Pareto ranker with empirical Wilson feedback and Direct-First Station cost_router",
           "stat_summary": "10 files changed, 1107 insertions(+), 67 deletions(-)",
           "changed_files": [

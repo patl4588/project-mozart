@@ -612,6 +612,45 @@
         </tbody>
       </table>
       <div id="qa-failures-box" style="display: none; margin-top: 12px;"></div>
+
+      <div id="task-pareto-benchmark-box" style="margin-top: 16px; padding: 14px 16px; border-radius: 10px; background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.32);">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 10px;">
+          <strong style="font-size: 13.5px; color: #ecfdf5;">⚡ Sovereign Direct-First 48-Micro-Group Task &times; Speed &times; Quality &times; Cost Pareto Benchmark (OpenRouter = Tail Backup Only)</strong>
+          <span class="badge-tag tag-floor" id="pareto-version-pill">linden-task-pareto-1.0 &middot; 48/48 Groups</span>
+        </div>
+        <div class="grid-6" style="margin-bottom: 0;">
+          <div class="kpi-card">
+            <div class="kpi-label">Direct Task Quality</div>
+            <div class="kpi-value" id="pb-dir-q">0.9660</div>
+            <div class="kpi-note" id="pb-or-q">vs 0.9561 OpenRouter (+0.99%)</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Direct p95 Latency</div>
+            <div class="kpi-value" id="pb-dir-lat">1.259s</div>
+            <div class="kpi-note" id="pb-or-lat">vs 1.623s OpenRouter (22.4% faster)</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Direct Net Cost / Turn</div>
+            <div class="kpi-value" id="pb-dir-cost">$0.000761</div>
+            <div class="kpi-note" id="pb-or-cost">vs $0.000907 OpenRouter</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Savings vs OpenRouter</div>
+            <div class="kpi-value" id="pb-sav-or" style="color: #34d399;">16.1%</div>
+            <div class="kpi-note">0% fee + 75-90% Direct cache</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Savings vs Frontier</div>
+            <div class="kpi-value" id="pb-sav-fr" style="color: #34d399;">95.4%</div>
+            <div class="kpi-note" id="pb-fr-cost">vs $0.016531 Opus single-model</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">OpenRouter Primaries</div>
+            <div class="kpi-value" style="color: #38bdf8;">0 / 48</div>
+            <div class="kpi-note">$0 idle emergency tail backup</div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- ================================================================== -->
@@ -1064,6 +1103,19 @@
             var cls = ok ? 'tag-floor' : 'tag-fail';
             return '<tr><td><strong>' + escHtml(s.id || '') + '</strong></td><td>' + escHtml(s.label || '') + '</td><td><code>' + escHtml(s.passed || 0) + ' pass / ' + escHtml(s.failed || 0) + ' fail (' + escHtml(s.ms || 0) + 'ms)</code></td><td><span class="badge-tag ' + cls + '">' + escHtml(s.status || 'UNKNOWN') + '</span></td></tr>';
           }).join('');
+          var s4 = sc.suites.find(function(x) { return x && x.task_routing_benchmark; });
+          if (s4 && s4.task_routing_benchmark) {
+            var b = s4.task_routing_benchmark;
+            if (b.avgDirectQuality != null) document.getElementById('pb-dir-q').textContent = Number(b.avgDirectQuality).toFixed(4);
+            if (b.avgOpenRouterQuality != null) document.getElementById('pb-or-q').textContent = 'vs ' + Number(b.avgOpenRouterQuality).toFixed(4) + ' OpenRouter';
+            if (b.avgDirectLatencySec != null) document.getElementById('pb-dir-lat').textContent = Number(b.avgDirectLatencySec).toFixed(3) + 's';
+            if (b.avgOpenRouterLatencySec != null) document.getElementById('pb-or-lat').textContent = 'vs ' + Number(b.avgOpenRouterLatencySec).toFixed(3) + 's OpenRouter';
+            if (b.avgDirectNetCostUsd != null) document.getElementById('pb-dir-cost').textContent = '$' + Number(b.avgDirectNetCostUsd).toFixed(6);
+            if (b.avgOpenRouterNetCostUsd != null) document.getElementById('pb-or-cost').textContent = 'vs $' + Number(b.avgOpenRouterNetCostUsd).toFixed(6) + ' OpenRouter';
+            if (b.savingsVsOpenRouterPct != null) document.getElementById('pb-sav-or').textContent = Number(b.savingsVsOpenRouterPct).toFixed(1) + '%';
+            if (b.savingsVsFrontierPct != null) document.getElementById('pb-sav-fr').textContent = Number(b.savingsVsFrontierPct).toFixed(1) + '%';
+            if (b.avgFrontierNetCostUsd != null) document.getElementById('pb-fr-cost').textContent = 'vs $' + Number(b.avgFrontierNetCostUsd).toFixed(6) + ' Frontier';
+          }
         }
         if (failBox && Array.isArray(sc.failures) && sc.failures.length > 0) {
           failBox.style.display = 'block';

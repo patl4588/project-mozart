@@ -36,7 +36,7 @@ if [ "$GATE_OK" -eq 1 ] && [ -f "$SCORECARD" ]; then
               /Users/patricklinden/mozart-delegated-lane/railcall-website \
               /Users/patricklinden/mozart-delegated-lane/railcall-chat \
               /Users/patricklinden/mozart-delegated-lane/linden; do
-    [ -d "$repo/.git" ] || continue
+    [ -e "$repo/.git" ] || continue
     name="$(basename "$repo")"
     branch="$(git -C "$repo" branch --show-current)"
     head_sha="$(git -C "$repo" rev-parse HEAD)"
