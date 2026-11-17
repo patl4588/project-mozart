@@ -9,25 +9,25 @@
     "audited_by": "Mozart Squad Alpha"
   },
   "live_rollup": {
-    "refreshed_at": "2026-11-17T13:46:11.173Z",
+    "refreshed_at": "2026-11-17T14:56:18.324Z",
     "privacy_policy": "strict_zero_pii_aggregates_only",
     "conversations": {
-      "total_conversations": 138,
-      "total_messages": 983,
-      "user_messages": 489,
-      "assistant_messages": 494,
-      "workflow_conversations": 137,
+      "total_conversations": 139,
+      "total_messages": 987,
+      "user_messages": 491,
+      "assistant_messages": 496,
+      "workflow_conversations": 138,
       "avg_messages_per_conversation": 7.1
     },
     "run_ledger": {
-      "total_runs": 310,
-      "succeeded": 305,
+      "total_runs": 312,
+      "succeeded": 307,
       "failed": 4,
       "interrupted": 1,
       "success_rate_pct": 98.4,
       "by_type": {
-        "chat": 134,
-        "goal": 174,
+        "chat": 135,
+        "goal": 175,
         "intent": 2
       },
       "by_provider": {
@@ -36,7 +36,7 @@
         "unspecified": 93,
         "ollama-local": 1,
         "linden-1.0-local": 3,
-        "railcall-cloud": 135,
+        "railcall-cloud": 137,
         "local-airlock-registry": 2
       },
       "top_models": [
@@ -50,11 +50,11 @@
         },
         {
           "model": "nvidia/NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-NVFP4",
-          "runs": 43
+          "runs": 44
         },
         {
           "model": "openai/gpt-5.4-mini",
-          "runs": 27
+          "runs": 28
         },
         {
           "model": "grok-imagine-video-1.5-lite",
@@ -76,20 +76,20 @@
     },
     "latency_ms": {
       "p50": 25933,
-      "p95": 183588,
+      "p95": 172651,
       "sub_2s_runs": 5,
-      "over_20s_runs": 82
+      "over_20s_runs": 83
     },
     "economics": {
-      "total_billed_usd": 82.94,
-      "total_frontier_baseline_usd": 1071.35,
-      "savings_vs_frontier_pct": 92.3,
+      "total_billed_usd": 83.31,
+      "total_frontier_baseline_usd": 1074.43,
+      "savings_vs_frontier_pct": 92.2,
       "p50_billed_usd": 0.05,
       "p95_billed_usd": 0.75,
-      "total_tokens": 8294,
+      "total_tokens": 8331,
       "local_runs": 17,
       "byok_runs": 74,
-      "cloud_runs": 219
+      "cloud_runs": 221
     },
     "pain_point_counters": {
       "station_chat_guard_declined_messages": 3,
@@ -97,10 +97,10 @@
       "execution_unknown_messages": 1
     },
     "artifacts": {
-      "trace_events": 692,
-      "unique_artifacts": 85,
+      "trace_events": 697,
+      "unique_artifacts": 86,
       "by_kind": {
-        "web": 477,
+        "web": 482,
         "pdf": 128,
         "unknown": 3,
         "video": 84

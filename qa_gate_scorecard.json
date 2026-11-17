@@ -1,15 +1,15 @@
 {
   "schema": "mozart.qa_gate_scorecard.v1",
-  "generated_at": "2026-11-17T13:46:54.048Z",
+  "generated_at": "2026-11-17T14:57:10.163Z",
   "mode": "full_5_squad_gate",
   "gate_passed": true,
   "push_authorized": true,
-  "duration_sec": 42.8,
+  "duration_sec": 51.8,
   "verified_commits": {
-    "railcall-marketplace": "8d6b6fac7008e220564cd8ac6766647487089381",
-    "railcall-website": "7e187a611596fc7d16343dc0f55b556566af1f77",
+    "railcall-marketplace": "12e98fb6b60e468f5d418a18cafdef138e4af69e",
+    "railcall-website": "940f5196085cf42d2130d05e802d9e9d1c83ca80",
     "railcall-chat": "83518dba195d87b5a2f8dde562777e7826c7d765",
-    "linden": "6a5f0645952322d7b48b425134a32a7cde0bfd14"
+    "linden": "e822ba805da360be20f7248f5997f92c16ab4ddd"
   },
   "suites": [
     {
@@ -18,7 +18,7 @@
       "passed": 3,
       "failed": 0,
       "status": "PASS",
-      "ms": 22,
+      "ms": 24,
       "failures": []
     },
     {
@@ -27,7 +27,7 @@
       "passed": 3,
       "failed": 0,
       "status": "PASS",
-      "ms": 5027,
+      "ms": 5807,
       "failures": []
     },
     {
@@ -36,7 +36,7 @@
       "passed": 3,
       "failed": 0,
       "status": "PASS",
-      "ms": 22304,
+      "ms": 22307,
       "failures": []
     },
     {
@@ -45,7 +45,7 @@
       "passed": 12,
       "failed": 0,
       "status": "PASS",
-      "ms": 4603,
+      "ms": 14106,
       "failures": []
     },
     {
@@ -54,7 +54,7 @@
       "passed": 5,
       "failed": 0,
       "status": "PASS",
-      "ms": 10309,
+      "ms": 8918,
       "failures": []
     }
   ],
