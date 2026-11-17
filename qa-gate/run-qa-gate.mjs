@@ -3,6 +3,12 @@
  * Operation Mozart — Unified 5-Squad Adversarial QA Release Gatekeeper
  * Runs outside the repos and blocks pushes to `delegated/continuous-improvements`
  * unless all 5 real-world QA suites pass on the exact HEAD commit SHAs.
+ *
+ * Hardened invariants:
+ * - Every HTTP fetch carries bounded `AbortSignal.timeout(...)` (zero 300s UND_ERR_HEADERS_TIMEOUT hangs).
+ * - Every ephemeral server & chaos proxy enforces `closeAllConnections()` + bounded teardown.
+ * - Every suite executes inside a structured error/timeout boundary so `qa_gate_scorecard.json`
+ *   and `repo_commits_feed.json` are ALWAYS emitted cleanly (never crashing uncaught).
  */
 import { execFileSync, spawnSync } from "node:child_process";
 import crypto from "node:crypto";
@@ -10,6 +16,7 @@ import fs from "node:fs";
 import http from "node:http";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { buildRepoCommitsFeed } from "./build-repo-commits-feed.mjs";
 import { startMockLlmUpstream } from "./harness/mock-llm-upstream.mjs";
 import { startSplitBrainChaosProxy } from "./harness/split-brain-chaos-proxy.mjs";
 
@@ -30,12 +37,51 @@ function getArg(flag, fallback) {
   return idx >= 0 && process.argv[idx + 1] ? process.argv[idx + 1] : fallback;
 }
 
+function hasFlag(flag) {
+  return process.argv.includes(flag);
+}
+
 function gitHead(repoPath) {
-  return execFileSync("git", ["-C", repoPath, "rev-parse", "HEAD"], { encoding: "utf8" }).trim();
+  try {
+    return execFileSync("git", ["-C", repoPath, "rev-parse", "HEAD"], {
+      encoding: "utf8",
+      timeout: 6000,
+    }).trim();
+  } catch {
+    return "unknown";
+  }
 }
 
 function gitBranch(repoPath) {
-  return execFileSync("git", ["-C", repoPath, "branch", "--show-current"], { encoding: "utf8" }).trim();
+  try {
+    return execFileSync("git", ["-C", repoPath, "branch", "--show-current"], {
+      encoding: "utf8",
+      timeout: 6000,
+    }).trim();
+  } catch {
+    return "unknown";
+  }
+}
+
+async function boundedFetch(url, init = {}, timeoutMs = 6000) {
+  return fetch(url, {
+    ...init,
+    signal: init.signal || AbortSignal.timeout(timeoutMs),
+  });
+}
+
+function closeServerBounded(srv, sockets = new Set(), timeoutMs = 1500) {
+  srv.closeAllConnections?.();
+  for (const s of sockets) s.destroy();
+  sockets.clear();
+  return new Promise((resolve) => {
+    const t = setTimeout(resolve, timeoutMs);
+    t.unref?.();
+    srv.close(() => {
+      clearTimeout(t);
+      resolve();
+    });
+  });
 }
 
 function runCmd(cmd, args, cwd, timeoutMs = 240_000) {
@@ -56,6 +102,33 @@ function runCmd(cmd, args, cwd, timeoutMs = 240_000) {
   };
 }
 
+async function runSuiteSafely(id, label, fn, suiteTimeoutMs = 420_000) {
+  const started = Date.now();
+  let timer = null;
+  try {
+    const result = await Promise.race([
+      fn(),
+      new Promise((_, reject) => {
+        timer = setTimeout(() => reject(new Error(`Suite timed out after ${suiteTimeoutMs}ms`)), suiteTimeoutMs);
+        timer.unref?.();
+      }),
+    ]);
+    return result;
+  } catch (err) {
+    return {
+      id,
+      label,
+      passed: 0,
+      failed: 1,
+      status: "FAIL",
+      ms: Date.now() - started,
+      failures: [`Unhandled suite error: ${err?.stack || err?.message || String(err)}`],
+    };
+  } finally {
+    if (timer) clearTimeout(timer);
+  }
+}
+
 // ---------------------------------------------------------------------------
 // QA Squad 1: 2-Instance Non-Sticky Split-Brain & Visitor IP HMAC Gate
 // ---------------------------------------------------------------------------
@@ -66,69 +139,86 @@ async function runSquad1SplitBrain() {
 
   const makeInstanceServer = (instanceId) => {
     const localTmpOnly = new Map(); // proves local RAM fails if used; shared stateless seal/IP HMAC succeeds
-    return http.createServer(async (req, res) => {
-      if (req.url === "/api/workspace/session" && req.method === "POST") {
-        const payload = JSON.stringify({ guest_id: "g_qa_1", exp: Date.now() + 60_000 });
-        const sig = crypto.createHmac("sha256", sharedSecret).update(payload).digest("hex");
-        res.writeHead(200, {
-          "content-type": "application/json",
-          "set-cookie": `rc_ws=${Buffer.from(payload).toString("base64url")}.${sig}; HttpOnly; Path=/`,
-        });
-        res.end(JSON.stringify({ ok: true, mintedOn: instanceId }));
-        return;
-      }
-      if (req.url === "/api/workspace/me") {
-        const cookie = String(req.headers.cookie || "");
-        const m = cookie.match(/rc_ws=([^.]+)\.([a-f0-9]{64})/);
-        if (!m) {
-          res.writeHead(401);
-          res.end(JSON.stringify({ error: "NO_SESSION" }));
+    const sockets = new Set();
+    const srv = http.createServer(async (req, res) => {
+      try {
+        req.resume();
+        if (req.url === "/api/workspace/session" && req.method === "POST") {
+          const payload = JSON.stringify({ guest_id: "g_qa_1", exp: Date.now() + 60_000 });
+          const sig = crypto.createHmac("sha256", sharedSecret).update(payload).digest("hex");
+          res.writeHead(200, {
+            "content-type": "application/json",
+            "set-cookie": `rc_ws=${Buffer.from(payload).toString("base64url")}.${sig}; HttpOnly; Path=/`,
+          });
+          res.end(JSON.stringify({ ok: true, mintedOn: instanceId }));
           return;
         }
-        const raw = Buffer.from(m[1], "base64url").toString("utf8");
-        const expected = crypto.createHmac("sha256", sharedSecret).update(raw).digest("hex");
-        if (expected !== m[2]) {
-          res.writeHead(401);
-          res.end(JSON.stringify({ error: "BAD_SEAL" }));
+        if (req.url === "/api/workspace/me") {
+          const cookie = String(req.headers.cookie || "");
+          const m = cookie.match(/rc_ws=([^.]+)\.([a-f0-9]{64})/);
+          if (!m) {
+            res.writeHead(401, { "content-type": "application/json" });
+            res.end(JSON.stringify({ error: "NO_SESSION" }));
+            return;
+          }
+          const raw = Buffer.from(m[1], "base64url").toString("utf8");
+          const expected = crypto.createHmac("sha256", sharedSecret).update(raw).digest("hex");
+          if (expected !== m[2]) {
+            res.writeHead(401, { "content-type": "application/json" });
+            res.end(JSON.stringify({ error: "BAD_SEAL" }));
+            return;
+          }
+          res.writeHead(200, { "content-type": "application/json" });
+          res.end(JSON.stringify({ ok: true, verifiedOn: instanceId, localSize: localTmpOnly.size }));
+          return;
+        }
+        if (req.url === "/api/test/visitor-ip") {
+          const ip = String(req.headers["x-railcall-client-ip"] || "");
+          const sig = String(req.headers["x-railcall-client-ip-sig"] || "");
+          const [ts, mac] = sig.split(".");
+          const expected = crypto.createHmac("sha256", sharedSecret).update(`${ts}.${ip}`).digest("hex");
+          const valid = Boolean(ip && ts && mac === expected && Math.abs(Date.now() - Number(ts)) < 120_000);
+          const effectiveIp = valid ? ip : "render-shared-nat-10.0.0.1";
+          const ipHash = crypto.createHash("sha256").update(effectiveIp).digest("hex").slice(0, 16);
+          res.writeHead(200, { "content-type": "application/json" });
+          res.end(JSON.stringify({ valid, ipHash, instanceId }));
           return;
         }
         res.writeHead(200, { "content-type": "application/json" });
-        res.end(JSON.stringify({ ok: true, verifiedOn: instanceId, localSize: localTmpOnly.size }));
-        return;
+        res.end(JSON.stringify({ ok: true, instanceId }));
+      } catch (err) {
+        if (!res.headersSent) res.writeHead(500, { "content-type": "application/json" });
+        if (!res.writableEnded) res.end(JSON.stringify({ error: String(err?.message || err) }));
       }
-      if (req.url === "/api/test/visitor-ip") {
-        const ip = String(req.headers["x-railcall-client-ip"] || "");
-        const sig = String(req.headers["x-railcall-client-ip-sig"] || "");
-        const [ts, mac] = sig.split(".");
-        const expected = crypto.createHmac("sha256", sharedSecret).update(`${ts}.${ip}`).digest("hex");
-        const valid = Boolean(ip && ts && mac === expected && Math.abs(Date.now() - Number(ts)) < 120_000);
-        const effectiveIp = valid ? ip : "render-shared-nat-10.0.0.1";
-        const ipHash = crypto.createHash("sha256").update(effectiveIp).digest("hex").slice(0, 16);
-        res.writeHead(200, { "content-type": "application/json" });
-        res.end(JSON.stringify({ valid, ipHash, instanceId }));
-        return;
-      }
-      res.writeHead(200, { "content-type": "application/json" });
-      res.end(JSON.stringify({ ok: true, instanceId }));
     });
+    srv.keepAliveTimeout = 1000;
+    srv.headersTimeout = 5000;
+    srv.requestTimeout = 10000;
+    srv.on("connection", (s) => {
+      sockets.add(s);
+      s.once("close", () => sockets.delete(s));
+    });
+    return { srv, sockets };
   };
 
-  const srvA = makeInstanceServer("A");
-  const srvB = makeInstanceServer("B");
-  await new Promise((r) => srvA.listen(0, "127.0.0.1", r));
-  await new Promise((r) => srvB.listen(0, "127.0.0.1", r));
+  const instA = makeInstanceServer("A");
+  const instB = makeInstanceServer("B");
+  await new Promise((r) => instA.srv.listen(0, "127.0.0.1", r));
+  await new Promise((r) => instB.srv.listen(0, "127.0.0.1", r));
   const proxy = await startSplitBrainChaosProxy({
-    targets: [`http://127.0.0.1:${srvA.address().port}`, `http://127.0.0.1:${srvB.address().port}`],
+    targets: [`http://127.0.0.1:${instA.srv.address().port}`, `http://127.0.0.1:${instB.srv.address().port}`],
+    upstreamTimeoutMs: 5000,
   });
 
   try {
     // 1. Session minted on A, verified on B (zero 401/404)
-    const rMint = await fetch(`${proxy.url}/api/workspace/session`, {
+    const rMint = await boundedFetch(`${proxy.url}/api/workspace/session`, {
       method: "POST",
       headers: { "x-mozart-pin-instance": "A", connection: "close" },
     });
+    await rMint.text();
     const setCookie = rMint.headers.get("set-cookie") || "";
-    const rMe = await fetch(`${proxy.url}/api/workspace/me`, {
+    const rMe = await boundedFetch(`${proxy.url}/api/workspace/me`, {
       headers: { cookie: setCookie.split(";")[0], "x-mozart-pin-instance": "B", connection: "close" },
     });
     const meJson = await rMe.json();
@@ -144,18 +234,22 @@ async function runSquad1SplitBrain() {
     const sig1 = `${ts}.${crypto.createHmac("sha256", sharedSecret).update(`${ts}.${ip1}`).digest("hex")}`;
     const sig2 = `${ts}.${crypto.createHmac("sha256", sharedSecret).update(`${ts}.${ip2}`).digest("hex")}`;
     const v1 = await (
-      await fetch(`${proxy.url}/api/test/visitor-ip`, {
+      await boundedFetch(`${proxy.url}/api/test/visitor-ip`, {
         headers: { "x-railcall-client-ip": ip1, "x-railcall-client-ip-sig": sig1, connection: "close" },
       })
     ).json();
     const v2 = await (
-      await fetch(`${proxy.url}/api/test/visitor-ip`, {
+      await boundedFetch(`${proxy.url}/api/test/visitor-ip`, {
         headers: { "x-railcall-client-ip": ip2, "x-railcall-client-ip-sig": sig2, connection: "close" },
       })
     ).json();
     const forged = await (
-      await fetch(`${proxy.url}/api/test/visitor-ip`, {
-        headers: { "x-railcall-client-ip": "1.2.3.4", "x-railcall-client-ip-sig": `${ts}.deadbeef`, connection: "close" },
+      await boundedFetch(`${proxy.url}/api/test/visitor-ip`, {
+        headers: {
+          "x-railcall-client-ip": "1.2.3.4",
+          "x-railcall-client-ip-sig": `${ts}.deadbeef`,
+          connection: "close",
+        },
       })
     ).json();
     checks.push({
@@ -168,12 +262,15 @@ async function runSquad1SplitBrain() {
       name: "Non-sticky A<->B round-robin routing (0x 404/401)",
       ok: proxy.telemetry.routedA >= 2 && proxy.telemetry.routedB >= 2 && proxy.telemetry.status404 === 0,
     });
+  } catch (err) {
+    checks.push({
+      name: `Split-Brain HTTP check error: ${err?.message || String(err)}`,
+      ok: false,
+    });
   } finally {
     await proxy.close();
-    srvA.closeAllConnections?.();
-    srvB.closeAllConnections?.();
-    await new Promise((r) => srvA.close(r));
-    await new Promise((r) => srvB.close(r));
+    await closeServerBounded(instA.srv, instA.sockets);
+    await closeServerBounded(instB.srv, instB.sockets);
   }
 
   const failed = checks.filter((c) => !c.ok);
@@ -233,42 +330,82 @@ async function runSquad2Concurrency() {
 }
 
 // ---------------------------------------------------------------------------
-// QA Squad 3: 502 Container-Swap Chaos, Mid-Stream Reset & Desktop Liveness
+// QA Squad 3: 502 Container-Swap Chaos, Hung-Header Guard & Desktop Liveness
 // ---------------------------------------------------------------------------
-async function runSquad3Chaos() {
+async function runSquad3Chaos({ httpHarnessOnly = false } = {}) {
   const started = Date.now();
   const failures = [];
   let passed = 0;
 
-  // 1. Live 502 Swap Window Simulation via Split-Brain Chaos Proxy + Bounded Jittered Recovery
+  // 1. Live 502 Swap Window Simulation + Hung-Header Regression Gate via Split-Brain Chaos Proxy
   const upA = await startMockLlmUpstream();
   const upB = await startMockLlmUpstream();
-  const proxy = await startSplitBrainChaosProxy({ targets: [upA.url, upB.url] });
+  const proxy = await startSplitBrainChaosProxy({
+    targets: [upA.url, upB.url],
+    upstreamTimeoutMs: 900,
+  });
   try {
-    await fetch(`${proxy.url}/__qa_control`, {
-      method: "POST",
-      headers: { "content-type": "application/json", connection: "close" },
-      body: JSON.stringify({ fault: "502_swap", durationMs: 900 }),
-    });
+    await (
+      await boundedFetch(
+        `${proxy.url}/__qa_control`,
+        {
+          method: "POST",
+          headers: { "content-type": "application/json", connection: "close" },
+          body: JSON.stringify({ fault: "502_swap", durationMs: 750 }),
+        },
+        4000,
+      )
+    ).text();
+
     // First hit during swap gets real HTML 502; bounded backoff recovers cleanly once swap clears
+    let saw502 = false;
     let recovered = false;
-    for (let attempt = 0; attempt < 5; attempt++) {
-      const r = await fetch(`${proxy.url}/v1/chat/completions`, {
-        method: "POST",
-        headers: { "content-type": "application/json", connection: "close" },
-        body: JSON.stringify({ model: "fast", messages: [{ role: "user", content: "ORION-42" }] }),
-      });
-      if (r.status === 200) {
+    for (let attempt = 0; attempt < 6; attempt++) {
+      const r = await boundedFetch(
+        `${proxy.url}/v1/chat/completions`,
+        {
+          method: "POST",
+          headers: { "content-type": "application/json", connection: "close" },
+          body: JSON.stringify({ model: "fast", messages: [{ role: "user", content: "ORION-42" }] }),
+        },
+        5000,
+      );
+      if (r.status === 502) {
+        saw502 = true;
+        await r.text().catch(() => "");
+      } else if (r.status === 200) {
         const j = await r.json();
         if (String(j?.choices?.[0]?.message?.content || "").includes("ORION-42")) {
           recovered = true;
           break;
         }
+      } else {
+        await r.text().catch(() => "");
       }
-      await new Promise((res) => setTimeout(res, 320));
+      await new Promise((res) => setTimeout(res, 260));
     }
-    if (recovered) passed++;
-    else failures.push("Failed to recover across simulated HTML 502 container swap window");
+    if (saw502 && recovered) passed++;
+    else failures.push(`Failed 502 container swap recovery (saw502=${saw502}, recovered=${recovered})`);
+
+    // Verify bounded proxy timeout prevents UND_ERR_HEADERS_TIMEOUT when an upstream stalls headers
+    const hungCheck = await boundedFetch(
+      `${proxy.url}/v1/chat/completions`,
+      {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          "x-qa-hang-headers-ms": "2200",
+          connection: "close",
+        },
+        body: JSON.stringify({ model: "fast", messages: [{ role: "user", content: "timeout-guard" }] }),
+      },
+      4000,
+    );
+    await hungCheck.text().catch(() => "");
+    if (hungCheck.status === 504 && proxy.telemetry.upstreamTimeouts >= 1) passed++;
+    else failures.push(`Hung-header guard expected 504 GATEWAY_TIMEOUT, got HTTP ${hungCheck.status}`);
+  } catch (err) {
+    failures.push(`Chaos proxy HTTP check failed: ${err?.message || String(err)}`);
   } finally {
     await proxy.close();
     await upA.close();
@@ -276,13 +413,15 @@ async function runSquad3Chaos() {
   }
 
   // 2. Desktop full test suite (including petiw 502/stall failover & non-wedging petiw-runs.json)
-  const deskTest = runCmd("npm", ["test"], REPOS["railcall-chat"], 300_000);
-  if (deskTest.ok) passed++;
-  else failures.push(`railcall-chat npm test failed: ${(deskTest.stderr || deskTest.stdout).slice(-400)}`);
+  if (!httpHarnessOnly) {
+    const deskTest = runCmd("npm", ["test"], REPOS["railcall-chat"], 300_000);
+    if (deskTest.ok) passed++;
+    else failures.push(`railcall-chat npm test failed: ${(deskTest.stderr || deskTest.stdout).slice(-400)}`);
+  }
 
   return {
     id: "QA Squad 3 · Stream & Chaos",
-    label: "HTML 502 Swap Recovery + SSE after_seq + Desktop <26s Stall Failover",
+    label: "HTML 502 Swap Recovery + Hung-Header 504 Guard + Desktop <26s Stall Failover",
     passed,
     failed: failures.length,
     status: failures.length === 0 ? "PASS" : "FAIL",
@@ -299,7 +438,7 @@ async function runSquad4RoutingAndCost() {
   const failures = [];
   let passed = 0;
 
-  // 1. Website TypeScript + targeted functional/QA suites (receipt verification, signed IP, SSE, browse & anti-hallucination)
+  // 1. Website TypeScript + targeted functional/QA suites
   const webTsc = runCmd("npx", ["tsc", "--noEmit"], REPOS["railcall-website"]);
   if (webTsc.ok) passed++;
   else failures.push(`railcall-website tsc failed: ${webTsc.stderr.slice(0, 350)}`);
@@ -318,42 +457,47 @@ async function runSquad4RoutingAndCost() {
     else failures.push(`railcall-website ${suite} failed: ${(res.stderr || res.stdout).slice(-300)}`);
   }
 
+  const checkSourceInvariant = (filePath, predicate, failMessage) => {
+    try {
+      const src = fs.readFileSync(filePath, "utf8");
+      if (predicate(src)) passed++;
+      else failures.push(failMessage);
+    } catch (err) {
+      failures.push(`${failMessage} (read error: ${err?.message || err})`);
+    }
+  };
+
   // 2. Assert hardcoded fallback relay secret is NOT active in production mode
-  const hbSrc = fs.readFileSync(
+  checkSourceInvariant(
     path.join(REPOS["railcall-website"], "app/lib/server/headless-browser.ts"),
-    "utf8",
+    (src) => src.includes("WORKSPACE_SESSION_SECRET"),
+    "headless-browser.ts missing WORKSPACE_SESSION_SECRET relay binding",
   );
-  if (hbSrc.includes("WORKSPACE_SESSION_SECRET")) passed++;
-  else failures.push("headless-browser.ts missing WORKSPACE_SESSION_SECRET relay binding");
 
   // 3. Enforce Sami's Production Baseline Invariants ("keep it true going forward")
-  const prismaSrc = fs.readFileSync(
+  checkSourceInvariant(
     path.join(REPOS["railcall-marketplace"], "src/prisma/prisma.service.ts"),
-    "utf8",
+    (src) => src.includes("connection_limit") && src.includes("pool_timeout"),
+    "Regression: Prisma connection_limit / pool_timeout tuning missing in railcall-marketplace",
   );
-  if (prismaSrc.includes("connection_limit") && prismaSrc.includes("pool_timeout")) passed++;
-  else failures.push("Regression: Prisma connection_limit / pool_timeout tuning missing in railcall-marketplace");
 
-  const mktRenderYaml = fs.readFileSync(
+  checkSourceInvariant(
     path.join(REPOS["railcall-marketplace"], "render.yaml"),
-    "utf8",
+    (src) => src.includes("plan: standard") && src.includes("plan: basic-1gb"),
+    "Regression: railcall-marketplace render.yaml downgraded from standard / basic-1gb",
   );
-  if (mktRenderYaml.includes("plan: standard") && mktRenderYaml.includes("plan: basic-1gb")) passed++;
-  else failures.push("Regression: railcall-marketplace render.yaml downgraded from standard / basic-1gb");
 
-  const chatSvcSrc = fs.readFileSync(
+  checkSourceInvariant(
     path.join(REPOS["railcall-marketplace"], "src/workspace/chat.service.ts"),
-    "utf8",
+    (src) => src.includes("solveBand0Deterministic"),
+    "Regression: Band-0 deterministic greeting fast-lane missing in chat.service.ts",
   );
-  if (chatSvcSrc.includes("solveBand0Deterministic")) passed++;
-  else failures.push("Regression: Band-0 deterministic greeting fast-lane missing in chat.service.ts");
 
-  const kpiSrc = fs.readFileSync(
+  checkSourceInvariant(
     path.join(REPOS["railcall-website"], "app/marketplace/admin/components/KpiCard.tsx"),
-    "utf8",
+    (src) => src.includes("prefetch={false}"),
+    "Regression: KpiCard.tsx missing prefetch={false} guard",
   );
-  if (kpiSrc.includes("prefetch={false}")) passed++;
-  else failures.push("Regression: KpiCard.tsx missing prefetch={false} guard");
 
   return {
     id: "QA Squad 4 · Routing & Cost",
@@ -397,38 +541,41 @@ async function runSquad5LiveWebsiteScreenshots() {
     } catch {
       browser = await pw.chromium.launch({ headless: true, executablePath: sysChrome });
     }
-    const context = await browser.newContext({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1.25 });
-    const targets = [
-      { slug: "stripe", url: "https://stripe.com", label: "Stripe.com — Enterprise Fintech UI" },
-      { slug: "linear", url: "https://linear.app", label: "Linear.app — Modern Product SaaS UI" },
-      { slug: "vercel", url: "https://vercel.com", label: "Vercel.com — Cloud Developer Platform" },
-      { slug: "github", url: "https://github.com", label: "GitHub.com — Developer Homepage" },
-      { slug: "hackernews", url: "https://news.ycombinator.com", label: "Hacker News — Live Frontpage Feed" },
-      { slug: "wikipedia", url: "https://en.wikipedia.org/wiki/Main_Page", label: "Wikipedia — Live Knowledge Portal" }
-    ];
-    const results = [];
-    for (const t of targets) {
-      const p = await context.newPage();
-      const t0 = Date.now();
-      try {
-        const resp = await p.goto(t.url, { waitUntil: "domcontentloaded", timeout: 18000 });
-        await p.waitForTimeout(650);
-        const title = await p.title();
-        const jpg = await p.screenshot({ type: "jpeg", quality: 78, fullPage: false, animations: "disabled" });
-        const outPath = path.join(${JSON.stringify(SCREENSHOTS_DIR)}, t.slug + ".jpg");
-        fs.writeFileSync(outPath, jpg);
-        results.push({ ...t, ok: jpg.byteLength > 4000, bytes: jpg.byteLength, title, status: resp?.status() || 200, ms: Date.now() - t0, file: "screenshots/" + t.slug + ".jpg" });
-      } catch (e) {
-        results.push({ ...t, ok: false, error: String(e) });
-      } finally {
-        await p.close();
+    try {
+      const context = await browser.newContext({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1.25 });
+      const targets = [
+        { slug: "stripe", url: "https://stripe.com", label: "Stripe.com — Enterprise Fintech UI" },
+        { slug: "linear", url: "https://linear.app", label: "Linear.app — Modern Product SaaS UI" },
+        { slug: "vercel", url: "https://vercel.com", label: "Vercel.com — Cloud Developer Platform" },
+        { slug: "github", url: "https://github.com", label: "GitHub.com — Developer Homepage" },
+        { slug: "hackernews", url: "https://news.ycombinator.com", label: "Hacker News — Live Frontpage Feed" },
+        { slug: "wikipedia", url: "https://en.wikipedia.org/wiki/Main_Page", label: "Wikipedia — Live Knowledge Portal" }
+      ];
+      const results = [];
+      for (const t of targets) {
+        const p = await context.newPage();
+        const t0 = Date.now();
+        try {
+          const resp = await p.goto(t.url, { waitUntil: "domcontentloaded", timeout: 15000 });
+          await p.waitForTimeout(550);
+          const title = await p.title();
+          const jpg = await p.screenshot({ type: "jpeg", quality: 78, fullPage: false, animations: "disabled", timeout: 10000 });
+          const outPath = path.join(${JSON.stringify(SCREENSHOTS_DIR)}, t.slug + ".jpg");
+          fs.writeFileSync(outPath, jpg);
+          results.push({ ...t, ok: jpg.byteLength > 4000, bytes: jpg.byteLength, title, status: resp?.status() || 200, ms: Date.now() - t0, file: "screenshots/" + t.slug + ".jpg" });
+        } catch (e) {
+          results.push({ ...t, ok: false, error: String(e) });
+        } finally {
+          await p.close().catch(() => {});
+        }
       }
+      fs.writeFileSync(path.join(${JSON.stringify(SCREENSHOTS_DIR)}, "manifest.json"), JSON.stringify({ generated_at: new Date().toISOString(), items: results }, null, 2));
+      const okCount = results.filter((r) => r.ok).length;
+      console.log(JSON.stringify({ okCount, results }));
+      if (okCount < 4) process.exit(1);
+    } finally {
+      await browser.close().catch(() => {});
     }
-    await browser.close();
-    fs.writeFileSync(path.join(${JSON.stringify(SCREENSHOTS_DIR)}, "manifest.json"), JSON.stringify({ generated_at: new Date().toISOString(), items: results }, null, 2));
-    const okCount = results.filter((r) => r.ok).length;
-    console.log(JSON.stringify({ okCount, results }));
-    if (okCount < 4) process.exit(1);
   `;
 
   const shotRes = runCmd("node", ["--input-type=module", "-e", captureScript], REPOS["railcall-website"], 90_000);
@@ -437,7 +584,7 @@ async function runSquad5LiveWebsiteScreenshots() {
 
   return {
     id: "QA Squad 5 · Live Browser & Websites",
-    label: "Live Chromium External Website Screenshots (4 Sites) + Branch Safety Gate",
+    label: "Live Chromium External Website Screenshots (6 Sites) + Branch Safety Gate",
     passed,
     failed: failures.length,
     status: failures.length === 0 ? "PASS" : "FAIL",
@@ -452,26 +599,79 @@ async function runSquad5LiveWebsiteScreenshots() {
 async function main() {
   const globalStart = Date.now();
   const outPath = getArg("--out", path.join(DASH_DIR, "qa_gate_scorecard.json"));
+  const commitsFeedOut = getArg("--commits-out", path.join(DASH_DIR, "repo_commits_feed.json"));
+  const httpHarnessOnly = hasFlag("--http-harness-only");
 
   const suites = [];
-  suites.push(await runSquad1SplitBrain());
-  suites.push(await runSquad2Concurrency());
-  suites.push(await runSquad3Chaos());
-  suites.push(await runSquad4RoutingAndCost());
-  suites.push(await runSquad5LiveWebsiteScreenshots());
+  suites.push(
+    await runSuiteSafely(
+      "QA Squad 1 · Split-Brain",
+      "2-Instance Non-Sticky Proxy (A↔B Cookies, Signed Visitor IP, 0× 404)",
+      () => runSquad1SplitBrain(),
+      30_000,
+    ),
+  );
+
+  if (!httpHarnessOnly) {
+    suites.push(
+      await runSuiteSafely(
+        "QA Squad 2 · DB Lock & Queue",
+        "Marketplace Lock-Free Claim/Exchange + 32-Slot Worker SIGTERM Drain",
+        () => runSquad2Concurrency(),
+        360_000,
+      ),
+    );
+  }
+
+  suites.push(
+    await runSuiteSafely(
+      "QA Squad 3 · Stream & Chaos",
+      "HTML 502 Swap Recovery + Hung-Header 504 Guard + Desktop <26s Stall Failover",
+      () => runSquad3Chaos({ httpHarnessOnly }),
+      httpHarnessOnly ? 30_000 : 360_000,
+    ),
+  );
+
+  if (!httpHarnessOnly) {
+    suites.push(
+      await runSuiteSafely(
+        "QA Squad 4 · Routing & Cost",
+        "Pre-Stream 5xx/TTFT Failover + COGS Redaction + Ed25519 /verify Gate",
+        () => runSquad4RoutingAndCost(),
+        360_000,
+      ),
+    );
+    suites.push(
+      await runSuiteSafely(
+        "QA Squad 5 · Live Browser & Websites",
+        "Live Chromium External Website Screenshots (6 Sites) + Branch Safety Gate",
+        () => runSquad5LiveWebsiteScreenshots(),
+        120_000,
+      ),
+    );
+  }
 
   const allFailures = suites.flatMap((s) => s.failures.map((f) => `[${s.id}] ${f}`));
-  const gatePassed = suites.every((s) => s.status === "PASS");
+  const gatePassed = suites.every((s) => s.status === "PASS") && !httpHarnessOnly;
 
   const verifiedCommits = {};
   for (const [name, repoPath] of Object.entries(REPOS)) {
     verifiedCommits[name] = gitHead(repoPath);
   }
 
+  if (!httpHarnessOnly) {
+    try {
+      buildRepoCommitsFeed({ outPath: commitsFeedOut });
+    } catch (err) {
+      console.error("[QA-GATE] Non-fatal warning updating repo_commits_feed.json:", err?.message || err);
+    }
+  }
+
   const scorecard = {
     schema: "mozart.qa_gate_scorecard.v1",
     generated_at: new Date().toISOString(),
-    gate_passed: gatePassed,
+    mode: httpHarnessOnly ? "http_harness_only" : "full_5_squad_gate",
+    gate_passed: httpHarnessOnly ? suites.every((s) => s.status === "PASS") : gatePassed,
     push_authorized: gatePassed,
     duration_sec: Number(((Date.now() - globalStart) / 1000).toFixed(1)),
     verified_commits: verifiedCommits,
@@ -479,12 +679,13 @@ async function main() {
     failures: allFailures,
   };
 
-  fs.writeFileSync(outPath, JSON.stringify(scorecard, null, 2));
-  console.log(`[QA-GATE] Completed in ${scorecard.duration_sec}s — gate_passed=${gatePassed}`);
+  fs.mkdirSync(path.dirname(outPath), { recursive: true });
+  fs.writeFileSync(outPath, JSON.stringify(scorecard, null, 2) + "\n");
+  console.log(`[QA-GATE] Completed in ${scorecard.duration_sec}s — gate_passed=${scorecard.gate_passed}`);
   for (const s of suites) {
     console.log(`  - ${s.id}: ${s.status} (${s.passed} pass / ${s.failed} fail, ${s.ms}ms)`);
   }
-  if (!gatePassed) {
+  if (!scorecard.gate_passed) {
     console.error("[QA-GATE] Failures:\n" + allFailures.join("\n"));
     process.exit(1);
   }
@@ -492,6 +693,28 @@ async function main() {
 }
 
 main().catch((err) => {
+  const outPath = getArg("--out", path.join(DASH_DIR, "qa_gate_scorecard.json"));
+  try {
+    fs.writeFileSync(
+      outPath,
+      JSON.stringify(
+        {
+          schema: "mozart.qa_gate_scorecard.v1",
+          generated_at: new Date().toISOString(),
+          gate_passed: false,
+          push_authorized: false,
+          duration_sec: 0,
+          verified_commits: {},
+          suites: [],
+          failures: [`Fatal orchestrator error: ${err?.stack || err?.message || String(err)}`],
+        },
+        null,
+        2,
+      ) + "\n",
+    );
+  } catch {
+    // ignore secondary write error
+  }
   console.error("[QA-GATE] Fatal error:", err);
   process.exit(1);
 });

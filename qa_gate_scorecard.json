@@ -1,0 +1,62 @@
+{
+  "schema": "mozart.qa_gate_scorecard.v1",
+  "generated_at": "2026-11-17T13:46:54.048Z",
+  "mode": "full_5_squad_gate",
+  "gate_passed": true,
+  "push_authorized": true,
+  "duration_sec": 42.8,
+  "verified_commits": {
+    "railcall-marketplace": "8d6b6fac7008e220564cd8ac6766647487089381",
+    "railcall-website": "7e187a611596fc7d16343dc0f55b556566af1f77",
+    "railcall-chat": "83518dba195d87b5a2f8dde562777e7826c7d765",
+    "linden": "6a5f0645952322d7b48b425134a32a7cde0bfd14"
+  },
+  "suites": [
+    {
+      "id": "QA Squad 1 · Split-Brain",
+      "label": "2-Instance Non-Sticky Proxy (A↔B Cookies, Signed Visitor IP, 0× 404)",
+      "passed": 3,
+      "failed": 0,
+      "status": "PASS",
+      "ms": 22,
+      "failures": []
+    },
+    {
+      "id": "QA Squad 2 · DB Lock & Queue",
+      "label": "Marketplace Lock-Free Claim/Exchange + 32-Slot Worker SIGTERM Drain",
+      "passed": 3,
+      "failed": 0,
+      "status": "PASS",
+      "ms": 5027,
+      "failures": []
+    },
+    {
+      "id": "QA Squad 3 · Stream & Chaos",
+      "label": "HTML 502 Swap Recovery + Hung-Header 504 Guard + Desktop <26s Stall Failover",
+      "passed": 3,
+      "failed": 0,
+      "status": "PASS",
+      "ms": 22304,
+      "failures": []
+    },
+    {
+      "id": "QA Squad 4 · Routing & Cost",
+      "label": "Pre-Stream 5xx/TTFT Failover + COGS Redaction + Ed25519 /verify Gate",
+      "passed": 12,
+      "failed": 0,
+      "status": "PASS",
+      "ms": 4603,
+      "failures": []
+    },
+    {
+      "id": "QA Squad 5 · Live Browser & Websites",
+      "label": "Live Chromium External Website Screenshots (6 Sites) + Branch Safety Gate",
+      "passed": 5,
+      "failed": 0,
+      "status": "PASS",
+      "ms": 10309,
+      "failures": []
+    }
+  ],
+  "failures": []
+}

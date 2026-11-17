@@ -1,0 +1,404 @@
+{
+  "schema": "mozart.product_telemetry_summary.v1",
+  "generated_at": "2026-11-17T13:11:39.353676+00:00",
+  "refreshed_at": "2026-11-17T13:11:39.353676+00:00",
+  "privacy_attestation": {
+    "zero_pii_verified": true,
+    "public_safe_verified": true,
+    "sanitization_policy": "Strict zero-PII & zero-secret aggregates: personal names, emails, private prompt text, file paths, tokens, and wholesale COGS are completely excluded.",
+    "audited_by": "Mozart Squad Alpha"
+  },
+  "live_rollup": {
+    "refreshed_at": "2026-11-17T13:46:11.173Z",
+    "privacy_policy": "strict_zero_pii_aggregates_only",
+    "conversations": {
+      "total_conversations": 138,
+      "total_messages": 983,
+      "user_messages": 489,
+      "assistant_messages": 494,
+      "workflow_conversations": 137,
+      "avg_messages_per_conversation": 7.1
+    },
+    "run_ledger": {
+      "total_runs": 310,
+      "succeeded": 305,
+      "failed": 4,
+      "interrupted": 1,
+      "success_rate_pct": 98.4,
+      "by_type": {
+        "chat": 134,
+        "goal": 174,
+        "intent": 2
+      },
+      "by_provider": {
+        "guard": 2,
+        "byok": 74,
+        "unspecified": 93,
+        "ollama-local": 1,
+        "linden-1.0-local": 3,
+        "railcall-cloud": 135,
+        "local-airlock-registry": 2
+      },
+      "top_models": [
+        {
+          "model": "openai/gpt-oss-120b:fastest",
+          "runs": 96
+        },
+        {
+          "model": "gpt-5.4-mini",
+          "runs": 60
+        },
+        {
+          "model": "nvidia/NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-NVFP4",
+          "runs": 43
+        },
+        {
+          "model": "openai/gpt-5.4-mini",
+          "runs": 27
+        },
+        {
+          "model": "grok-imagine-video-1.5-lite",
+          "runs": 19
+        },
+        {
+          "model": "railcall-coder:latest",
+          "runs": 11
+        },
+        {
+          "model": "openai/gpt-oss-120b",
+          "runs": 5
+        },
+        {
+          "model": "guard",
+          "runs": 3
+        }
+      ]
+    },
+    "latency_ms": {
+      "p50": 25933,
+      "p95": 183588,
+      "sub_2s_runs": 5,
+      "over_20s_runs": 82
+    },
+    "economics": {
+      "total_billed_usd": 82.94,
+      "total_frontier_baseline_usd": 1071.35,
+      "savings_vs_frontier_pct": 92.3,
+      "p50_billed_usd": 0.05,
+      "p95_billed_usd": 0.75,
+      "total_tokens": 8294,
+      "local_runs": 17,
+      "byok_runs": 74,
+      "cloud_runs": 219
+    },
+    "pain_point_counters": {
+      "station_chat_guard_declined_messages": 3,
+      "station_chat_guard_ledger_runs": 4,
+      "execution_unknown_messages": 1
+    },
+    "artifacts": {
+      "trace_events": 692,
+      "unique_artifacts": 85,
+      "by_kind": {
+        "web": 477,
+        "pdf": 128,
+        "unknown": 3,
+        "video": 84
+      }
+    }
+  },
+  "forensic_kpis": {
+    "goal_execution_runs_n215": {
+      "total_goal_runs": 215,
+      "completed": 180,
+      "interrupted": 21,
+      "failed": 9,
+      "orphaned_running": 5,
+      "true_goal_completion_rate_pct": 83.72,
+      "website_builds": {
+        "total": 99,
+        "completed": 74,
+        "interrupted": 17,
+        "failed": 4,
+        "orphaned_running": 4,
+        "completion_rate_pct": 74.75
+      },
+      "pdf_deliverables": {
+        "total": 54,
+        "completed": 50,
+        "interrupted": 2,
+        "failed": 1,
+        "orphaned_running": 1,
+        "completion_rate_pct": 92.59
+      },
+      "top_step_error_signatures": [
+        {
+          "tool": "project_read",
+          "count": 42,
+          "category": "binary_image_utf8_decode_error"
+        },
+        {
+          "tool": "project_edit",
+          "count": 25,
+          "category": "exact_find_string_mismatch"
+        },
+        {
+          "tool": "visual_qa",
+          "count": 10,
+          "category": "layout_or_check_revision_gate"
+        },
+        {
+          "tool": "web_fetch",
+          "count": 4,
+          "category": "upstream_http_403"
+        }
+      ]
+    },
+    "surface_latency_seconds": {
+      "ledger_all_n136": {
+        "count": 137,
+        "min": 0.001,
+        "p25": 12.499,
+        "p50": 25.933,
+        "p75": 71.922,
+        "p90": 113.254,
+        "p95": 174.838,
+        "p99": 392.023,
+        "max": 420.421,
+        "mean": 53.867,
+        "sum": 7379.785
+      },
+      "ledger_chat_n55": {
+        "count": 56,
+        "min": 0.001,
+        "p25": 9.711,
+        "p50": 12.113,
+        "p75": 17.858,
+        "p90": 22.187,
+        "p95": 27.368,
+        "p99": 31.543,
+        "max": 35.135,
+        "mean": 14.074,
+        "sum": 788.161
+      },
+      "ledger_goal_n81": {
+        "count": 81,
+        "min": 0.031,
+        "p25": 26.778,
+        "p50": 64.544,
+        "p75": 92.714,
+        "p90": 166.234,
+        "p95": 300.985,
+        "p99": 413.531,
+        "max": 420.421,
+        "mean": 81.378,
+        "sum": 6591.624
+      },
+      "completed_goal_runs_n169": {
+        "count": 78,
+        "min": 10.947,
+        "p25": 28.12,
+        "p50": 66.091,
+        "p75": 91.06,
+        "p90": 168.159,
+        "p95": 309.185,
+        "p99": 413.789,
+        "max": 420.421,
+        "mean": 82.824,
+        "sum": 6460.261
+      },
+      "badge_chat_turns_n137": {
+        "count": 138,
+        "min": 0.4,
+        "p25": 1.23,
+        "p50": 6.75,
+        "p75": 12.73,
+        "p90": 20.36,
+        "p95": 26.54,
+        "p99": 40.11,
+        "max": 165.6,
+        "mean": 9.74,
+        "sum": 1343.5
+      },
+      "badge_goal_turns_n105": {
+        "count": 105,
+        "min": 0.8,
+        "p25": 21.5,
+        "p50": 34.8,
+        "p75": 77.6,
+        "p90": 106.98,
+        "p95": 131.54,
+        "p99": 426.87,
+        "max": 1162,
+        "mean": 66.22,
+        "sum": 6953.1
+      },
+      "badge_website_builds_n69": {
+        "count": 69,
+        "min": 6.2,
+        "p25": 61,
+        "p50": 97,
+        "p75": 251,
+        "p90": 356.2,
+        "p95": 404,
+        "p99": 735.84,
+        "max": 1152,
+        "mean": 164.85,
+        "sum": 11374.6
+      },
+      "badge_hosted_fallback_n5": {
+        "count": 5,
+        "min": 6.7,
+        "p25": 8.1,
+        "p50": 26.9,
+        "p75": 65.2,
+        "p90": 110.26,
+        "p95": 125.28,
+        "p99": 137.3,
+        "max": 140.3,
+        "mean": 49.44,
+        "sum": 247.2
+      }
+    },
+    "customer_billed_usd_by_surface": {
+      "all_n308": {
+        "count": 309,
+        "min": 0,
+        "p25": 0.02,
+        "p50": 0.05,
+        "p75": 0.35,
+        "p90": 0.52,
+        "p95": 0.734,
+        "p99": 2.636,
+        "max": 6.78,
+        "mean": 0.2684,
+        "sum": 82.93
+      },
+      "chat_n132": {
+        "count": 133,
+        "min": 0,
+        "p25": 0.02,
+        "p50": 0.02,
+        "p75": 0.03,
+        "p90": 0.06,
+        "p95": 0.07,
+        "p99": 0.1036,
+        "max": 0.71,
+        "mean": 0.0341,
+        "sum": 4.53
+      },
+      "goal_n174": {
+        "count": 174,
+        "min": 0,
+        "p25": 0.1525,
+        "p50": 0.35,
+        "p75": 0.495,
+        "p90": 0.665,
+        "p95": 1.2935,
+        "p99": 3.6375,
+        "max": 6.78,
+        "mean": 0.4505,
+        "sum": 78.38
+      }
+    },
+    "execution_plane_split": {
+      "ledger_runs_n308": {
+        "local_on_device_runs": 17,
+        "byok_runs": 74,
+        "cloud_runs": 218,
+        "local_share_pct": 5.5,
+        "byok_share_pct": 23.95,
+        "cloud_share_pct": 70.55
+      },
+      "model_breakdown_calls_n823": {
+        "local_gpu_ollama_calls": 79,
+        "cloud_and_byok_calls": 744,
+        "local_call_share_pct": 9.6
+      }
+    },
+    "message_storage_audit": {
+      "conversations_count": 138,
+      "messages_count": 981,
+      "persisted_body_key": "text (979/979 messages; 0 content, 0 parts)",
+      "roles": {
+        "user": 488,
+        "bot": 407,
+        "sys": 86
+      },
+      "field_counts": {
+        "role": 981,
+        "text": 981,
+        "meta": 981,
+        "context": 974,
+        "pdf": 47,
+        "hostedRunId": 5,
+        "videos": 20,
+        "images": 12
+      },
+      "orphaned_consecutive_user_turns": 34,
+      "incomplete_model_response_turns": 2,
+      "hallucinated_unattached_export_turns": 3,
+      "zero_plate_pdf_summaries": 2,
+      "generic_placeholder_pdf_titles": 3,
+      "missing_pdf_files_on_disk": 0
+    },
+    "artifact_viewer_telemetry": {
+      "total_trace_events": 692,
+      "total_clicks": 150,
+      "visible_assert_succeeded": 147,
+      "failed_clicks": 3,
+      "click_success_rate_pct": 98,
+      "click_to_visible_ms": {
+        "count": 147,
+        "min": 4,
+        "p25": 25,
+        "p50": 34,
+        "p75": 49,
+        "p90": 75,
+        "p95": 88.4,
+        "p99": 124.72,
+        "max": 158,
+        "mean": 40.52,
+        "sum": 5956
+      },
+      "duplicate_double_fire_pairs": 20,
+      "duplicate_events_pct": 26.7,
+      "stale_version_1_requests": 95
+    },
+    "chat_guard_forensics": {
+      "historical_guard_events": 5,
+      "root_causes_identified": [
+        "Station pre_gate returned static KB FAQ entries (build_workflow, receipts) with provider:'guard', which Desktop agent.js treated as a fatal policy refusal ('the station's chat guard declined this request').",
+        "Preloaded project HTML containing 'Privacy' / 'Is my data secure?' triggered pre_gate prior to request_text separation.",
+        "Live HEAD gaps remaining: _MARKET_STRONG ('best tool', 'cheaper option') blocks benign non-software prompts on both chat and agent turns; single-word KB triggers ('receipts', 'policies', 'privacy') still hijack <=140-char prompts; dispatch_llm.py ignores skip_pre_gate."
+      ]
+    },
+    "top_5_product_levers": [
+      {
+        "rank": 1,
+        "lever": "Require affirmative site-edit intent on sticky activeBuilds & skip binary images in project_read preload",
+        "kpi_target": "Eliminate 459k-token/$3.30 runaway edits + 42 UTF-8 step errors; lift website completion 74.8% -> >95%"
+      },
+      {
+        "rank": 2,
+        "lever": "Direct SSE fast-tier chat + reasoning_effort:'none' on conversational turns + local zero-think fastpath",
+        "kpi_target": "Cut chat p50 latency 6x from 11.7s -> <2.0s"
+      },
+      {
+        "rank": 3,
+        "lever": "Exempt copywriting/drafting prompts from intent.js service hijack & remove $0.01 billing on 0-token airlock cards",
+        "kpi_target": "0 false connector cards on social/email drafting; 0 orphaned user->user turns"
+      },
+      {
+        "rank": 4,
+        "lever": "Scope chat_guard _MARKET_STRONG to software/automation context, tighten single-word KB rules, and honor skip_pre_gate",
+        "kpi_target": "0 false-positive guard refusals on travel, shopping, finance, or policy summarization"
+      },
+      {
+        "rank": 5,
+        "lever": "Resolve anaphoric web-search queries from thread entities, deduplicate openProjectInArtifactDock, and suppress '0 embedded visual plates' copy",
+        "kpi_target": "Eliminate 26.7% duplicate preview spawns & 100% of meta-word web search misfires"
+      }
+    ]
+  }
+}
