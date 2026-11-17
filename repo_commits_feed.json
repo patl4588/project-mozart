@@ -1,9 +1,9 @@
 {
   "schema": "mozart.repo_commits_feed.v1",
-  "generated_at": "2026-11-17T16:01:11.762Z",
+  "generated_at": "2026-11-17T17:45:09.961Z",
   "lane_branch": "delegated/continuous-improvements",
   "repo_count": 4,
-  "total_commits_ahead_of_main": 23,
+  "total_commits_ahead_of_main": 17,
   "all_ff_ready": true,
   "private_repo_explanation": "All 4 RailCall code repositories are private on GitHub (unauthenticated browsers show GitHub's standard 404 page). Every commit SHA, git log --stat -n 5 summary, code diff preview, and 1-command fast-forward merge instruction is rendered inline here so Patrick and Sami never hit a 404 dead-end.",
   "repos": [
@@ -16,24 +16,77 @@
       "private_repo_notice": "Private GitHub Repo — sign in to GitHub to open external links, or inspect full commits, file stats & diffs inline below.",
       "available": true,
       "branch": "delegated/continuous-improvements",
-      "head_sha": "fce0a8622feeb51bf7e434e537853a508a0e9f7f",
-      "head_short": "fce0a86",
+      "head_sha": "d81173a06a32acb16e5d4c800b68e7845ae8cbaa",
+      "head_short": "d81173a",
       "main_ref": "origin/main",
-      "main_sha": "2e9cfa60c4630b123fd9f400eb7e5755034f927b",
-      "main_short": "2e9cfa6",
-      "ahead_count": 3,
+      "main_sha": "1199d69bbe0b5d91964d017ce9a795af2b076ab7",
+      "main_short": "1199d69",
+      "ahead_count": 1,
       "behind_count": 0,
       "ff_ready": true,
       "github_branch_url": "https://github.com/patl4588/railcall-marketplace/tree/delegated/continuous-improvements",
       "github_compare_url": "https://github.com/patl4588/railcall-marketplace/compare/main...delegated/continuous-improvements",
       "sami_one_liner": "cd railcall-marketplace && git fetch origin main delegated/continuous-improvements && git checkout main && git pull --ff-only origin main && git merge --ff-only origin/delegated/continuous-improvements && git push origin main",
-      "git_log_stat_5": "commit fce0a8622feeb51bf7e434e537853a508a0e9f7f\nAuthor: Test <test@example.com>\nDate:   Tue Nov 17 10:59:28 2026 -0500\n\n    feat(assistant,v1): admit Google Gemini direct & Tier-0 dedicated_gpu in PatSUM catalog and expand /v1 direct foundation fleet ahead of OpenRouter backup\n\n src/assistant/assistant.policy.ts         |  4 +-\n src/assistant/patsum.config.ts            |  6 +++\n src/assistant/patsum.policy.spec.ts       |  4 ++\n src/assistant/patsum.policy.ts            |  2 +-\n src/v1/linden-v1.service.ts               | 85 +++++++++++++++++++++++++++++++++++++++++--\n src/v1/linden-v1.spec.ts                  | 56 ++++++++++++++++++++++++++++\n src/workspace/upstream-failover.policy.ts |  1 +\n 7 files changed, 152 insertions(+), 6 deletions(-)\n\ncommit 899ec1ca7993a980e812416764ebadf0a9a6b932\nMerge: 12e98fb 2e9cfa6\nAuthor: Test <test@example.com>\nDate:   Tue Nov 17 10:25:54 2026 -0500\n\n    chore(merge): sync origin/main (2e9cfa6) onto delegated/continuous-improvements\n\ncommit 2e9cfa60c4630b123fd9f400eb7e5755034f927b\nAuthor: Test <test@example.com>\nDate:   Tue Nov 17 10:15:08 2026 -0500\n\n    fix(v1): prioritize direct foundation providers (Groq, OpenAI, Anthropic, xAI) ahead of OpenRouter\n\n src/v1/linden-v1.service.ts | 6 +++---\n 1 file changed, 3 insertions(+), 3 deletions(-)\n\ncommit a380e8382394fb8f604ff6c92372657e8e7646d3\nAuthor: SamyBchaalia <sami.benchaalia@sesame.com.tn>\nDate:   Tue Nov 17 16:10:50 2026 +0100\n\n    perf(assistant,workspace): map rung-0 auto jobs to fast effort and emit style.css before index.html\n\n src/assistant/assistant.service.ts | 4 +++-\n src/workspace/chat.service.ts      | 2 +-\n 2 files changed, 4 insertions(+), 2 deletions(-)\n\ncommit d3551a7e75cf75994bfa4f50b1cd838870a07257\nMerge: 0aad760 8d6b6fa\nAuthor: SamyBchaalia <sami.benchaalia@sesame.com.tn>\nDate:   Tue Nov 17 15:47:59 2026 +0100\n\n    fix(workspace): merge delegated/continuous-improvements (8d6b6fa) and lock instant fast-lane onto Rung 0",
+      "git_log_stat_5": "commit d81173a06a32acb16e5d4c800b68e7845ae8cbaa\nAuthor: Test <test@example.com>\nDate:   Tue Nov 17 12:43:39 2026 -0500\n\n    feat(workspace,v1): wire 48-group Direct-First Task x Speed x Quality x Cost scoring into PredictiveRoutingIndex and LindenV1Service\n\n src/v1/linden-v1.service.ts                    |  60 ++++++++---\n src/v1/linden-v1.spec.ts                       |  83 ++++++++++++++\n src/workspace/predictive-routing-index.spec.ts |  24 ++++-\n src/workspace/predictive-routing-index.ts      | 216 +++++++++++++++++++++++++++++--------\n 4 files changed, 328 insertions(+), 55 deletions(-)\n\ncommit 1199d69bbe0b5d91964d017ce9a795af2b076ab7\nAuthor: SamyBchaalia <sami.benchaalia@sesame.com.tn>\nDate:   Tue Nov 17 17:58:20 2026 +0100\n\n    perf(workflow): route simple workflow drafts to Rung-0 fast-lane without planning roundtrip\n\n src/admin/admin-24h-metrics.spec.ts | 38 ++++++++++++++++++++++++++++++++++++++\n src/workspace/chat.service.ts       | 19 ++++++++++++++-----\n src/workspace/fast-lane.policy.ts   | 26 +++++++++++++++++++++++++-\n 3 files changed, 77 insertions(+), 6 deletions(-)\n\ncommit 52e7937616011a60fd2ea1ddb1d78627f69f5c72\nMerge: 2e9cfa6 fce0a86\nAuthor: SamyBchaalia <sami.benchaalia@sesame.com.tn>\nDate:   Tue Nov 17 17:13:38 2026 +0100\n\n    chore(merge): integrate delegated/continuous-improvements (fce0a86) Gemini/Tier-0 admission & /v1 direct fleet\n\ncommit fce0a8622feeb51bf7e434e537853a508a0e9f7f\nAuthor: Test <test@example.com>\nDate:   Tue Nov 17 10:59:28 2026 -0500\n\n    feat(assistant,v1): admit Google Gemini direct & Tier-0 dedicated_gpu in PatSUM catalog and expand /v1 direct foundation fleet ahead of OpenRouter backup\n\n src/assistant/assistant.policy.ts         |  4 +-\n src/assistant/patsum.config.ts            |  6 +++\n src/assistant/patsum.policy.spec.ts       |  4 ++\n src/assistant/patsum.policy.ts            |  2 +-\n src/v1/linden-v1.service.ts               | 85 +++++++++++++++++++++++++++++++++++++++++--\n src/v1/linden-v1.spec.ts                  | 56 ++++++++++++++++++++++++++++\n src/workspace/upstream-failover.policy.ts |  1 +\n 7 files changed, 152 insertions(+), 6 deletions(-)\n\ncommit 899ec1ca7993a980e812416764ebadf0a9a6b932\nMerge: 12e98fb 2e9cfa6\nAuthor: Test <test@example.com>\nDate:   Tue Nov 17 10:25:54 2026 -0500\n\n    chore(merge): sync origin/main (2e9cfa6) onto delegated/continuous-improvements",
       "commits": [
+        {
+          "sha": "d81173a06a32acb16e5d4c800b68e7845ae8cbaa",
+          "short_sha": "d81173a",
+          "author_date_iso": "2026-11-17T12:43:39-05:00",
+          "relative_time": "2 minutes ago",
+          "subject": "feat(workspace,v1): wire 48-group Direct-First Task x Speed x Quality x Cost scoring into PredictiveRoutingIndex and LindenV1Service",
+          "stat_summary": "4 files changed, 328 insertions(+), 55 deletions(-)",
+          "changed_files": [
+            "src/v1/linden-v1.service.ts                    |  60 +++++++--",
+            "src/v1/linden-v1.spec.ts                       |  83 +++++++++++++",
+            "src/workspace/predictive-routing-index.spec.ts |  24 +++-",
+            "src/workspace/predictive-routing-index.ts      | 216 ++++++++++++++++++++++++++-------"
+          ],
+          "patch_preview": "",
+          "github_commit_url": "https://github.com/patl4588/railcall-marketplace/commit/d81173a06a32acb16e5d4c800b68e7845ae8cbaa"
+        },
+        {
+          "sha": "1199d69bbe0b5d91964d017ce9a795af2b076ab7",
+          "short_sha": "1199d69",
+          "author_date_iso": "2026-11-17T17:58:20+01:00",
+          "relative_time": "47 minutes ago",
+          "subject": "perf(workflow): route simple workflow drafts to Rung-0 fast-lane without planning roundtrip",
+          "stat_summary": "3 files changed, 77 insertions(+), 6 deletions(-)",
+          "changed_files": [
+            "src/admin/admin-24h-metrics.spec.ts | 38 ++++++++++++++++++++++++++++++++++++++",
+            "src/workspace/chat.service.ts       | 19 ++++++++++++++-----",
+            "src/workspace/fast-lane.policy.ts   | 26 +++++++++++++++++++++++++-"
+          ],
+          "patch_preview": "",
+          "github_commit_url": "https://github.com/patl4588/railcall-marketplace/commit/1199d69bbe0b5d91964d017ce9a795af2b076ab7"
+        },
+        {
+          "sha": "52e7937616011a60fd2ea1ddb1d78627f69f5c72",
+          "short_sha": "52e7937",
+          "author_date_iso": "2026-11-17T17:13:38+01:00",
+          "relative_time": "2 hours ago",
+          "subject": "chore(merge): integrate delegated/continuous-improvements (fce0a86) Gemini/Tier-0 admission & /v1 direct fleet",
+          "stat_summary": "10 files changed, 185 insertions(+), 11 deletions(-)",
+          "changed_files": [
+            "src/assistant/assistant.policy.ts                |  4 +-",
+            "src/assistant/patsum.config.ts                   |  6 +++",
+            "src/assistant/patsum.policy.spec.ts              |  4 ++",
+            "src/assistant/patsum.policy.ts                   |  2 +-",
+            "src/v1/linden-v1.service.ts                      | 85 ++++++++++++++++++++++++++++++--",
+            "src/v1/linden-v1.spec.ts                         | 56 +++++++++++++++++++++",
+            "src/workspace/chat.service.ts                    |  3 +-",
+            "src/workspace/fullstack-app-and-fastlane.spec.ts | 31 ++++++++++--",
+            "src/workspace/open-preview-and-uploads.spec.ts   |  4 +-",
+            "src/workspace/upstream-failover.policy.ts        |  1 +"
+          ],
+          "patch_preview": "",
+          "github_commit_url": "https://github.com/patl4588/railcall-marketplace/commit/52e7937616011a60fd2ea1ddb1d78627f69f5c72"
+        },
         {
           "sha": "fce0a8622feeb51bf7e434e537853a508a0e9f7f",
           "short_sha": "fce0a86",
           "author_date_iso": "2026-11-17T10:59:28-05:00",
-          "relative_time": "2 minutes ago",
+          "relative_time": "2 hours ago",
           "subject": "feat(assistant,v1): admit Google Gemini direct & Tier-0 dedicated_gpu in PatSUM catalog and expand /v1 direct foundation fleet ahead of OpenRouter backup",
           "stat_summary": "7 files changed, 152 insertions(+), 6 deletions(-)",
           "changed_files": [
@@ -52,7 +105,7 @@
           "sha": "899ec1ca7993a980e812416764ebadf0a9a6b932",
           "short_sha": "899ec1c",
           "author_date_iso": "2026-11-17T10:25:54-05:00",
-          "relative_time": "35 minutes ago",
+          "relative_time": "2 hours ago",
           "subject": "chore(merge): sync origin/main (2e9cfa6) onto delegated/continuous-improvements",
           "stat_summary": "5 files changed, 934 insertions(+), 58 deletions(-)",
           "changed_files": [
@@ -64,58 +117,6 @@
           ],
           "patch_preview": "",
           "github_commit_url": "https://github.com/patl4588/railcall-marketplace/commit/899ec1ca7993a980e812416764ebadf0a9a6b932"
-        },
-        {
-          "sha": "2e9cfa60c4630b123fd9f400eb7e5755034f927b",
-          "short_sha": "2e9cfa6",
-          "author_date_iso": "2026-11-17T10:15:15-05:00",
-          "relative_time": "46 minutes ago",
-          "subject": "fix(v1): prioritize direct foundation providers (Groq, OpenAI, Anthropic, xAI) ahead of OpenRouter",
-          "stat_summary": "1 file changed, 3 insertions(+), 3 deletions(-)",
-          "changed_files": [
-            "src/v1/linden-v1.service.ts | 6 +++---"
-          ],
-          "patch_preview": "",
-          "github_commit_url": "https://github.com/patl4588/railcall-marketplace/commit/2e9cfa60c4630b123fd9f400eb7e5755034f927b"
-        },
-        {
-          "sha": "a380e8382394fb8f604ff6c92372657e8e7646d3",
-          "short_sha": "a380e83",
-          "author_date_iso": "2026-11-17T16:10:50+01:00",
-          "relative_time": "50 minutes ago",
-          "subject": "perf(assistant,workspace): map rung-0 auto jobs to fast effort and emit style.css before index.html",
-          "stat_summary": "2 files changed, 4 insertions(+), 2 deletions(-)",
-          "changed_files": [
-            "src/assistant/assistant.service.ts | 4 +++-",
-            "src/workspace/chat.service.ts      | 2 +-"
-          ],
-          "patch_preview": "",
-          "github_commit_url": "https://github.com/patl4588/railcall-marketplace/commit/a380e8382394fb8f604ff6c92372657e8e7646d3"
-        },
-        {
-          "sha": "d3551a7e75cf75994bfa4f50b1cd838870a07257",
-          "short_sha": "d3551a7",
-          "author_date_iso": "2026-11-17T15:47:59+01:00",
-          "relative_time": "73 minutes ago",
-          "subject": "fix(workspace): merge delegated/continuous-improvements (8d6b6fa) and lock instant fast-lane onto Rung 0",
-          "stat_summary": "13 files changed, 1471 insertions(+), 172 deletions(-)",
-          "changed_files": [
-            ".../migration.sql                                       |   3 +",
-            "prisma/schema.prisma                                    |   2 +",
-            "src/admin/admin-24h-metrics.spec.ts                     |  83 ++++",
-            "src/assistant/assistant.service.ts                      | 581 +++++++++++++++++++-----",
-            "src/assistant/desktop-patsum.admission.spec.ts          |  14 +-",
-            "src/assistant/worker-contention-and-deadlock.spec.ts    | 317 +++++++++++++",
-            "src/main.ts                                             |   3 +",
-            "src/workspace/chat.service.ts                           |  62 ++-",
-            "src/workspace/manager-poll-snapshot.spec.ts             |  11 +-",
-            "src/workspace/prompt-policy-guard.spec.ts               |  94 ++++",
-            "src/workspace/signed-ip-and-cost-redaction.spec.ts      | 353 ++++++++++++++",
-            "src/workspace/upstream-failover.policy.ts               |   9 +-",
-            "src/workspace/workspace.controller.ts                   | 111 ++++-"
-          ],
-          "patch_preview": "",
-          "github_commit_url": "https://github.com/patl4588/railcall-marketplace/commit/d3551a7e75cf75994bfa4f50b1cd838870a07257"
         }
       ]
     },
@@ -128,24 +129,94 @@
       "private_repo_notice": "Private GitHub Repo — sign in to GitHub to open external links, or inspect full commits, file stats & diffs inline below.",
       "available": true,
       "branch": "delegated/continuous-improvements",
-      "head_sha": "0cd97f9dc09631b434da933f153ae4b4c19cfa3b",
-      "head_short": "0cd97f9",
+      "head_sha": "2b1f3edcf0470ce10f13d88bc3aaaaab14e24c60",
+      "head_short": "2b1f3ed",
       "main_ref": "origin/main",
-      "main_sha": "e3d47ab597fa2f0c359cd6f22da24aa9a38b6f9d",
-      "main_short": "e3d47ab",
-      "ahead_count": 6,
+      "main_sha": "b1a4b8e6d09507bb2bc924a75b4946ea010edbc7",
+      "main_short": "b1a4b8e",
+      "ahead_count": 1,
       "behind_count": 0,
       "ff_ready": true,
       "github_branch_url": "https://github.com/patl4588/railcall-website/tree/delegated/continuous-improvements",
       "github_compare_url": "https://github.com/patl4588/railcall-website/compare/main...delegated/continuous-improvements",
       "sami_one_liner": "cd railcall-website && git fetch origin main delegated/continuous-improvements && git checkout main && git pull --ff-only origin main && git merge --ff-only origin/delegated/continuous-improvements && git push origin main",
-      "git_log_stat_5": "commit 0cd97f9dc09631b434da933f153ae4b4c19cfa3b\nAuthor: Antigravity-UI <patrickjameslinden@gmail.com>\nDate:   Tue Nov 17 10:59:28 2026 -0500\n\n    feat(v1,fallback): wire full direct foundation fleet with 30s circuit-breaker cooldowns ahead of last-resort OpenRouter backup\n\n app/lib/server/workspace-free-fallback.ts |  65 ++++++++++--\n app/v1/chat/completions/route.ts          | 242 ++++++++++++++++++++++++++++++++----------\n 2 files changed, 242 insertions(+), 65 deletions(-)\n\ncommit 25f1d09b0074e8216ad3bbc3e9171c7a93997f4d\nMerge: 85f2054 e3d47ab\nAuthor: Antigravity-UI <patrickjameslinden@gmail.com>\nDate:   Tue Nov 17 10:24:49 2026 -0500\n\n    Merge remote-tracking branch 'origin/main' into delegated/continuous-improvements\n\ncommit 85f2054385c364a726344654c76324c30aeee7e2\nAuthor: Antigravity-UI <patrickjameslinden@gmail.com>\nDate:   Tue Nov 17 10:17:04 2026 -0500\n\n    feat(workbench): mirror exact desktop tabs, quality 5/5 pane, .zip, and open actions\n\n app/chat/[id]/ChatClient.tsx                  |   1 +\n app/components/chat/LiveArtifactWorkbench.tsx | 159 +++++++++++++++++++++++++++++++-------\n app/components/workspace/ApiKeysModal.tsx     |   1 +\n app/components/workspace/workspace.module.css |   8 +-\n app/lib/live-artifact-workbench.ts            |   2 +-\n next.config.ts                                |   2 +\n 6 files changed, 142 insertions(+), 31 deletions(-)\n\ncommit e3d47ab597fa2f0c359cd6f22da24aa9a38b6f9d\nAuthor: Antigravity-UI <patrickjameslinden@gmail.com>\nDate:   Tue Nov 17 10:15:07 2026 -0500\n\n    fix(v1): prioritize direct Groq and OpenAI providers ahead of OpenRouter\n\n app/v1/chat/completions/route.ts | 38 ++++++++++++++++++++------------------\n 1 file changed, 20 insertions(+), 18 deletions(-)\n\ncommit aafece65d3dca9347efd1c6462708043b404acc2\nAuthor: ncapozzo3-lgtm <n.capozzo3@gmail.com>\nDate:   Tue Nov 17 10:14:49 2026 -0500\n\n    feat(gateway): track IP + usage on the forwarded rc_ak_live_ key path (#13)\n    \n    #12 only logged usage on the locally-minted rc_sk_live_ path. Production\n    uses Postgres-backed rc_ak_live_ keys, which hit handleGatewayApiKeyForward\n    and return before recordOpenApiKeyUsage, so no real traffic was tracked.\n    \n    Append a usage event on the forward path too (captures status, since it\n    runs post-upstream), keyed by a non-reversible sha256 of the gateway key\n    (never the raw key). Now every /v1/chat call is tracked by IP regardless\n    of key type. Best-effort; never affects the proxied response.\n    \n    Co-authored-by: Claude Opus 4.8 <noreply@anthropic.com>\n\n app/v1/chat/completions/route.ts | 17 +++++++++++++++++\n 1 file changed, 17 insertions(+)",
+      "git_log_stat_5": "commit 2b1f3edcf0470ce10f13d88bc3aaaaab14e24c60\nAuthor: Antigravity-UI <patrickjameslinden@gmail.com>\nDate:   Tue Nov 17 12:43:39 2026 -0500\n\n    feat(v1): add task-profile Speed x Quality x Cost Direct routing on /v1/chat/completions with OpenRouter backup\n\n app/v1/chat/completions/route.ts   |  71 +++++++++++---------\n tests/wave26-linden-v1-api.test.ts | 172 +++++++++++++++++++++++++++++++++++++++++++++++++\n 2 files changed, 213 insertions(+), 30 deletions(-)\n\ncommit b1a4b8e6d09507bb2bc924a75b4946ea010edbc7\nAuthor: SamyBchaalia <sami.benchaalia@sesame.com.tn>\nDate:   Tue Nov 17 17:58:20 2026 +0100\n\n    ux(thinking): display instant workflow fast-lane & architect labels on workflow prompts\n\n app/components/chat/RailCallThinkingPanel.tsx | 83 ++++++++++++++++++++++++---------------\n 1 file changed, 52 insertions(+), 31 deletions(-)\n\ncommit e85fa4bd467aa86de09ee57187a21e11f6ce2d6d\nAuthor: ncapozzo3-lgtm <n.capozzo3@gmail.com>\nDate:   Tue Nov 17 11:20:13 2026 -0500\n\n    feat(webchat): log caller IP per WebChat/guest turn to the usage events log (#14)\n    \n    ~100% of real traffic is WebChat/Console/guest turns hitting\n    /api/workspace/conversations/:id/messages (forwarded to marketplace),\n    which bypasses /v1 and so was invisible to the #12/#13 usage tracking.\n    \n    Call appendUsageEvent on every turn, using the IP already extracted via\n    extractClientIp(req), tagged keyId=webchat. Feeds the same events log and\n    usage dashboard. Best-effort; never affects the response. Per Pat's\n    traffic-split analysis.\n    \n    Co-authored-by: Claude Opus 4.8 <noreply@anthropic.com>\n\n app/api/workspace/conversations/[id]/messages/route.ts | 11 +++++++++++\n 1 file changed, 11 insertions(+)\n\ncommit 7814ac593da175e28eea98ed84f11653c290981c\nMerge: e3d47ab 0cd97f9\nAuthor: SamyBchaalia <sami.benchaalia@sesame.com.tn>\nDate:   Tue Nov 17 17:13:11 2026 +0100\n\n    chore(merge): integrate delegated/continuous-improvements (0cd97f9d) desktop parity, local bridge & /v1 fleet\n\ncommit 0cd97f9dc09631b434da933f153ae4b4c19cfa3b\nAuthor: Antigravity-UI <patrickjameslinden@gmail.com>\nDate:   Tue Nov 17 10:59:28 2026 -0500\n\n    feat(v1,fallback): wire full direct foundation fleet with 30s circuit-breaker cooldowns ahead of last-resort OpenRouter backup\n\n app/lib/server/workspace-free-fallback.ts |  65 ++++++++++--\n app/v1/chat/completions/route.ts          | 242 ++++++++++++++++++++++++++++++++----------\n 2 files changed, 242 insertions(+), 65 deletions(-)",
       "commits": [
+        {
+          "sha": "2b1f3edcf0470ce10f13d88bc3aaaaab14e24c60",
+          "short_sha": "2b1f3ed",
+          "author_date_iso": "2026-11-17T12:43:39-05:00",
+          "relative_time": "2 minutes ago",
+          "subject": "feat(v1): add task-profile Speed x Quality x Cost Direct routing on /v1/chat/completions with OpenRouter backup",
+          "stat_summary": "2 files changed, 213 insertions(+), 30 deletions(-)",
+          "changed_files": [
+            "app/v1/chat/completions/route.ts   |  71 +++++++++++--------",
+            "tests/wave26-linden-v1-api.test.ts | 172 +++++++++++++++++++++++++++++++++++++++++++++"
+          ],
+          "patch_preview": "",
+          "github_commit_url": "https://github.com/patl4588/railcall-website/commit/2b1f3edcf0470ce10f13d88bc3aaaaab14e24c60"
+        },
+        {
+          "sha": "b1a4b8e6d09507bb2bc924a75b4946ea010edbc7",
+          "short_sha": "b1a4b8e",
+          "author_date_iso": "2026-11-17T17:58:20+01:00",
+          "relative_time": "47 minutes ago",
+          "subject": "ux(thinking): display instant workflow fast-lane & architect labels on workflow prompts",
+          "stat_summary": "1 file changed, 52 insertions(+), 31 deletions(-)",
+          "changed_files": [
+            "app/components/chat/RailCallThinkingPanel.tsx | 83 ++++++++++++++++++++++-------------"
+          ],
+          "patch_preview": "",
+          "github_commit_url": "https://github.com/patl4588/railcall-website/commit/b1a4b8e6d09507bb2bc924a75b4946ea010edbc7"
+        },
+        {
+          "sha": "e85fa4bd467aa86de09ee57187a21e11f6ce2d6d",
+          "short_sha": "e85fa4b",
+          "author_date_iso": "2026-11-17T11:20:13-05:00",
+          "relative_time": "85 minutes ago",
+          "subject": "feat(webchat): log caller IP per WebChat/guest turn to the usage events log (#14)",
+          "stat_summary": "1 file changed, 11 insertions(+)",
+          "changed_files": [
+            "app/api/workspace/conversations/[id]/messages/route.ts | 11 +++++++++++"
+          ],
+          "patch_preview": "",
+          "github_commit_url": "https://github.com/patl4588/railcall-website/commit/e85fa4bd467aa86de09ee57187a21e11f6ce2d6d"
+        },
+        {
+          "sha": "7814ac593da175e28eea98ed84f11653c290981c",
+          "short_sha": "7814ac5",
+          "author_date_iso": "2026-11-17T17:13:38+01:00",
+          "relative_time": "2 hours ago",
+          "subject": "chore(merge): integrate delegated/continuous-improvements (0cd97f9d) desktop parity, local bridge & /v1 fleet",
+          "stat_summary": "21 files changed, 5194 insertions(+), 481 deletions(-)",
+          "changed_files": [
+            "app/api/download/chat/route.ts                      | 156 +++++",
+            "app/chat/[id]/ChatClient.tsx                        | 505 +++++++++++----",
+            "app/components/chat/LiveArtifactWorkbench.tsx       | 183 +++++-",
+            "app/components/home/HomeHero.tsx                    |  65 +-",
+            "app/components/home/hero.module.css                 |  98 +++",
+            "app/components/workspace/ApiKeysModal.tsx           |   1 +",
+            "app/components/workspace/BuildWorkspace.tsx         |   3 +-",
+            "app/components/workspace/Composer.tsx               | 181 +++++-",
+            "app/components/workspace/DesktopSplitStudioDock.tsx | 359 +++++++++++",
+            "app/components/workspace/LocalEngineBridge.tsx      | 925 ++++++++++++++++++++++++++++",
+            "app/components/workspace/MessageList.tsx            |  32 +-",
+            "app/components/workspace/RoutingControlsBar.tsx     | 245 +++++---",
+            "app/components/workspace/WorkspaceShell.tsx         | 721 +++++++++++++++++++---",
+            "app/components/workspace/workspace.module.css       | 735 +++++++++++++++++++++-",
+            "app/lib/direct-download-os.ts                       | 132 ++++",
+            "app/lib/live-artifact-workbench.ts                  | 327 +++++++++-",
+            "app/lib/server/workspace-free-fallback.ts           |  65 +-",
+            "app/page.tsx                                        |   8 +-"
+          ],
+          "patch_preview": "",
+          "github_commit_url": "https://github.com/patl4588/railcall-website/commit/7814ac593da175e28eea98ed84f11653c290981c"
+        },
         {
           "sha": "0cd97f9dc09631b434da933f153ae4b4c19cfa3b",
           "short_sha": "0cd97f9",
           "author_date_iso": "2026-11-17T10:59:28-05:00",
-          "relative_time": "2 minutes ago",
+          "relative_time": "2 hours ago",
           "subject": "feat(v1,fallback): wire full direct foundation fleet with 30s circuit-breaker cooldowns ahead of last-resort OpenRouter backup",
           "stat_summary": "2 files changed, 242 insertions(+), 65 deletions(-)",
           "changed_files": [
@@ -154,63 +225,6 @@
           ],
           "patch_preview": "",
           "github_commit_url": "https://github.com/patl4588/railcall-website/commit/0cd97f9dc09631b434da933f153ae4b4c19cfa3b"
-        },
-        {
-          "sha": "25f1d09b0074e8216ad3bbc3e9171c7a93997f4d",
-          "short_sha": "25f1d09",
-          "author_date_iso": "2026-11-17T10:24:49-05:00",
-          "relative_time": "36 minutes ago",
-          "subject": "Merge remote-tracking branch 'origin/main' into delegated/continuous-improvements",
-          "stat_summary": "1 file changed, 37 insertions(+), 18 deletions(-)",
-          "changed_files": [
-            "app/v1/chat/completions/route.ts | 55 ++++++++++++++++++++++++++++++++----------------"
-          ],
-          "patch_preview": "",
-          "github_commit_url": "https://github.com/patl4588/railcall-website/commit/25f1d09b0074e8216ad3bbc3e9171c7a93997f4d"
-        },
-        {
-          "sha": "85f2054385c364a726344654c76324c30aeee7e2",
-          "short_sha": "85f2054",
-          "author_date_iso": "2026-11-17T10:17:04-05:00",
-          "relative_time": "44 minutes ago",
-          "subject": "feat(workbench): mirror exact desktop tabs, quality 5/5 pane, .zip, and open actions",
-          "stat_summary": "6 files changed, 142 insertions(+), 31 deletions(-)",
-          "changed_files": [
-            "app/chat/[id]/ChatClient.tsx                  |   1 +",
-            "app/components/chat/LiveArtifactWorkbench.tsx | 159 ++++++++++++++++++++++++++++------",
-            "app/components/workspace/ApiKeysModal.tsx     |   1 +",
-            "app/components/workspace/workspace.module.css |   8 +-",
-            "app/lib/live-artifact-workbench.ts            |   2 +-",
-            "next.config.ts                                |   2 +"
-          ],
-          "patch_preview": "",
-          "github_commit_url": "https://github.com/patl4588/railcall-website/commit/85f2054385c364a726344654c76324c30aeee7e2"
-        },
-        {
-          "sha": "e3d47ab597fa2f0c359cd6f22da24aa9a38b6f9d",
-          "short_sha": "e3d47ab",
-          "author_date_iso": "2026-11-17T10:15:07-05:00",
-          "relative_time": "46 minutes ago",
-          "subject": "fix(v1): prioritize direct Groq and OpenAI providers ahead of OpenRouter",
-          "stat_summary": "1 file changed, 20 insertions(+), 18 deletions(-)",
-          "changed_files": [
-            "app/v1/chat/completions/route.ts | 38 ++++++++++++++++++++------------------"
-          ],
-          "patch_preview": "",
-          "github_commit_url": "https://github.com/patl4588/railcall-website/commit/e3d47ab597fa2f0c359cd6f22da24aa9a38b6f9d"
-        },
-        {
-          "sha": "aafece65d3dca9347efd1c6462708043b404acc2",
-          "short_sha": "aafece6",
-          "author_date_iso": "2026-11-17T10:14:49-05:00",
-          "relative_time": "46 minutes ago",
-          "subject": "feat(gateway): track IP + usage on the forwarded rc_ak_live_ key path (#13)",
-          "stat_summary": "1 file changed, 17 insertions(+)",
-          "changed_files": [
-            "app/v1/chat/completions/route.ts | 17 +++++++++++++++++"
-          ],
-          "patch_preview": "",
-          "github_commit_url": "https://github.com/patl4588/railcall-website/commit/aafece65d3dca9347efd1c6462708043b404acc2"
         }
       ]
     },
@@ -240,7 +254,7 @@
           "sha": "83518dba195d87b5a2f8dde562777e7826c7d765",
           "short_sha": "83518db",
           "author_date_iso": "2026-11-17T08:43:27-05:00",
-          "relative_time": "2 hours ago",
+          "relative_time": "4 hours ago",
           "subject": "fix(desktop): eliminate false-positive chat guard blocks, unlock reopened threads, and harden offline/PDF/DOCX artifact previews",
           "stat_summary": "8 files changed, 2598 insertions(+), 190 deletions(-)",
           "changed_files": [
@@ -260,7 +274,7 @@
           "sha": "765e3ce0d999c9cee23ba2f23fabbd6799087984",
           "short_sha": "765e3ce",
           "author_date_iso": "2026-11-16T17:28:59-05:00",
-          "relative_time": "18 hours ago",
+          "relative_time": "19 hours ago",
           "subject": "fix(docs): prevent anaphoric PDF context wipeout and add native .docx Word export",
           "stat_summary": "9 files changed, 1449 insertions(+), 28 deletions(-)",
           "changed_files": [
@@ -281,7 +295,7 @@
           "sha": "20d192675c048da78a6a77b88b277bb4a305286d",
           "short_sha": "20d1926",
           "author_date_iso": "2026-11-16T17:02:39-05:00",
-          "relative_time": "18 hours ago",
+          "relative_time": "20 hours ago",
           "subject": "feat(desktop): native $0.00 governed external website screenshot capture and multi-site preview",
           "stat_summary": "7 files changed, 1885 insertions(+), 1 deletion(-)",
           "changed_files": [
@@ -300,7 +314,7 @@
           "sha": "9732758c7a129c08c58ff130beafda75ec662d20",
           "short_sha": "9732758",
           "author_date_iso": "2026-11-16T16:54:09-05:00",
-          "relative_time": "18 hours ago",
+          "relative_time": "20 hours ago",
           "subject": "fix(resilience): eliminate 140s execution_unknown hangs, wedged petiw-runs, and error receipt bugs",
           "stat_summary": "7 files changed, 910 insertions(+), 71 deletions(-)",
           "changed_files": [
@@ -319,7 +333,7 @@
           "sha": "7432606532392c0464de9a9a9e422b5174e5b777",
           "short_sha": "7432606",
           "author_date_iso": "2026-11-16T12:31:49-05:00",
-          "relative_time": "22 hours ago",
+          "relative_time": "24 hours ago",
           "subject": "perf(mozart-wave2): wire zero-think loopback Ollama fastpath into Desktop subagent swarm",
           "stat_summary": "3 files changed, 202 insertions(+), 16 deletions(-)",
           "changed_files": [
@@ -341,24 +355,46 @@
       "private_repo_notice": "Private GitHub Repo — sign in to GitHub to open external links, or inspect full commits, file stats & diffs inline below.",
       "available": true,
       "branch": "delegated/continuous-improvements",
-      "head_sha": "785c70e024fa221f797684b09c1d12825a304438",
-      "head_short": "785c70e",
+      "head_sha": "4f06b83ae111692bc2cd18c339d662effa11015e",
+      "head_short": "4f06b83",
       "main_ref": "origin/main",
       "main_sha": "af39f7a900677ef4a3e6e1c033e3805e22e08a22",
       "main_short": "af39f7a",
-      "ahead_count": 8,
+      "ahead_count": 9,
       "behind_count": 0,
       "ff_ready": true,
       "github_branch_url": "https://github.com/patl4588/linden/tree/delegated/continuous-improvements",
       "github_compare_url": "https://github.com/patl4588/linden/compare/main...delegated/continuous-improvements",
       "sami_one_liner": "cd linden && git fetch origin main delegated/continuous-improvements && git checkout main && git pull --ff-only origin main && git merge --ff-only origin/delegated/continuous-improvements && git push origin main",
-      "git_log_stat_5": "commit 785c70e024fa221f797684b09c1d12825a304438\nAuthor: Test <test@example.com>\nDate:   Tue Nov 17 10:59:28 2026 -0500\n\n    feat(cloud-router): build direct-first sovereign routing, native Google Gemini direct, dedicated_gpu replay fix, and OpenRouter emergency backup\n\n apps/cloud-router/src/effort.js                            |   3 +-\n apps/cloud-router/src/marketplace-image-bridge.js          |   7 +-\n apps/cloud-router/src/marketplace-runner.js                |  79 +++++---\n apps/cloud-router/src/marketplace-worker.js                |   8 +-\n apps/cloud-router/src/predictive-routing-index.js          |  88 ++++++---\n apps/cloud-router/src/providers/contracts.js               |   6 +-\n apps/cloud-router/src/providers/credentials.js             |   3 +-\n apps/cloud-router/src/providers/replay.js                  |   4 +-\n apps/cloud-router/src/providers/transport.js               |   2 +-\n apps/cloud-router/src/registry.js                          |   5 +\n .../test/direct-first-sovereign-routing.test.js            | 256 +++++++++++++++++++++++++\n apps/cloud-router/test/predictive-routing-index.test.js    |  28 ++-\n .../test/provider-failover-monday-launch.test.js           |   5 +-\n apps/cloud-router/test/render-routing.test.js              |   8 +-\n apps/cloud-router/test/xai.test.js                         |   8 +-\n 15 files changed, 428 insertions(+), 82 deletions(-)\n\ncommit e822ba805da360be20f7248f5997f92c16ab4ddd\nAuthor: Test <test@example.com>\nDate:   Tue Nov 17 09:12:27 2026 -0500\n\n    perf(station,cloud-router): disable hidden reasoning on fast SSE streams, fix binary preload crash, and wire Tier-0 Dedicated GPU pool\n\n apps/cloud-router/src/effort.js                            |   3 +-\n apps/cloud-router/src/marketplace-runner.js                |  55 ++--\n apps/cloud-router/src/marketplace-worker.js                |  55 +++-\n apps/cloud-router/src/parameter-field.js                   |  11 +\n apps/cloud-router/src/provider-failover.js                 | 281 +++++++++++++++++--\n apps/cloud-router/src/providers/contracts.js               |   9 +-\n apps/cloud-router/src/providers/credentials.js             |   4 +\n apps/cloud-router/src/providers/replay.js                  |   2 +-\n apps/cloud-router/src/providers/transport.js               |  22 +-\n apps/cloud-router/src/registry.js                          |   4 +\n apps/cloud-router/src/router.js                            |  28 +-\n apps/cloud-router/test/dedicated-gpu-tier0.test.js         | 357 +++++++++++++++++++++++++\n apps/desktop/agent.js                                      |   3 +-\n apps/desktop/project-tools.js                              |   3 +\n apps/desktop/tests/chat-guard-precision.test.js            |  91 +++++++\n apps/gateway/src/assistant/assistant.service.ts            |   4 +-\n apps/gateway/src/workspace/chat.service.ts                 |   7 +-\n .../src/workspace/fullstack-app-and-fastlane.spec.ts       |  18 +-\n apps/station/workbench/primitives/assistant_client.py      |  24 +-\n apps/station/workbench/primitives/project_workspace.py     |  50 +++-\n apps/station/workbench/routes/dispatch_llm.py              |  62 ++++-\n .../workbench/tests/test_fast_stream_and_binary_preload.py | 271 +++++++++++++++++++\n 22 files changed, 1279 insertions(+), 85 deletions(-)\n\ncommit 6a5f0645952322d7b48b425134a32a7cde0bfd14\nAuthor: Test <test@example.com>\nDate:   Tue Nov 17 08:14:24 2026 -0500\n\n    fix(guard): eliminate chat_guard false-positive declines on executive/legal/financial/M&A/coding/workflow prompts while preserving security & red-team rails\n\n apps/desktop/agent.js                                      |   2 +-\n apps/desktop/tests/chat-guard-precision.test.js            |  40 +++++\n apps/gateway/src/workspace/prompt-policy-guard.spec.ts     |  34 ++++\n apps/gateway/src/workspace/upstream-failover.policy.ts     |   9 +-\n apps/station/workbench/chat_guard.py                       | 223 ++++++++++++++++++++-----\n apps/station/workbench/routes/dispatch_llm.py              |  11 +-\n .../tests/test_executive_legal_ma_guard_precision.py       | 167 ++++++++++++++++++\n 7 files changed, 435 insertions(+), 51 deletions(-)\n\ncommit 8d82ed54b3b4fec4b8ec03b64c454a1139df46de\nAuthor: Test <test@example.com>\nDate:   Mon Nov 16 17:13:18 2026 -0500\n\n    perf(cloud-router): wire sub-second pre-stream failover, priority exchange pool, non-blocking delta traces, and two-phase SIGTERM drain\n\n apps/cloud-router/src/marketplace-exchange.js            | 131 ++++++++++--\n apps/cloud-router/src/marketplace-runner.js              |  85 +++++++-\n apps/cloud-router/src/marketplace-worker.js              | 278 +++++++++++++++++++------\n apps/cloud-router/src/providers/availability.js          |   7 +-\n apps/cloud-router/src/providers/transport.js             |  25 ++-\n apps/cloud-router/test/availability.test.js              |   9 +-\n apps/cloud-router/test/worker-failover-and-drain.test.js | 299 +++++++++++++++++++++++++++\n 7 files changed, 737 insertions(+), 97 deletions(-)\n\ncommit ed0f160809fd50041f9f7be8a0c0c6c2dba75449\nAuthor: Test <test@example.com>\nDate:   Mon Nov 16 17:06:31 2026 -0500\n\n    perf(gateway): eliminate AssistantState(id=1) hot-path contention, enforce canonical WorkspaceRun lock order, and enable shutdown hooks\n\n apps/gateway/src/assistant/assistant.service.ts            | 565 ++++++++++++++++++++-----\n .../src/assistant/worker-contention-and-deadlock.spec.ts   | 317 ++++++++++++++\n apps/gateway/src/main.ts                                   |   3 +\n 3 files changed, 788 insertions(+), 97 deletions(-)",
+      "git_log_stat_5": "commit 4f06b83ae111692bc2cd18c339d662effa11015e\nAuthor: Test <test@example.com>\nDate:   Tue Nov 17 12:43:39 2026 -0500\n\n    feat(cloud-router,station): implement 48-group 14D Task x Speed x Quality x Cost Pareto ranker with empirical Wilson feedback and Direct-First Station cost_router\n\n apps/cloud-router/src/marketplace-runner.js                |  51 ++-\n apps/cloud-router/src/marketplace-worker.js                |   1 +\n apps/cloud-router/src/parameter-field.js                   |  22 +-\n apps/cloud-router/src/predictive-routing-index.js          |   6 +-\n apps/cloud-router/src/registry.js                          |  18 +-\n apps/cloud-router/src/router.js                            |  70 +--\n apps/cloud-router/src/task-rating-algo.js                  | 580 +++++++++++++++++++++++++\n apps/cloud-router/test/task-rating-algo.test.js            | 270 ++++++++++++\n apps/station/workbench/cost_router.py                      |  87 +++-\n .../workbench/tests/test_cost_router_direct_task_algo.py   |  69 +++\n 10 files changed, 1107 insertions(+), 67 deletions(-)\n\ncommit 785c70e024fa221f797684b09c1d12825a304438\nAuthor: Test <test@example.com>\nDate:   Tue Nov 17 10:59:28 2026 -0500\n\n    feat(cloud-router): build direct-first sovereign routing, native Google Gemini direct, dedicated_gpu replay fix, and OpenRouter emergency backup\n\n apps/cloud-router/src/effort.js                            |   3 +-\n apps/cloud-router/src/marketplace-image-bridge.js          |   7 +-\n apps/cloud-router/src/marketplace-runner.js                |  79 +++++---\n apps/cloud-router/src/marketplace-worker.js                |   8 +-\n apps/cloud-router/src/predictive-routing-index.js          |  88 ++++++---\n apps/cloud-router/src/providers/contracts.js               |   6 +-\n apps/cloud-router/src/providers/credentials.js             |   3 +-\n apps/cloud-router/src/providers/replay.js                  |   4 +-\n apps/cloud-router/src/providers/transport.js               |   2 +-\n apps/cloud-router/src/registry.js                          |   5 +\n .../test/direct-first-sovereign-routing.test.js            | 256 +++++++++++++++++++++++++\n apps/cloud-router/test/predictive-routing-index.test.js    |  28 ++-\n .../test/provider-failover-monday-launch.test.js           |   5 +-\n apps/cloud-router/test/render-routing.test.js              |   8 +-\n apps/cloud-router/test/xai.test.js                         |   8 +-\n 15 files changed, 428 insertions(+), 82 deletions(-)\n\ncommit e822ba805da360be20f7248f5997f92c16ab4ddd\nAuthor: Test <test@example.com>\nDate:   Tue Nov 17 09:12:27 2026 -0500\n\n    perf(station,cloud-router): disable hidden reasoning on fast SSE streams, fix binary preload crash, and wire Tier-0 Dedicated GPU pool\n\n apps/cloud-router/src/effort.js                            |   3 +-\n apps/cloud-router/src/marketplace-runner.js                |  55 ++--\n apps/cloud-router/src/marketplace-worker.js                |  55 +++-\n apps/cloud-router/src/parameter-field.js                   |  11 +\n apps/cloud-router/src/provider-failover.js                 | 281 +++++++++++++++++--\n apps/cloud-router/src/providers/contracts.js               |   9 +-\n apps/cloud-router/src/providers/credentials.js             |   4 +\n apps/cloud-router/src/providers/replay.js                  |   2 +-\n apps/cloud-router/src/providers/transport.js               |  22 +-\n apps/cloud-router/src/registry.js                          |   4 +\n apps/cloud-router/src/router.js                            |  28 +-\n apps/cloud-router/test/dedicated-gpu-tier0.test.js         | 357 +++++++++++++++++++++++++\n apps/desktop/agent.js                                      |   3 +-\n apps/desktop/project-tools.js                              |   3 +\n apps/desktop/tests/chat-guard-precision.test.js            |  91 +++++++\n apps/gateway/src/assistant/assistant.service.ts            |   4 +-\n apps/gateway/src/workspace/chat.service.ts                 |   7 +-\n .../src/workspace/fullstack-app-and-fastlane.spec.ts       |  18 +-\n apps/station/workbench/primitives/assistant_client.py      |  24 +-\n apps/station/workbench/primitives/project_workspace.py     |  50 +++-\n apps/station/workbench/routes/dispatch_llm.py              |  62 ++++-\n .../workbench/tests/test_fast_stream_and_binary_preload.py | 271 +++++++++++++++++++\n 22 files changed, 1279 insertions(+), 85 deletions(-)\n\ncommit 6a5f0645952322d7b48b425134a32a7cde0bfd14\nAuthor: Test <test@example.com>\nDate:   Tue Nov 17 08:14:24 2026 -0500\n\n    fix(guard): eliminate chat_guard false-positive declines on executive/legal/financial/M&A/coding/workflow prompts while preserving security & red-team rails\n\n apps/desktop/agent.js                                      |   2 +-\n apps/desktop/tests/chat-guard-precision.test.js            |  40 +++++\n apps/gateway/src/workspace/prompt-policy-guard.spec.ts     |  34 ++++\n apps/gateway/src/workspace/upstream-failover.policy.ts     |   9 +-\n apps/station/workbench/chat_guard.py                       | 223 ++++++++++++++++++++-----\n apps/station/workbench/routes/dispatch_llm.py              |  11 +-\n .../tests/test_executive_legal_ma_guard_precision.py       | 167 ++++++++++++++++++\n 7 files changed, 435 insertions(+), 51 deletions(-)\n\ncommit 8d82ed54b3b4fec4b8ec03b64c454a1139df46de\nAuthor: Test <test@example.com>\nDate:   Mon Nov 16 17:13:18 2026 -0500\n\n    perf(cloud-router): wire sub-second pre-stream failover, priority exchange pool, non-blocking delta traces, and two-phase SIGTERM drain\n\n apps/cloud-router/src/marketplace-exchange.js            | 131 ++++++++++--\n apps/cloud-router/src/marketplace-runner.js              |  85 +++++++-\n apps/cloud-router/src/marketplace-worker.js              | 278 +++++++++++++++++++------\n apps/cloud-router/src/providers/availability.js          |   7 +-\n apps/cloud-router/src/providers/transport.js             |  25 ++-\n apps/cloud-router/test/availability.test.js              |   9 +-\n apps/cloud-router/test/worker-failover-and-drain.test.js | 299 +++++++++++++++++++++++++++\n 7 files changed, 737 insertions(+), 97 deletions(-)",
       "commits": [
+        {
+          "sha": "4f06b83ae111692bc2cd18c339d662effa11015e",
+          "short_sha": "4f06b83ae",
+          "author_date_iso": "2026-11-17T12:43:39-05:00",
+          "relative_time": "2 minutes ago",
+          "subject": "feat(cloud-router,station): implement 48-group 14D Task x Speed x Quality x Cost Pareto ranker with empirical Wilson feedback and Direct-First Station cost_router",
+          "stat_summary": "10 files changed, 1107 insertions(+), 67 deletions(-)",
+          "changed_files": [
+            "apps/cloud-router/src/marketplace-runner.js             |  51 ++-",
+            "apps/cloud-router/src/marketplace-worker.js             |   1 +",
+            "apps/cloud-router/src/parameter-field.js                |  22 +-",
+            "apps/cloud-router/src/predictive-routing-index.js       |   6 +-",
+            "apps/cloud-router/src/registry.js                       |  18 +-",
+            "apps/cloud-router/src/router.js                         |  70 +--",
+            "apps/cloud-router/src/task-rating-algo.js               | 580 ++++++++++++++++++++++++",
+            "apps/cloud-router/test/task-rating-algo.test.js         | 270 +++++++++++",
+            "apps/station/workbench/cost_router.py                   |  87 +++-",
+            ".../tests/test_cost_router_direct_task_algo.py          |  69 +++"
+          ],
+          "patch_preview": "",
+          "github_commit_url": "https://github.com/patl4588/linden/commit/4f06b83ae111692bc2cd18c339d662effa11015e"
+        },
         {
           "sha": "785c70e024fa221f797684b09c1d12825a304438",
           "short_sha": "785c70e02",
           "author_date_iso": "2026-11-17T10:59:28-05:00",
-          "relative_time": "2 minutes ago",
+          "relative_time": "2 hours ago",
           "subject": "feat(cloud-router): build direct-first sovereign routing, native Google Gemini direct, dedicated_gpu replay fix, and OpenRouter emergency backup",
           "stat_summary": "15 files changed, 428 insertions(+), 82 deletions(-)",
           "changed_files": [
@@ -385,7 +421,7 @@
           "sha": "e822ba805da360be20f7248f5997f92c16ab4ddd",
           "short_sha": "e822ba805",
           "author_date_iso": "2026-11-17T09:14:56-05:00",
-          "relative_time": "2 hours ago",
+          "relative_time": "4 hours ago",
           "subject": "perf(station,cloud-router): disable hidden reasoning on fast SSE streams, fix binary preload crash, and wire Tier-0 Dedicated GPU pool",
           "stat_summary": "22 files changed, 1279 insertions(+), 85 deletions(-)",
           "changed_files": [
@@ -415,7 +451,7 @@
           "sha": "6a5f0645952322d7b48b425134a32a7cde0bfd14",
           "short_sha": "6a5f06459",
           "author_date_iso": "2026-11-17T08:14:24-05:00",
-          "relative_time": "3 hours ago",
+          "relative_time": "5 hours ago",
           "subject": "fix(guard): eliminate chat_guard false-positive declines on executive/legal/financial/M&A/coding/workflow prompts while preserving security & red-team rails",
           "stat_summary": "7 files changed, 435 insertions(+), 51 deletions(-)",
           "changed_files": [
@@ -434,7 +470,7 @@
           "sha": "8d82ed54b3b4fec4b8ec03b64c454a1139df46de",
           "short_sha": "8d82ed54b",
           "author_date_iso": "2026-11-16T17:13:18-05:00",
-          "relative_time": "18 hours ago",
+          "relative_time": "20 hours ago",
           "subject": "perf(cloud-router): wire sub-second pre-stream failover, priority exchange pool, non-blocking delta traces, and two-phase SIGTERM drain",
           "stat_summary": "7 files changed, 737 insertions(+), 97 deletions(-)",
           "changed_files": [
@@ -448,21 +484,6 @@
           ],
           "patch_preview": "",
           "github_commit_url": "https://github.com/patl4588/linden/commit/8d82ed54b3b4fec4b8ec03b64c454a1139df46de"
-        },
-        {
-          "sha": "ed0f160809fd50041f9f7be8a0c0c6c2dba75449",
-          "short_sha": "ed0f16080",
-          "author_date_iso": "2026-11-16T17:06:31-05:00",
-          "relative_time": "18 hours ago",
-          "subject": "perf(gateway): eliminate AssistantState(id=1) hot-path contention, enforce canonical WorkspaceRun lock order, and enable shutdown hooks",
-          "stat_summary": "3 files changed, 788 insertions(+), 97 deletions(-)",
-          "changed_files": [
-            "apps/gateway/src/assistant/assistant.service.ts         | 565 ++++++++++++++++++++----",
-            ".../assistant/worker-contention-and-deadlock.spec.ts    | 317 +++++++++++++",
-            "apps/gateway/src/main.ts                                |   3 +"
-          ],
-          "patch_preview": "",
-          "github_commit_url": "https://github.com/patl4588/linden/commit/ed0f160809fd50041f9f7be8a0c0c6c2dba75449"
         }
       ]
     }

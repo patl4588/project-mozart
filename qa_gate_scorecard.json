@@ -1,15 +1,15 @@
 {
   "schema": "mozart.qa_gate_scorecard.v1",
-  "generated_at": "2026-11-17T16:01:08.405Z",
+  "generated_at": "2026-11-17T17:45:07.313Z",
   "mode": "full_5_squad_gate",
   "gate_passed": true,
   "push_authorized": true,
-  "duration_sec": 47.1,
+  "duration_sec": 45.5,
   "verified_commits": {
-    "railcall-marketplace": "fce0a8622feeb51bf7e434e537853a508a0e9f7f",
-    "railcall-website": "0cd97f9dc09631b434da933f153ae4b4c19cfa3b",
+    "railcall-marketplace": "d81173a06a32acb16e5d4c800b68e7845ae8cbaa",
+    "railcall-website": "2b1f3edcf0470ce10f13d88bc3aaaaab14e24c60",
     "railcall-chat": "83518dba195d87b5a2f8dde562777e7826c7d765",
-    "linden": "785c70e024fa221f797684b09c1d12825a304438"
+    "linden": "4f06b83ae111692bc2cd18c339d662effa11015e"
   },
   "suites": [
     {
@@ -18,7 +18,7 @@
       "passed": 3,
       "failed": 0,
       "status": "PASS",
-      "ms": 23,
+      "ms": 22,
       "failures": []
     },
     {
@@ -27,7 +27,7 @@
       "passed": 3,
       "failed": 0,
       "status": "PASS",
-      "ms": 8257,
+      "ms": 9231,
       "failures": []
     },
     {
@@ -36,16 +36,27 @@
       "passed": 3,
       "failed": 0,
       "status": "PASS",
-      "ms": 22336,
+      "ms": 22357,
       "failures": []
     },
     {
       "id": "QA Squad 4 · Routing & Cost",
-      "label": "Pre-Stream 5xx/TTFT Failover + COGS Redaction + Ed25519 /verify Gate",
-      "passed": 12,
+      "label": "48-Group Task×Speed×Quality×Cost Pareto + Pre-Stream Failover + Ed25519 /verify",
+      "passed": 15,
       "failed": 0,
       "status": "PASS",
-      "ms": 4185,
+      "ms": 4892,
+      "task_routing_benchmark": {
+        "avgDirectQuality": 0.966,
+        "avgOpenRouterQuality": 0.9561,
+        "avgDirectLatencySec": 1.259,
+        "avgOpenRouterLatencySec": 1.623,
+        "avgDirectNetCostUsd": 0.000761,
+        "avgOpenRouterNetCostUsd": 0.000907,
+        "avgFrontierNetCostUsd": 0.016531,
+        "savingsVsOpenRouterPct": 16.1,
+        "savingsVsFrontierPct": 95.4
+      },
       "failures": []
     },
     {
@@ -54,7 +65,7 @@
       "passed": 5,
       "failed": 0,
       "status": "PASS",
-      "ms": 11827,
+      "ms": 8456,
       "failures": []
     }
   ],

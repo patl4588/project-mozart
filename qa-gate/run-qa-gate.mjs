@@ -306,6 +306,9 @@ async function runSquad2Concurrency() {
       "src/assistant/worker-contention-and-deadlock.spec.ts",
       "src/workspace/webchat-greeting-provider-error.spec.ts",
       "src/workspace/manager-poll-snapshot.spec.ts",
+      "src/workspace/predictive-routing-index.spec.ts",
+      "src/v1/linden-v1.spec.ts",
+      "src/assistant/patsum.policy.spec.ts",
       "--forceExit",
     ],
     REPOS["railcall-marketplace"],
@@ -448,6 +451,7 @@ async function runSquad4RoutingAndCost() {
     "tests/live-web-browser.test.ts",
     "tests/folio-document-workbench.test.ts",
     "tests/zero-retry-liability.test.ts",
+    "tests/wave26-linden-v1-api.test.ts",
     "app/lib/server/__tests__/workspace-session.test.ts",
     "app/verify/__tests__/verify-core.test.ts",
   ];
@@ -499,13 +503,50 @@ async function runSquad4RoutingAndCost() {
     "Regression: KpiCard.tsx missing prefetch={false} guard",
   );
 
+  // 4. Station Python cost_router Direct-First + OpenRouter backup unit tests
+  const pyStationTest = runCmd(
+    "python3",
+    ["-m", "unittest", "tests/test_cost_router_direct_task_algo.py", "tests/test_anthropic_model_setting_ed7eb8.py"],
+    path.join(REPOS.linden, "apps/station/workbench"),
+    30_000,
+  );
+  if (pyStationTest.ok) passed++;
+  else failures.push(`linden/apps/station/workbench cost_router tests failed: ${(pyStationTest.stderr || pyStationTest.stdout).slice(-300)}`);
+
+  // 5. Enforce 48-Micro-Group Task × Speed × Quality × Cost Triple Pareto Dominance over OpenRouter
+  let taskRoutingBenchmark = null;
+  try {
+    const algoMod = await import(path.join(REPOS.linden, "apps/cloud-router/src/task-rating-algo.js"));
+    const bench = algoMod.runTaskRoutingBenchmark({ systemTokens: 1600 });
+    taskRoutingBenchmark = bench.summary;
+    const s = bench.summary;
+    const paretoOk =
+      bench.evaluatedMicroGroups === 48 &&
+      s.avgDirectQuality > s.avgOpenRouterQuality &&
+      s.avgDirectQuality >= 0.96 &&
+      s.avgDirectLatencySec < s.avgOpenRouterLatencySec &&
+      s.avgDirectLatencySec <= 1.35 &&
+      s.avgDirectNetCostUsd < s.avgOpenRouterNetCostUsd &&
+      s.savingsVsOpenRouterPct >= 12 &&
+      s.savingsVsFrontierPct >= 92;
+    if (paretoOk) passed++;
+    else {
+      failures.push(
+        `48-group Task Rating Pareto gate failed: ${JSON.stringify(s)}`,
+      );
+    }
+  } catch (err) {
+    failures.push(`Failed running 48-group Task Rating benchmark: ${err?.message || err}`);
+  }
+
   return {
     id: "QA Squad 4 · Routing & Cost",
-    label: "Pre-Stream 5xx/TTFT Failover + COGS Redaction + Ed25519 /verify Gate",
+    label: "48-Group Task×Speed×Quality×Cost Pareto + Pre-Stream Failover + Ed25519 /verify",
     passed,
     failed: failures.length,
     status: failures.length === 0 ? "PASS" : "FAIL",
     ms: Date.now() - started,
+    task_routing_benchmark: taskRoutingBenchmark,
     failures,
   };
 }
