@@ -1,6 +1,6 @@
 {
   "schema": "mozart.repo_commits_feed.v1",
-  "generated_at": "2026-11-17T13:46:56.299Z",
+  "generated_at": "2026-11-17T13:48:45.168Z",
   "lane_branch": "delegated/continuous-improvements",
   "repo_count": 4,
   "total_commits_ahead_of_main": 20,
@@ -33,7 +33,7 @@
           "sha": "8d6b6fac7008e220564cd8ac6766647487089381",
           "short_sha": "8d6b6fa",
           "author_date_iso": "2026-11-17T08:14:21-05:00",
-          "relative_time": "33 minutes ago",
+          "relative_time": "34 minutes ago",
           "subject": "fix(workspace): tighten prompt policy guard against defensive/legal/M&A false declines and add dual IP relay tests",
           "stat_summary": "2 files changed, 101 insertions(+), 2 deletions(-)",
           "changed_files": [
@@ -47,7 +47,7 @@
           "sha": "9e5737c846903bf65029533f295493a78830dc79",
           "short_sha": "9e5737c",
           "author_date_iso": "2026-11-17T08:03:56-05:00",
-          "relative_time": "43 minutes ago",
+          "relative_time": "45 minutes ago",
           "subject": "chore(merge): sync origin/main (70f7938) onto delegated/continuous-improvements and reconcile signed visitor IP relay",
           "stat_summary": "9 files changed, 1004 insertions(+), 27 deletions(-)",
           "changed_files": [
@@ -139,7 +139,7 @@
           "sha": "7e187a611596fc7d16343dc0f55b556566af1f77",
           "short_sha": "7e187a6",
           "author_date_iso": "2026-11-17T08:32:54-05:00",
-          "relative_time": "14 minutes ago",
+          "relative_time": "16 minutes ago",
           "subject": "fix(web): unlock zero-downtime Render deploys, add 502 swap-retry JSON parser, and harden ProjectsHome",
           "stat_summary": "13 files changed, 1579 insertions(+), 162 deletions(-)",
           "changed_files": [
@@ -164,7 +164,7 @@
           "sha": "8ec8794cc5a12056dde131efc4350a328a981d6d",
           "short_sha": "8ec8794",
           "author_date_iso": "2026-11-17T08:19:44-05:00",
-          "relative_time": "27 minutes ago",
+          "relative_time": "29 minutes ago",
           "subject": "merge: sync origin/main cd7ce66 while preserving full-site serene editorial cohesion",
           "stat_summary": "5 files changed, 27 insertions(+), 17 deletions(-)",
           "changed_files": [
@@ -181,7 +181,7 @@
           "sha": "b163e463f7961dc3a5f19c93ca05f45dcad295e3",
           "short_sha": "b163e46",
           "author_date_iso": "2026-11-17T08:10:40-05:00",
-          "relative_time": "36 minutes ago",
+          "relative_time": "38 minutes ago",
           "subject": "feat(home): harmonize full-site serene editorial palette and fix 856px workflow canvas clipping",
           "stat_summary": "6 files changed, 473 insertions(+), 347 deletions(-)",
           "changed_files": [
@@ -199,7 +199,7 @@
           "sha": "b9ae1ef94ec645cdf457c85c28fa08d069e7b2b2",
           "short_sha": "b9ae1ef",
           "author_date_iso": "2026-11-17T07:56:01-05:00",
-          "relative_time": "51 minutes ago",
+          "relative_time": "53 minutes ago",
           "subject": "merge: sync origin/main marine tides, session recovery, research routing, and $5.00 IP allowance",
           "stat_summary": "16 files changed, 851 insertions(+), 76 deletions(-)",
           "changed_files": [
@@ -227,7 +227,7 @@
           "sha": "cd7ce664ff1c3819312e3d8e1fb00de4b3386353",
           "short_sha": "cd7ce66",
           "author_date_iso": "2026-11-17T13:51:25+01:00",
-          "relative_time": "56 minutes ago",
+          "relative_time": "57 minutes ago",
           "subject": "merge: integrate serene editorial hero, SSE swap resilience, DOCX follow-ups & $5.00 IP allowance",
           "stat_summary": "23 files changed, 3888 insertions(+), 522 deletions(-)",
           "changed_files": [
@@ -281,7 +281,7 @@
           "sha": "83518dba195d87b5a2f8dde562777e7826c7d765",
           "short_sha": "83518db",
           "author_date_iso": "2026-11-17T08:43:27-05:00",
-          "relative_time": "3 minutes ago",
+          "relative_time": "5 minutes ago",
           "subject": "fix(desktop): eliminate false-positive chat guard blocks, unlock reopened threads, and harden offline/PDF/DOCX artifact previews",
           "stat_summary": "8 files changed, 2598 insertions(+), 190 deletions(-)",
           "changed_files": [
@@ -399,7 +399,7 @@
           "sha": "6a5f0645952322d7b48b425134a32a7cde0bfd14",
           "short_sha": "6a5f06459",
           "author_date_iso": "2026-11-17T08:14:24-05:00",
-          "relative_time": "33 minutes ago",
+          "relative_time": "34 minutes ago",
           "subject": "fix(guard): eliminate chat_guard false-positive declines on executive/legal/financial/M&A/coding/workflow prompts while preserving security & red-team rails",
           "stat_summary": "7 files changed, 435 insertions(+), 51 deletions(-)",
           "changed_files": [

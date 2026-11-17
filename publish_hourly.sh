@@ -42,7 +42,10 @@ if [ "$GATE_OK" -eq 1 ] && [ -f "$SCORECARD" ]; then
     head_sha="$(git -C "$repo" rev-parse HEAD)"
     verified_sha="$(python3 -c "import json; d=json.load(open('$SCORECARD')); print(d.get('verified_commits',{}).get('$name','') if d.get('gate_passed') else '')" 2>/dev/null || true)"
     if [ "$branch" = "delegated/continuous-improvements" ] && [ -n "$verified_sha" ] && [ "$head_sha" = "$verified_sha" ]; then
-      perl -e 'alarm 60; exec @ARGV' git -C "$repo" -c http.lowSpeedLimit=1000 -c http.lowSpeedTime=20 push --force-with-lease -u origin delegated/continuous-improvements
+      perl -e 'alarm 30; exec @ARGV' git -C "$repo" fetch origin delegated/continuous-improvements --quiet 2>/dev/null || true
+      perl -e 'alarm 60; exec @ARGV' git -C "$repo" -c http.lowSpeedLimit=1000 -c http.lowSpeedTime=20 push -u origin delegated/continuous-improvements \
+        || perl -e 'alarm 60; exec @ARGV' git -C "$repo" -c http.lowSpeedLimit=1000 -c http.lowSpeedTime=20 push --force-with-lease -u origin delegated/continuous-improvements \
+        || echo "[QA-GATE] Push failed for $name ($head_sha)" >&2
     else
       echo "[QA-GATE] BLOCKED push for $name (branch=$branch head=$head_sha verified=$verified_sha)" >&2
     fi
