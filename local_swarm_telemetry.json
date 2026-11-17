@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-16T20:25:42.168137+00:00",
+  "generated_at": "2026-11-16T22:56:09.564391+00:00",
   "orchestrator": "Google Gemini 4 Carbon (High)",
   "local_gpu_swarm": "Active ($0.00 COGS)",
   "total_local_cost_usd": 0.0,
@@ -11,10 +11,10 @@
       "json_mode": true,
       "role": "Sub-100ms JSON routing classification & intent triage ($0 GPU)",
       "ok": true,
-      "latency_ms": 2348.7,
+      "latency_ms": 1149.8,
       "prompt_tokens": 74,
       "completion_tokens": 16,
-      "tokens_per_sec": 84.7,
+      "tokens_per_sec": 271.2,
       "cost_usd": 0.0,
       "output_preview": "{\"route\":\"floor_json\",\"think\":false,\"prefix_cache\":true}"
     },
@@ -25,10 +25,10 @@
       "json_mode": true,
       "role": "Fast sub-300ms JSON extraction, dead-link scanning & selector lint ($0 GPU)",
       "ok": true,
-      "latency_ms": 4435.4,
+      "latency_ms": 1829.6,
       "prompt_tokens": 93,
       "completion_tokens": 28,
-      "tokens_per_sec": 49.8,
+      "tokens_per_sec": 128.5,
       "cost_usd": 0.0,
       "output_preview": "{\"module\":\"local_reason\",\"think\":false,\"fast_model\":\"railcall-fast:latest\",\"saved_vram_pct\":93}"
     },
@@ -39,12 +39,12 @@
       "json_mode": false,
       "role": "Unit test assertion synthesis & security boundary fuzzing ($0 GPU)",
       "ok": true,
-      "latency_ms": 5194.4,
+      "latency_ms": 3055.4,
       "prompt_tokens": 90,
-      "completion_tokens": 208,
-      "tokens_per_sec": 80.0,
+      "completion_tokens": 209,
+      "tokens_per_sec": 110.4,
       "cost_usd": 0.0,
-      "output_preview": "```bash\n# 1\ufe0f\u20e3 Verify that Ollama egress is restricted to loopback only\nassert \"$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:11434/api/ping)\" -eq 200 && \\\n       ! curl -s -o /dev/null -w '%{http_code}' http://10.0.0.1:11434/api/ping | grep -q 200\n\n# 2\ufe0f\u20e3 Confirm that launch_metered media gates return 401 Unauthorized\nassert \"$(curl -s -o /dev/nul"
+      "output_preview": "```bash\n# 1\ufe0f\u20e3 Verify that Ollama egress is restricted to loopback only\nassert $(curl -s -o /dev/null -w \"%{http_code}\" http://127.0.0.1:11434/api/ping) -eq 200 && \\\n       ! curl -s -o /dev/null -w \"%{http_code}\" http://10.0.0.1:11434/api/ping | grep -q 200\n\n# 2\ufe0f\u20e3 Confirm that launch_metered media gates return 401 Unauthorized\nassert $(curl -s -o /dev/null -"
     }
   ]
 }

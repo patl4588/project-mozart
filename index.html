@@ -260,16 +260,27 @@
 
     <div class="delegated-banner">
       <div>
-        🌿 <strong>Isolated Git Branches Synced Hourly for Review:</strong> All Mozart code commits push strictly to branch <code>delegated/continuous-improvements</code> (never <code>main</code>). Click any repo below to inspect live diffs on GitHub:
+        🌿 <strong>Isolated Test Branches Synced Every 6 Hours for Sami:</strong> All Mozart code commits push strictly to branch <code>delegated/continuous-improvements</code> (never <code>main</code>) only after passing the 5-Squad QA Gatekeeper. Click any repo below to inspect live diffs on GitHub:
       </div>
-      <div><strong>Cron Schedule:</strong> <code>0 * * * *</code> (Hourly)</div>
+      <div><strong>Cron Schedule:</strong> <code>0 */6 * * *</code> (Every 6 Hours)</div>
     </div>
 
     <div class="repo-links">
-      <a class="repo-pill" href="https://github.com/SamyBchaalia/railcall-chat/tree/delegated/continuous-improvements" target="_blank" rel="noreferrer">📂 SamyBchaalia/railcall-chat (delegated/continuous-improvements) ↗</a>
-      <a class="repo-pill" href="https://github.com/patl4588/linden/tree/delegated/continuous-improvements" target="_blank" rel="noreferrer">📂 patl4588/linden (delegated/continuous-improvements) ↗</a>
+      <a class="repo-pill" href="https://github.com/patl4588/railcall-marketplace/tree/delegated/continuous-improvements" target="_blank" rel="noreferrer">📂 patl4588/railcall-marketplace (delegated/continuous-improvements) ↗</a>
       <a class="repo-pill" href="https://github.com/patl4588/railcall-website/tree/delegated/continuous-improvements" target="_blank" rel="noreferrer">📂 patl4588/railcall-website (delegated/continuous-improvements) ↗</a>
-      <a class="repo-pill" href="https://github.com/patl4588/project-mozart" target="_blank" rel="noreferrer">📊 Dashboard Git Repo (patl4588/project-mozart) ↗</a>
+      <a class="repo-pill" href="https://github.com/SamyBchaalia/railcall-chat/tree/delegated/continuous-improvements" target="_blank" rel="noreferrer">📂 SamyBchaalia/railcall-chat (delegated/continuous-improvements) ↗</a>
+      <a class="repo-pill" href="https://github.com/patl4588/project-mozart" target="_blank" rel="noreferrer">📊 Test Hub &amp; QA Gate Repo (patl4588/project-mozart) ↗</a>
+    </div>
+
+    <!-- Live Captured Screenshots of External Websites Gallery -->
+    <div class="card" id="website-screenshots-card">
+      <div class="section-title">📸 Live External Website Screenshot Capture Proof (Governed Chromium Engine)</div>
+      <p style="font-size: 12.5px; color: var(--text-dim); margin-bottom: 14px;">
+        Captured automatically during QA Squad 5 runs across real external websites (1440&times;900 desktop &amp; mobile viewports, SSRF-guarded, adaptive inline JPEG preview guaranteed &le;420 KB so multi-instance hops never 404). Click any screenshot to open full size:
+      </p>
+      <div id="live-screenshots-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 14px;">
+        <div style="font-size: 12px; color: var(--text-dim);">Capturing live external website screenshots via QA Squad 5…</div>
+      </div>
     </div>
 
     <!-- KPI Summary Row -->
@@ -342,9 +353,66 @@
       </table>
     </div>
 
-    <!-- Verified Upgrades Staged in Delegated Lane -->
+    <!-- Wave 3: 60-Second Review Cards for Sami -->
     <div class="card">
-      <div class="section-title">⚙️ Verified Commits Staged &amp; Pushed to <code>delegated/continuous-improvements</code></div>
+      <div class="section-title">📋 Wave 3 — 60-Second Atomic Review Cards for Sami (<code>delegated/continuous-improvements</code>)</div>
+
+      <div class="arch-item">
+        <div class="arch-icon">🌐</div>
+        <div class="arch-content">
+          <h4>1. [MARKETPLACE · PR-A] Signed Visitor IP Attribution Behind Render NAT + Wholesale COGS Redaction</h4>
+          <p><strong>Problem solved:</strong> Prevents all anonymous visitors behind Next.js Render's outbound NAT IP from sharing one <code>ip_hash</code> (global guest lockout after 3 turns) via HMAC-signed <code>x-railcall-client-ip</code>, adds <code>GuestSession(ip_hash, created_at)</code> &amp; <code>WorkspaceMessage(run_id)</code> indexes, and strips internal <code>operator_micro</code> / multiplier fields from public JSON.<br/>
+          <strong>QA Proof:</strong> <code>45/45</code> Jest tests PASS &middot; <code>0</code> TypeScript errors &middot; Forged IP headers rejected.<br/>
+          <strong>Rollback:</strong> Additive backward-compatible header check (gracefully falls back to <code>cf-connecting-ip</code> if secret unset).</p>
+          <a class="diff-tag" href="https://github.com/patl4588/railcall-marketplace/commit/d2fa24a233d76b81b8a6502400045f8148263ac9" target="_blank" rel="noreferrer">patl4588/railcall-marketplace &middot; d2fa24a &rarr; View Diff ↗</a>
+        </div>
+      </div>
+
+      <div class="arch-item">
+        <div class="arch-icon">🔓</div>
+        <div class="arch-content">
+          <h4>2. [MARKETPLACE · PR-B] Eliminate <code>AssistantState(id=1)</code> Hot-Path Lock, Fix AB-BA Deadlock &amp; Enable Shutdown Hooks</h4>
+          <p><strong>Problem solved:</strong> Moves remaining maintenance sweeps out of <code>locked()</code>, switches <code>claim</code> to <code>FOR UPDATE SKIP LOCKED</code> + CAS, replaces strict monotonic <code>worker_time</code> (<code>409</code> under multi-slot workers) with 30s bounded replay dedup, enforces canonical <code>WorkspaceRun &rarr; AssistantJob</code> lock order (<code>0&times; 40P01</code> deadlocks), and enables NestJS <code>SIGTERM</code> shutdown hooks.<br/>
+          <strong>QA Proof:</strong> Built cleanly on top of Sami's <code>76c9ad2</code> &amp; <code>7f6e875</code> &middot; <code>9/9</code> Jest suites PASS.<br/>
+          <strong>Rollback:</strong> Single self-contained commit on <code>assistant.service.ts</code> + <code>main.ts</code>.</p>
+          <a class="diff-tag" href="https://github.com/patl4588/railcall-marketplace/commit/6e759ce4a65b210230404fb0729f59a010fb50a8" target="_blank" rel="noreferrer">patl4588/railcall-marketplace &middot; 6e759ce &rarr; View Diff ↗</a>
+        </div>
+      </div>
+
+      <div class="arch-item">
+        <div class="arch-icon">⚡</div>
+        <div class="arch-content">
+          <h4>3. [CLOUD-ROUTER WORKER · PR-C] Pre-Stream 5xx/TTFT Sub-Second Failover, Priority Exchange Pool &amp; Two-Phase <code>SIGTERM</code> Drain</h4>
+          <p><strong>Problem solved:</strong> Wires <code>createProviderFailover</code> into <code>marketplace-worker.js</code>, fails over immediately on pre-first-token <code>500/502/503/504</code> or <code>FIRST_TEXT_TIMEOUT</code> without burning <code>job.max_calls</code>, removes sync <code>fsyncSync</code> on preview deltas, and drains active jobs on <code>SIGTERM</code> (requeuing pre-dispatch jobs with <code>unknown_cost: false</code> so credits never strand).<br/>
+          <strong>QA Proof:</strong> <code>442/442</code> cloud-router Node tests PASS in <code>1.39s</code>.</p>
+          <a class="diff-tag" href="https://github.com/patl4588/linden/commit/8d82ed54b3b4fec4b8ec03b64c454a1139df46de" target="_blank" rel="noreferrer">patl4588/linden &middot; 8d82ed5 &rarr; View Diff ↗</a>
+        </div>
+      </div>
+
+      <div class="arch-item">
+        <div class="arch-icon">📸</div>
+        <div class="arch-content">
+          <h4>4. [DESKTOP · PR-D] Native $0.00 External Website Screenshots, &le;18s Hosted Stall Recovery &amp; Anti-Hallucination (<code>.docx</code> + PDF Context)</h4>
+          <p><strong>Problem solved:</strong> (1) Kills 140s <code>execution_unknown</code> hangs &amp; wedged <code>petiw-runs.json</code>; (2) Adds SSRF-guarded offscreen Electron <code>website-screenshot.js</code> multi-site preview cards in Desktop Chat; (3) Fixes the <code>cmwjpvd1g4wjh</code> hallucinations—preserving settlement context on <code>"make it into an artifact likea pdf"</code> (never inventing <em>"A Decade of Progress"</em>) and adding pure-Node native <code>docx-export.js</code> clickable Word downloads.<br/>
+          <strong>QA Proof:</strong> <code>816/816</code> Desktop tests PASS in <code>20.5s</code> (0 failures).</p>
+          <a class="diff-tag" href="https://github.com/SamyBchaalia/railcall-chat/tree/delegated/continuous-improvements" target="_blank" rel="noreferrer">SamyBchaalia/railcall-chat &middot; 9732758 + 20d1926 + 765e3ce &rarr; View Diffs ↗</a>
+        </div>
+      </div>
+
+      <div class="arch-item" id="web-wave3-card">
+        <div class="arch-icon">🛡️</div>
+        <div class="arch-content">
+          <h4>5. [WEBSITE · PR-E] Adaptive Inline Website Screenshots, Fail-Closed Relay HMAC, SSE <code>after_seq</code> 502 Recovery, Anti-Hallucination DOCX/PDF &amp; Receipt Gate</h4>
+          <p><strong>Problem solved:</strong> (1) Binds browse relay HMAC to <code>WORKSPACE_SESSION_SECRET</code> (fail-closed in prod) &amp; adds adaptive JPEG cascade (<code>80&rarr;60&rarr;46</code>) so rich external sites never drop <code>screenshotDataUrl</code>; (2) Adds JS-visible SSE <code>ping</code> + <code>after_seq</code> 502 swap recovery &amp; fixes all 4 duplicate-conversation bugs; (3) Grounds anaphoric <code>"word doscus"</code> / <code>"likea pdf"</code> follow-ups in prior drafts with real 1-click <code>.docx</code> &amp; <code>.pdf</code> downloads; (4) Signs visitor IP header &amp; blocks unsigned <code>/verify</code> receipts.<br/>
+          <strong>QA Proof:</strong> <code>0</code> TypeScript errors &middot; <code>52/52</code> browse, SSE, session, folio &amp; Ed25519 receipt checks PASS.</p>
+          <a class="diff-tag" id="web-wave3-link" href="https://github.com/patl4588/railcall-website/tree/delegated/continuous-improvements" target="_blank" rel="noreferrer">patl4588/railcall-website &middot; 080aae5 + c1ea83c + 5ee93ab + d4bd4b0 &rarr; View Diffs ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Verified Upgrades Staged in Earlier Waves -->
+    <div class="card">
+      <div class="section-title">⚙️ Earlier Wave Commits Preserved on <code>delegated/continuous-improvements</code></div>
 
       <div class="arch-item">
         <div class="arch-icon">⚡</div>
@@ -445,6 +513,27 @@
             return '<tr><td><strong>' + (s.id || '') + '</strong></td><td>' + (s.label || '') + '</td><td><code>' + (s.passed || 0) + ' pass / ' + (s.failed || 0) + ' fail (' + (s.ms || 0) + 'ms)</code></td><td><span class="badge-tag ' + cls + '" style="' + style + '">' + (s.status || 'UNKNOWN') + '</span></td></tr>';
           }).join('');
         }
+      })
+      .catch(function() {});
+
+    fetch('./screenshots/manifest.json', { cache: 'no-store' })
+      .then(function(r) { return r.ok ? r.json() : null; })
+      .then(function(m) {
+        if (!m || !Array.isArray(m.items)) return;
+        var grid = document.getElementById('live-screenshots-grid');
+        if (!grid) return;
+        grid.innerHTML = m.items.map(function(it) {
+          if (!it.ok) {
+            return '<div class="kpi-card"><div class="kpi-label">' + (it.label || it.url) + '</div><div style="color:#fca5a5;font-size:12px;margin-top:6px;">Capture skipped: ' + (it.error || '') + '</div></div>';
+          }
+          var kb = Math.round((it.bytes || 0) / 1024);
+          return '<a href="./' + it.file + '" target="_blank" rel="noreferrer" style="text-decoration:none;color:inherit;display:block;background:#161929;border:1px solid rgba(255,255,255,0.1);border-radius:10px;overflow:hidden;">' +
+            '<img src="./' + it.file + '?t=' + encodeURIComponent(m.generated_at || '') + '" alt="' + (it.label || '') + '" style="width:100%;height:155px;object-fit:cover;object-position:top;display:block;border-bottom:1px solid rgba(255,255,255,0.08);" />' +
+            '<div style="padding:10px 12px;">' +
+              '<div style="font-size:12.5px;font-weight:650;color:#f4f4f5;margin-bottom:3px;">' + (it.label || it.url) + '</div>' +
+              '<div style="font-size:11px;color:#34d399;font-family:var(--font-mono);">HTTP ' + (it.status || 200) + ' &middot; ' + (it.ms || 0) + 'ms &middot; ' + kb + ' KB</div>' +
+            '</div></a>';
+        }).join('');
       })
       .catch(function() {});
   </script>
