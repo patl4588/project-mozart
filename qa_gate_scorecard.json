@@ -1,10 +1,10 @@
 {
   "schema": "mozart.qa_gate_scorecard.v1",
-  "generated_at": "2026-11-18T15:53:12.311Z",
+  "generated_at": "2026-11-18T16:47:38.304Z",
   "mode": "full_5_squad_gate",
   "gate_passed": true,
   "push_authorized": true,
-  "duration_sec": 48.2,
+  "duration_sec": 57.2,
   "verified_commits": {
     "railcall-marketplace": "75e428ca133a092a762cc87fea0c6db8eb57b3b6",
     "railcall-website": "f7fc04ed201b9185c923d5c3aa46282d96f1776c",
@@ -27,7 +27,7 @@
       "passed": 3,
       "failed": 0,
       "status": "PASS",
-      "ms": 9180,
+      "ms": 5567,
       "failures": []
     },
     {
@@ -36,7 +36,7 @@
       "passed": 3,
       "failed": 0,
       "status": "PASS",
-      "ms": 22307,
+      "ms": 22318,
       "failures": []
     },
     {
@@ -45,7 +45,7 @@
       "passed": 15,
       "failed": 0,
       "status": "PASS",
-      "ms": 6576,
+      "ms": 19396,
       "task_routing_benchmark": {
         "avgDirectQuality": 0.966,
         "avgOpenRouterQuality": 0.9561,
@@ -65,7 +65,7 @@
       "passed": 5,
       "failed": 0,
       "status": "PASS",
-      "ms": 9537,
+      "ms": 9285,
       "failures": []
     }
   ],

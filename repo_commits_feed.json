@@ -1,6 +1,6 @@
 {
   "schema": "mozart.repo_commits_feed.v1",
-  "generated_at": "2026-11-18T15:53:37.608Z",
+  "generated_at": "2026-11-18T16:47:38.303Z",
   "lane_branch": "delegated/continuous-improvements",
   "repo_count": 4,
   "total_commits_ahead_of_main": 17,
@@ -33,7 +33,7 @@
           "sha": "75e428ca133a092a762cc87fea0c6db8eb57b3b6",
           "short_sha": "75e428c",
           "author_date_iso": "2026-11-18T10:50:08-05:00",
-          "relative_time": "3 minutes ago",
+          "relative_time": "57 minutes ago",
           "subject": "feat(workspace,v1): wire 48-group Direct-First Task x Speed x Quality x Cost scoring into PredictiveRoutingIndex and LindenV1Service",
           "stat_summary": "4 files changed, 328 insertions(+), 55 deletions(-)",
           "changed_files": [
@@ -49,7 +49,7 @@
           "sha": "095f115bdb00f98b5f67d5b3158d10d45aaed674",
           "short_sha": "095f115",
           "author_date_iso": "2026-11-18T13:37:36+01:00",
-          "relative_time": "3 hours ago",
+          "relative_time": "4 hours ago",
           "subject": "docs: pass-3 round — PRs merged, installer shipped, open list",
           "stat_summary": "1 file changed, 47 insertions(+)",
           "changed_files": [
@@ -62,7 +62,7 @@
           "sha": "ac6e35b32510dff60f48ad42b741b90fb8eef1ae",
           "short_sha": "ac6e35b",
           "author_date_iso": "2026-11-18T13:03:11+01:00",
-          "relative_time": "4 hours ago",
+          "relative_time": "5 hours ago",
           "subject": "merge: web search fixes from live QA pass 3 (PR #4)",
           "stat_summary": "4 files changed, 602 insertions(+), 11 deletions(-)",
           "changed_files": [
@@ -78,7 +78,7 @@
           "sha": "7ce429f87bafd4d1e04654ecce4ca5f3b6c321a4",
           "short_sha": "7ce429f",
           "author_date_iso": "2026-11-18T13:00:39+01:00",
-          "relative_time": "4 hours ago",
+          "relative_time": "5 hours ago",
           "subject": "merge main into qa web-search branch",
           "stat_summary": "1 file changed, 27 insertions(+)",
           "changed_files": [
@@ -91,7 +91,7 @@
           "sha": "9848ac95ad80c8e95545c608b8726a7fe82ee8d4",
           "short_sha": "9848ac9",
           "author_date_iso": "2026-11-18T11:53:01+01:00",
-          "relative_time": "5 hours ago",
+          "relative_time": "6 hours ago",
           "subject": "docs: QA pass-2 results + same-night fixes",
           "stat_summary": "1 file changed, 27 insertions(+)",
           "changed_files": [
@@ -128,7 +128,7 @@
           "sha": "f7fc04ed201b9185c923d5c3aa46282d96f1776c",
           "short_sha": "f7fc04e",
           "author_date_iso": "2026-11-18T10:51:25-05:00",
-          "relative_time": "2 minutes ago",
+          "relative_time": "56 minutes ago",
           "subject": "feat(v1): add task-profile Speed x Quality x Cost Direct routing on /v1/chat/completions with OpenRouter backup",
           "stat_summary": "2 files changed, 213 insertions(+), 30 deletions(-)",
           "changed_files": [
@@ -142,7 +142,7 @@
           "sha": "a6e2411f9cf99874b555095e123b1848a7435f3d",
           "short_sha": "a6e2411",
           "author_date_iso": "2026-11-18T13:24:48+01:00",
-          "relative_time": "3 hours ago",
+          "relative_time": "4 hours ago",
           "subject": "fix(prelaunch): pass-3 quick set — Private honesty, tablet split collapse, title/note leftovers + 0.12.47 pins",
           "stat_summary": "5 files changed, 58 insertions(+), 17 deletions(-)",
           "changed_files": [
@@ -159,7 +159,7 @@
           "sha": "2bb372738723e6bd767db170960ad0ca2df14d53",
           "short_sha": "2bb3727",
           "author_date_iso": "2026-11-18T13:12:23+01:00",
-          "relative_time": "4 hours ago",
+          "relative_time": "5 hours ago",
           "subject": "merge: QA pass-3 fixes from the QA session (PR #17)",
           "stat_summary": "29 files changed, 2131 insertions(+), 71 deletions(-)",
           "changed_files": [
@@ -189,7 +189,7 @@
           "sha": "a16cd72f68421681f684f69f7fccd4b134c1fa7e",
           "short_sha": "a16cd72",
           "author_date_iso": "2026-11-18T13:07:48+01:00",
-          "relative_time": "4 hours ago",
+          "relative_time": "5 hours ago",
           "subject": "merge main into qa17 (resolved: isNounLedWebsiteAsk supersedes noun-first; brief refactor carries pass-2 rules)",
           "stat_summary": "20 files changed, 491 insertions(+), 31 deletions(-)",
           "changed_files": [
@@ -219,7 +219,7 @@
           "sha": "31bd14d64f36cce4e8540c33fc0406472de407c4",
           "short_sha": "31bd14d",
           "author_date_iso": "2026-11-18T11:50:51+01:00",
-          "relative_time": "5 hours ago",
+          "relative_time": "6 hours ago",
           "subject": "fix(prelaunch): QA pass-2 full report — website photos, routing, blank builds, panels",
           "stat_summary": "8 files changed, 119 insertions(+), 19 deletions(-)",
           "changed_files": [
@@ -263,7 +263,7 @@
           "sha": "78d4108444bac2bf67cdf2a3fc529a4fa82f230f",
           "short_sha": "78d4108",
           "author_date_iso": "2026-11-18T10:52:01-05:00",
-          "relative_time": "2 minutes ago",
+          "relative_time": "56 minutes ago",
           "subject": "fix(desktop): eliminate false-positive chat guard blocks, unlock reopened threads, and harden offline/PDF/DOCX artifact previews",
           "stat_summary": "8 files changed, 2598 insertions(+), 190 deletions(-)",
           "changed_files": [
@@ -283,7 +283,7 @@
           "sha": "fc46df93840fcfce3f4f5f072556f3c08622b385",
           "short_sha": "fc46df9",
           "author_date_iso": "2026-11-18T10:52:01-05:00",
-          "relative_time": "2 minutes ago",
+          "relative_time": "56 minutes ago",
           "subject": "fix(docs): prevent anaphoric PDF context wipeout and add native .docx Word export",
           "stat_summary": "9 files changed, 1449 insertions(+), 28 deletions(-)",
           "changed_files": [
@@ -304,7 +304,7 @@
           "sha": "b34152af9bdab3f0e3b97a9cf9bd40e777a79632",
           "short_sha": "b34152a",
           "author_date_iso": "2026-11-18T10:52:01-05:00",
-          "relative_time": "2 minutes ago",
+          "relative_time": "56 minutes ago",
           "subject": "feat(desktop): native $0.00 governed external website screenshot capture and multi-site preview",
           "stat_summary": "7 files changed, 1885 insertions(+), 1 deletion(-)",
           "changed_files": [
@@ -323,7 +323,7 @@
           "sha": "0eae9d20379516a393c8ae4e1d465e2884cb51f4",
           "short_sha": "0eae9d2",
           "author_date_iso": "2026-11-18T10:52:01-05:00",
-          "relative_time": "2 minutes ago",
+          "relative_time": "56 minutes ago",
           "subject": "fix(resilience): eliminate 140s execution_unknown hangs, wedged petiw-runs, and error receipt bugs",
           "stat_summary": "7 files changed, 910 insertions(+), 71 deletions(-)",
           "changed_files": [
@@ -342,7 +342,7 @@
           "sha": "fcee734ef9f6c7860cdb79cadf05dc572958d081",
           "short_sha": "fcee734",
           "author_date_iso": "2026-11-18T10:52:01-05:00",
-          "relative_time": "2 minutes ago",
+          "relative_time": "56 minutes ago",
           "subject": "perf(mozart-wave2): wire zero-think loopback Ollama fastpath into Desktop subagent swarm",
           "stat_summary": "3 files changed, 202 insertions(+), 16 deletions(-)",
           "changed_files": [
@@ -381,7 +381,7 @@
           "sha": "4f06b83ae111692bc2cd18c339d662effa11015e",
           "short_sha": "4f06b83ae",
           "author_date_iso": "2026-11-17T12:43:39-05:00",
-          "relative_time": "22 hours ago",
+          "relative_time": "23 hours ago",
           "subject": "feat(cloud-router,station): implement 48-group 14D Task x Speed x Quality x Cost Pareto ranker with empirical Wilson feedback and Direct-First Station cost_router",
           "stat_summary": "10 files changed, 1107 insertions(+), 67 deletions(-)",
           "changed_files": [
@@ -403,7 +403,7 @@
           "sha": "785c70e024fa221f797684b09c1d12825a304438",
           "short_sha": "785c70e02",
           "author_date_iso": "2026-11-17T10:59:28-05:00",
-          "relative_time": "24 hours ago",
+          "relative_time": "25 hours ago",
           "subject": "feat(cloud-router): build direct-first sovereign routing, native Google Gemini direct, dedicated_gpu replay fix, and OpenRouter emergency backup",
           "stat_summary": "15 files changed, 428 insertions(+), 82 deletions(-)",
           "changed_files": [
@@ -430,7 +430,7 @@
           "sha": "e822ba805da360be20f7248f5997f92c16ab4ddd",
           "short_sha": "e822ba805",
           "author_date_iso": "2026-11-17T09:14:56-05:00",
-          "relative_time": "26 hours ago",
+          "relative_time": "27 hours ago",
           "subject": "perf(station,cloud-router): disable hidden reasoning on fast SSE streams, fix binary preload crash, and wire Tier-0 Dedicated GPU pool",
           "stat_summary": "22 files changed, 1279 insertions(+), 85 deletions(-)",
           "changed_files": [
@@ -460,7 +460,7 @@
           "sha": "6a5f0645952322d7b48b425134a32a7cde0bfd14",
           "short_sha": "6a5f06459",
           "author_date_iso": "2026-11-17T08:14:24-05:00",
-          "relative_time": "27 hours ago",
+          "relative_time": "28 hours ago",
           "subject": "fix(guard): eliminate chat_guard false-positive declines on executive/legal/financial/M&A/coding/workflow prompts while preserving security & red-team rails",
           "stat_summary": "7 files changed, 435 insertions(+), 51 deletions(-)",
           "changed_files": [
