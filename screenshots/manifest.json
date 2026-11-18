@@ -1,15 +1,15 @@
 {
-  "generated_at": "2026-11-17T17:45:06.605Z",
+  "generated_at": "2026-11-18T15:53:11.567Z",
   "items": [
     {
       "slug": "stripe",
       "url": "https://stripe.com",
       "label": "Stripe.com — Enterprise Fintech UI",
       "ok": true,
-      "bytes": 159458,
+      "bytes": 159341,
       "title": "Stripe | Financial Infrastructure to Grow Your Revenue",
       "status": 200,
-      "ms": 1374,
+      "ms": 1406,
       "file": "screenshots/stripe.jpg"
     },
     {
@@ -20,7 +20,7 @@
       "bytes": 21167,
       "title": "Linear – The system for product development",
       "status": 200,
-      "ms": 1021,
+      "ms": 1260,
       "file": "screenshots/linear.jpg"
     },
     {
@@ -31,7 +31,7 @@
       "bytes": 54883,
       "title": "Agentic Infrastructure - Vercel",
       "status": 200,
-      "ms": 1106,
+      "ms": 1093,
       "file": "screenshots/vercel.jpg"
     },
     {
@@ -42,7 +42,7 @@
       "bytes": 54766,
       "title": "GitHub · Change is constant. GitHub keeps you ahead. · GitHub · GitHub",
       "status": 200,
-      "ms": 1874,
+      "ms": 2517,
       "file": "screenshots/github.jpg"
     },
     {
@@ -50,10 +50,10 @@
       "url": "https://news.ycombinator.com",
       "label": "Hacker News — Live Frontpage Feed",
       "ok": true,
-      "bytes": 211162,
+      "bytes": 195241,
       "title": "Hacker News",
       "status": 200,
-      "ms": 1101,
+      "ms": 1128,
       "file": "screenshots/hackernews.jpg"
     },
     {
@@ -61,10 +61,10 @@
       "url": "https://en.wikipedia.org/wiki/Main_Page",
       "label": "Wikipedia — Live Knowledge Portal",
       "ok": true,
-      "bytes": 288951,
+      "bytes": 282707,
       "title": "Wikipedia, the free encyclopedia",
       "status": 200,
-      "ms": 952,
+      "ms": 966,
       "file": "screenshots/wikipedia.jpg"
     }
   ]

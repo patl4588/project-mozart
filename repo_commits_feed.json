@@ -1,6 +1,6 @@
 {
   "schema": "mozart.repo_commits_feed.v1",
-  "generated_at": "2026-11-17T17:47:51.276Z",
+  "generated_at": "2026-11-18T15:53:37.608Z",
   "lane_branch": "delegated/continuous-improvements",
   "repo_count": 4,
   "total_commits_ahead_of_main": 17,
@@ -16,24 +16,24 @@
       "private_repo_notice": "Private GitHub Repo — sign in to GitHub to open external links, or inspect full commits, file stats & diffs inline below.",
       "available": true,
       "branch": "delegated/continuous-improvements",
-      "head_sha": "d81173a06a32acb16e5d4c800b68e7845ae8cbaa",
-      "head_short": "d81173a",
+      "head_sha": "75e428ca133a092a762cc87fea0c6db8eb57b3b6",
+      "head_short": "75e428c",
       "main_ref": "origin/main",
-      "main_sha": "1199d69bbe0b5d91964d017ce9a795af2b076ab7",
-      "main_short": "1199d69",
+      "main_sha": "095f115bdb00f98b5f67d5b3158d10d45aaed674",
+      "main_short": "095f115",
       "ahead_count": 1,
       "behind_count": 0,
       "ff_ready": true,
       "github_branch_url": "https://github.com/patl4588/railcall-marketplace/tree/delegated/continuous-improvements",
       "github_compare_url": "https://github.com/patl4588/railcall-marketplace/compare/main...delegated/continuous-improvements",
       "sami_one_liner": "cd railcall-marketplace && git fetch origin main delegated/continuous-improvements && git checkout main && git pull --ff-only origin main && git merge --ff-only origin/delegated/continuous-improvements && git push origin main",
-      "git_log_stat_5": "commit d81173a06a32acb16e5d4c800b68e7845ae8cbaa\nAuthor: Test <test@example.com>\nDate:   Tue Nov 17 12:43:39 2026 -0500\n\n    feat(workspace,v1): wire 48-group Direct-First Task x Speed x Quality x Cost scoring into PredictiveRoutingIndex and LindenV1Service\n\n src/v1/linden-v1.service.ts                    |  60 ++++++++---\n src/v1/linden-v1.spec.ts                       |  83 ++++++++++++++\n src/workspace/predictive-routing-index.spec.ts |  24 ++++-\n src/workspace/predictive-routing-index.ts      | 216 +++++++++++++++++++++++++++++--------\n 4 files changed, 328 insertions(+), 55 deletions(-)\n\ncommit 1199d69bbe0b5d91964d017ce9a795af2b076ab7\nAuthor: SamyBchaalia <sami.benchaalia@sesame.com.tn>\nDate:   Tue Nov 17 17:58:20 2026 +0100\n\n    perf(workflow): route simple workflow drafts to Rung-0 fast-lane without planning roundtrip\n\n src/admin/admin-24h-metrics.spec.ts | 38 ++++++++++++++++++++++++++++++++++++++\n src/workspace/chat.service.ts       | 19 ++++++++++++++-----\n src/workspace/fast-lane.policy.ts   | 26 +++++++++++++++++++++++++-\n 3 files changed, 77 insertions(+), 6 deletions(-)\n\ncommit 52e7937616011a60fd2ea1ddb1d78627f69f5c72\nMerge: 2e9cfa6 fce0a86\nAuthor: SamyBchaalia <sami.benchaalia@sesame.com.tn>\nDate:   Tue Nov 17 17:13:38 2026 +0100\n\n    chore(merge): integrate delegated/continuous-improvements (fce0a86) Gemini/Tier-0 admission & /v1 direct fleet\n\ncommit fce0a8622feeb51bf7e434e537853a508a0e9f7f\nAuthor: Test <test@example.com>\nDate:   Tue Nov 17 10:59:28 2026 -0500\n\n    feat(assistant,v1): admit Google Gemini direct & Tier-0 dedicated_gpu in PatSUM catalog and expand /v1 direct foundation fleet ahead of OpenRouter backup\n\n src/assistant/assistant.policy.ts         |  4 +-\n src/assistant/patsum.config.ts            |  6 +++\n src/assistant/patsum.policy.spec.ts       |  4 ++\n src/assistant/patsum.policy.ts            |  2 +-\n src/v1/linden-v1.service.ts               | 85 +++++++++++++++++++++++++++++++++++++++++--\n src/v1/linden-v1.spec.ts                  | 56 ++++++++++++++++++++++++++++\n src/workspace/upstream-failover.policy.ts |  1 +\n 7 files changed, 152 insertions(+), 6 deletions(-)\n\ncommit 899ec1ca7993a980e812416764ebadf0a9a6b932\nMerge: 12e98fb 2e9cfa6\nAuthor: Test <test@example.com>\nDate:   Tue Nov 17 10:25:54 2026 -0500\n\n    chore(merge): sync origin/main (2e9cfa6) onto delegated/continuous-improvements",
+      "git_log_stat_5": "commit 75e428ca133a092a762cc87fea0c6db8eb57b3b6\nAuthor: Test <test@example.com>\nDate:   Tue Nov 17 12:43:39 2026 -0500\n\n    feat(workspace,v1): wire 48-group Direct-First Task x Speed x Quality x Cost scoring into PredictiveRoutingIndex and LindenV1Service\n\n src/v1/linden-v1.service.ts                    |  60 ++++++++---\n src/v1/linden-v1.spec.ts                       |  83 ++++++++++++++\n src/workspace/predictive-routing-index.spec.ts |  24 ++++-\n src/workspace/predictive-routing-index.ts      | 216 +++++++++++++++++++++++++++++--------\n 4 files changed, 328 insertions(+), 55 deletions(-)\n\ncommit 095f115bdb00f98b5f67d5b3158d10d45aaed674\nAuthor: SamyBchaalia <sami.benchaalia@sesame.com.tn>\nDate:   Wed Nov 18 13:37:36 2026 +0100\n\n    docs: pass-3 round — PRs merged, installer shipped, open list\n    \n    Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>\n\n docs/plan-prelaunch-fix-list-2026-11-17.md | 47 ++++++++++++++++++++++++++++++++++++++++++\n 1 file changed, 47 insertions(+)\n\ncommit ac6e35b32510dff60f48ad42b741b90fb8eef1ae\nMerge: 9848ac9 7ce429f\nAuthor: SamyBchaalia <sami.benchaalia@sesame.com.tn>\nDate:   Wed Nov 18 13:03:11 2026 +0100\n\n    merge: web search fixes from live QA pass 3 (PR #4)\n    \n    Team-schedule questions get the team's real ESPN schedule (next N games,\n    cached team lists, 2.5s timeouts); the scoreboard only suppresses web\n    research when it actually answers the question; follow-ups (\"go find it\",\n    \"opponents yes\" after an offer), \"with sources\", phone/hours, recent\n    coverage and local rules now search; \"how do I turn on web research\" gets a\n    plain product answer instead of Wikipedia-Backrooms results; internal feed\n    instruction lines are never shown to customers; a search-link list is never\n    the fallback answer for a build or picture ask.\n    \n    Authored by the QA session (draft PR #4), reviewed + merged on top of main:\n    75 specs green (incl. the new 230-line web-search spec), tsc clean.\n    \n    Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>\n\ncommit 7ce429f87bafd4d1e04654ecce4ca5f3b6c321a4\nMerge: 0a85437 9848ac9\nAuthor: SamyBchaalia <sami.benchaalia@sesame.com.tn>\nDate:   Wed Nov 18 13:00:39 2026 +0100\n\n    merge main into qa web-search branch\n\ncommit 9848ac95ad80c8e95545c608b8726a7fe82ee8d4\nAuthor: SamyBchaalia <sami.benchaalia@sesame.com.tn>\nDate:   Wed Nov 18 11:53:01 2026 +0100\n\n    docs: QA pass-2 results + same-night fixes\n    \n    Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>\n\n docs/plan-prelaunch-fix-list-2026-11-17.md | 27 +++++++++++++++++++++++++++\n 1 file changed, 27 insertions(+)",
       "commits": [
         {
-          "sha": "d81173a06a32acb16e5d4c800b68e7845ae8cbaa",
-          "short_sha": "d81173a",
-          "author_date_iso": "2026-11-17T12:43:39-05:00",
-          "relative_time": "4 minutes ago",
+          "sha": "75e428ca133a092a762cc87fea0c6db8eb57b3b6",
+          "short_sha": "75e428c",
+          "author_date_iso": "2026-11-18T10:50:08-05:00",
+          "relative_time": "3 minutes ago",
           "subject": "feat(workspace,v1): wire 48-group Direct-First Task x Speed x Quality x Cost scoring into PredictiveRoutingIndex and LindenV1Service",
           "stat_summary": "4 files changed, 328 insertions(+), 55 deletions(-)",
           "changed_files": [
@@ -43,80 +43,62 @@
             "src/workspace/predictive-routing-index.ts      | 216 ++++++++++++++++++++++++++-------"
           ],
           "patch_preview": "",
-          "github_commit_url": "https://github.com/patl4588/railcall-marketplace/commit/d81173a06a32acb16e5d4c800b68e7845ae8cbaa"
+          "github_commit_url": "https://github.com/patl4588/railcall-marketplace/commit/75e428ca133a092a762cc87fea0c6db8eb57b3b6"
         },
         {
-          "sha": "1199d69bbe0b5d91964d017ce9a795af2b076ab7",
-          "short_sha": "1199d69",
-          "author_date_iso": "2026-11-17T17:58:20+01:00",
-          "relative_time": "50 minutes ago",
-          "subject": "perf(workflow): route simple workflow drafts to Rung-0 fast-lane without planning roundtrip",
-          "stat_summary": "3 files changed, 77 insertions(+), 6 deletions(-)",
+          "sha": "095f115bdb00f98b5f67d5b3158d10d45aaed674",
+          "short_sha": "095f115",
+          "author_date_iso": "2026-11-18T13:37:36+01:00",
+          "relative_time": "3 hours ago",
+          "subject": "docs: pass-3 round — PRs merged, installer shipped, open list",
+          "stat_summary": "1 file changed, 47 insertions(+)",
           "changed_files": [
-            "src/admin/admin-24h-metrics.spec.ts | 38 ++++++++++++++++++++++++++++++++++++++",
-            "src/workspace/chat.service.ts       | 19 ++++++++++++++-----",
-            "src/workspace/fast-lane.policy.ts   | 26 +++++++++++++++++++++++++-"
+            "docs/plan-prelaunch-fix-list-2026-11-17.md | 47 ++++++++++++++++++++++++++++++++++++++"
           ],
           "patch_preview": "",
-          "github_commit_url": "https://github.com/patl4588/railcall-marketplace/commit/1199d69bbe0b5d91964d017ce9a795af2b076ab7"
+          "github_commit_url": "https://github.com/patl4588/railcall-marketplace/commit/095f115bdb00f98b5f67d5b3158d10d45aaed674"
         },
         {
-          "sha": "52e7937616011a60fd2ea1ddb1d78627f69f5c72",
-          "short_sha": "52e7937",
-          "author_date_iso": "2026-11-17T17:13:38+01:00",
-          "relative_time": "2 hours ago",
-          "subject": "chore(merge): integrate delegated/continuous-improvements (fce0a86) Gemini/Tier-0 admission & /v1 direct fleet",
-          "stat_summary": "10 files changed, 185 insertions(+), 11 deletions(-)",
+          "sha": "ac6e35b32510dff60f48ad42b741b90fb8eef1ae",
+          "short_sha": "ac6e35b",
+          "author_date_iso": "2026-11-18T13:03:11+01:00",
+          "relative_time": "4 hours ago",
+          "subject": "merge: web search fixes from live QA pass 3 (PR #4)",
+          "stat_summary": "4 files changed, 602 insertions(+), 11 deletions(-)",
           "changed_files": [
-            "src/assistant/assistant.policy.ts                |  4 +-",
-            "src/assistant/patsum.config.ts                   |  6 +++",
-            "src/assistant/patsum.policy.spec.ts              |  4 ++",
-            "src/assistant/patsum.policy.ts                   |  2 +-",
-            "src/v1/linden-v1.service.ts                      | 85 ++++++++++++++++++++++++++++++--",
-            "src/v1/linden-v1.spec.ts                         | 56 +++++++++++++++++++++",
-            "src/workspace/chat.service.ts                    |  3 +-",
-            "src/workspace/fullstack-app-and-fastlane.spec.ts | 31 ++++++++++--",
-            "src/workspace/open-preview-and-uploads.spec.ts   |  4 +-",
-            "src/workspace/upstream-failover.policy.ts        |  1 +"
+            "src/workspace/chat.service.ts                  |  72 ++++++++-",
+            "src/workspace/research.policy.ts               |  35 ++++-",
+            "src/workspace/sports-scoreboard.ts             | 276 +++++++++++++++++++++++++++++++++",
+            "src/workspace/web-search-qa-2026-11-17.spec.ts | 230 +++++++++++++++++++++++++++"
           ],
           "patch_preview": "",
-          "github_commit_url": "https://github.com/patl4588/railcall-marketplace/commit/52e7937616011a60fd2ea1ddb1d78627f69f5c72"
+          "github_commit_url": "https://github.com/patl4588/railcall-marketplace/commit/ac6e35b32510dff60f48ad42b741b90fb8eef1ae"
         },
         {
-          "sha": "fce0a8622feeb51bf7e434e537853a508a0e9f7f",
-          "short_sha": "fce0a86",
-          "author_date_iso": "2026-11-17T10:59:28-05:00",
-          "relative_time": "2 hours ago",
-          "subject": "feat(assistant,v1): admit Google Gemini direct & Tier-0 dedicated_gpu in PatSUM catalog and expand /v1 direct foundation fleet ahead of OpenRouter backup",
-          "stat_summary": "7 files changed, 152 insertions(+), 6 deletions(-)",
+          "sha": "7ce429f87bafd4d1e04654ecce4ca5f3b6c321a4",
+          "short_sha": "7ce429f",
+          "author_date_iso": "2026-11-18T13:00:39+01:00",
+          "relative_time": "4 hours ago",
+          "subject": "merge main into qa web-search branch",
+          "stat_summary": "1 file changed, 27 insertions(+)",
           "changed_files": [
-            "src/assistant/assistant.policy.ts         |  4 +-",
-            "src/assistant/patsum.config.ts            |  6 +++",
-            "src/assistant/patsum.policy.spec.ts       |  4 ++",
-            "src/assistant/patsum.policy.ts            |  2 +-",
-            "src/v1/linden-v1.service.ts               | 85 +++++++++++++++++++++++++++++++++++++--",
-            "src/v1/linden-v1.spec.ts                  | 56 ++++++++++++++++++++++++++",
-            "src/workspace/upstream-failover.policy.ts |  1 +"
+            "docs/plan-prelaunch-fix-list-2026-11-17.md | 27 +++++++++++++++++++++++++++"
           ],
           "patch_preview": "",
-          "github_commit_url": "https://github.com/patl4588/railcall-marketplace/commit/fce0a8622feeb51bf7e434e537853a508a0e9f7f"
+          "github_commit_url": "https://github.com/patl4588/railcall-marketplace/commit/7ce429f87bafd4d1e04654ecce4ca5f3b6c321a4"
         },
         {
-          "sha": "899ec1ca7993a980e812416764ebadf0a9a6b932",
-          "short_sha": "899ec1c",
-          "author_date_iso": "2026-11-17T10:25:54-05:00",
-          "relative_time": "2 hours ago",
-          "subject": "chore(merge): sync origin/main (2e9cfa6) onto delegated/continuous-improvements",
-          "stat_summary": "5 files changed, 934 insertions(+), 58 deletions(-)",
+          "sha": "9848ac95ad80c8e95545c608b8726a7fe82ee8d4",
+          "short_sha": "9848ac9",
+          "author_date_iso": "2026-11-18T11:53:01+01:00",
+          "relative_time": "5 hours ago",
+          "subject": "docs: QA pass-2 results + same-night fixes",
+          "stat_summary": "1 file changed, 27 insertions(+)",
           "changed_files": [
-            "src/admin/admin-24h-metrics.spec.ts | 443 +++++++++++++++++++++++++++++++++++++++++",
-            "src/admin/admin.controller.ts       |  10 +-",
-            "src/admin/admin.service.ts          | 467 ++++++++++++++++++++++++++++++++++++++++----",
-            "src/v1/linden-v1.service.ts         |   6 +-",
-            "src/workspace/chat.service.ts       |  66 ++++++-"
+            "docs/plan-prelaunch-fix-list-2026-11-17.md | 27 +++++++++++++++++++++++++++"
           ],
           "patch_preview": "",
-          "github_commit_url": "https://github.com/patl4588/railcall-marketplace/commit/899ec1ca7993a980e812416764ebadf0a9a6b932"
+          "github_commit_url": "https://github.com/patl4588/railcall-marketplace/commit/9848ac95ad80c8e95545c608b8726a7fe82ee8d4"
         }
       ]
     },
@@ -129,24 +111,24 @@
       "private_repo_notice": "Private GitHub Repo — sign in to GitHub to open external links, or inspect full commits, file stats & diffs inline below.",
       "available": true,
       "branch": "delegated/continuous-improvements",
-      "head_sha": "2b1f3edcf0470ce10f13d88bc3aaaaab14e24c60",
-      "head_short": "2b1f3ed",
+      "head_sha": "f7fc04ed201b9185c923d5c3aa46282d96f1776c",
+      "head_short": "f7fc04e",
       "main_ref": "origin/main",
-      "main_sha": "b1a4b8e6d09507bb2bc924a75b4946ea010edbc7",
-      "main_short": "b1a4b8e",
+      "main_sha": "a6e2411f9cf99874b555095e123b1848a7435f3d",
+      "main_short": "a6e2411",
       "ahead_count": 1,
       "behind_count": 0,
       "ff_ready": true,
       "github_branch_url": "https://github.com/patl4588/railcall-website/tree/delegated/continuous-improvements",
       "github_compare_url": "https://github.com/patl4588/railcall-website/compare/main...delegated/continuous-improvements",
       "sami_one_liner": "cd railcall-website && git fetch origin main delegated/continuous-improvements && git checkout main && git pull --ff-only origin main && git merge --ff-only origin/delegated/continuous-improvements && git push origin main",
-      "git_log_stat_5": "commit 2b1f3edcf0470ce10f13d88bc3aaaaab14e24c60\nAuthor: Antigravity-UI <patrickjameslinden@gmail.com>\nDate:   Tue Nov 17 12:43:39 2026 -0500\n\n    feat(v1): add task-profile Speed x Quality x Cost Direct routing on /v1/chat/completions with OpenRouter backup\n\n app/v1/chat/completions/route.ts   |  71 +++++++++++---------\n tests/wave26-linden-v1-api.test.ts | 172 +++++++++++++++++++++++++++++++++++++++++++++++++\n 2 files changed, 213 insertions(+), 30 deletions(-)\n\ncommit b1a4b8e6d09507bb2bc924a75b4946ea010edbc7\nAuthor: SamyBchaalia <sami.benchaalia@sesame.com.tn>\nDate:   Tue Nov 17 17:58:20 2026 +0100\n\n    ux(thinking): display instant workflow fast-lane & architect labels on workflow prompts\n\n app/components/chat/RailCallThinkingPanel.tsx | 83 ++++++++++++++++++++++++---------------\n 1 file changed, 52 insertions(+), 31 deletions(-)\n\ncommit e85fa4bd467aa86de09ee57187a21e11f6ce2d6d\nAuthor: ncapozzo3-lgtm <n.capozzo3@gmail.com>\nDate:   Tue Nov 17 11:20:13 2026 -0500\n\n    feat(webchat): log caller IP per WebChat/guest turn to the usage events log (#14)\n    \n    ~100% of real traffic is WebChat/Console/guest turns hitting\n    /api/workspace/conversations/:id/messages (forwarded to marketplace),\n    which bypasses /v1 and so was invisible to the #12/#13 usage tracking.\n    \n    Call appendUsageEvent on every turn, using the IP already extracted via\n    extractClientIp(req), tagged keyId=webchat. Feeds the same events log and\n    usage dashboard. Best-effort; never affects the response. Per Pat's\n    traffic-split analysis.\n    \n    Co-authored-by: Claude Opus 4.8 <noreply@anthropic.com>\n\n app/api/workspace/conversations/[id]/messages/route.ts | 11 +++++++++++\n 1 file changed, 11 insertions(+)\n\ncommit 7814ac593da175e28eea98ed84f11653c290981c\nMerge: e3d47ab 0cd97f9\nAuthor: SamyBchaalia <sami.benchaalia@sesame.com.tn>\nDate:   Tue Nov 17 17:13:11 2026 +0100\n\n    chore(merge): integrate delegated/continuous-improvements (0cd97f9d) desktop parity, local bridge & /v1 fleet\n\ncommit 0cd97f9dc09631b434da933f153ae4b4c19cfa3b\nAuthor: Antigravity-UI <patrickjameslinden@gmail.com>\nDate:   Tue Nov 17 10:59:28 2026 -0500\n\n    feat(v1,fallback): wire full direct foundation fleet with 30s circuit-breaker cooldowns ahead of last-resort OpenRouter backup\n\n app/lib/server/workspace-free-fallback.ts |  65 ++++++++++--\n app/v1/chat/completions/route.ts          | 242 ++++++++++++++++++++++++++++++++----------\n 2 files changed, 242 insertions(+), 65 deletions(-)",
+      "git_log_stat_5": "commit f7fc04ed201b9185c923d5c3aa46282d96f1776c\nAuthor: Antigravity-UI <patrickjameslinden@gmail.com>\nDate:   Tue Nov 17 12:43:39 2026 -0500\n\n    feat(v1): add task-profile Speed x Quality x Cost Direct routing on /v1/chat/completions with OpenRouter backup\n\n app/v1/chat/completions/route.ts   |  71 +++++++++++---------\n tests/wave26-linden-v1-api.test.ts | 172 +++++++++++++++++++++++++++++++++++++++++++++++++\n 2 files changed, 213 insertions(+), 30 deletions(-)\n\ncommit a6e2411f9cf99874b555095e123b1848a7435f3d\nAuthor: SamyBchaalia <sami.benchaalia@sesame.com.tn>\nDate:   Wed Nov 18 13:24:48 2026 +0100\n\n    fix(prelaunch): pass-3 quick set — Private honesty, tablet split collapse, title/note leftovers + 0.12.47 pins\n    \n    - QA pass-3 item 1 (HIGHEST): the Private toggle promised \"kept in browser\n      memory only\" while the chat saved to the account like any other — hidden\n      behind PRIVATE_MODE_IMPLEMENTED=false until private mode is real. A false\n      privacy promise is worse than no button.\n    - Item 7: below 980px the open split-pane's column minimums (300+6+340px)\n      collapsed chat to one letter per line — the split now stacks (chat full\n      width, Workbench beneath with its existing Back-to-Chat).\n    - Item 22: header titles run the FULL unwrap chain (no more\n      \"[RC_ORIG_HEX:…\" conversation titles); the stream time-limit note is not\n      stapled to answers that read as finished.\n    - Mac download pins -> 0.12.47 (both arches now notarized + stapled).\n    \n    Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>\n\n app/chat/[id]/ChatClient.tsx                  | 16 +++++++++++++++-\n app/components/workspace/WorkspaceShell.tsx   | 38 +++++++++++++++++++++++++-------------\n app/components/workspace/workspace.module.css |  9 +++++++++\n app/lib/chat-stream-guard.ts                  |  8 +++++++-\n app/lib/direct-download-os.ts                 |  4 ++--\n 5 files changed, 58 insertions(+), 17 deletions(-)\n\ncommit 2bb372738723e6bd767db170960ad0ca2df14d53\nMerge: 31bd14d a16cd72\nAuthor: SamyBchaalia <sami.benchaalia@sesame.com.tn>\nDate:   Wed Nov 18 13:12:23 2026 +0100\n\n    merge: QA pass-3 fixes from the QA session (PR #17)\n    \n    - Pictures no longer stick on \"Synthesizing…\": synthesis requests have no\n      cancellation (workbench-image-synthesis.ts); the finished picture always\n      lands and re-renders, and the quality gate reads the image cache.\n    - isNounLedWebsiteAsk: noun-led and tool-named site asks (\"Landing page for\n      PayDay…\", \"mortgage calculator web app\", Spanish nouns) are builds —\n      supersedes main's simpler noun-first pattern (33 wordings tested).\n    - Small tools get a small-app brief (one file, the app first) instead of the\n      6-section marketing-site brief that turned a to-do list into \"Momentum\n      Task OS\"; the site brief keeps main's IMAGES-keyword + CONTENT-HONESTY\n      rules (resolved in app/lib/chat-build-brief.ts).\n    - Quality gate: visible-content check ignores <head>-only output; new \"Page\n      was written to the end\" check fails cut-off documents instead of Ready.\n    - Workflow diagrams draw steps nested in condition/router branches (the\n      pass-2 \"missing last step\" was a diagram bug — correction recorded).\n    - QA evidence archived under docs/qa/2026-11-17/ incl. the 1000-run CSV.\n    \n    Reviewed + merged on top of main: 17 PR tests + 50 prelaunch pins green,\n    tsc clean.\n    \n    Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>\n\ncommit a16cd72f68421681f684f69f7fccd4b134c1fa7e\nMerge: 5d3fcf0 31bd14d\nAuthor: SamyBchaalia <sami.benchaalia@sesame.com.tn>\nDate:   Wed Nov 18 13:07:48 2026 +0100\n\n    merge main into qa17 (resolved: isNounLedWebsiteAsk supersedes noun-first; brief refactor carries pass-2 rules)\n\ncommit 31bd14d64f36cce4e8540c33fc0406472de407c4\nAuthor: SamyBchaalia <sami.benchaalia@sesame.com.tn>\nDate:   Wed Nov 18 11:50:51 2026 +0100\n\n    fix(prelaunch): QA pass-2 full report — website photos, routing, blank builds, panels\n    \n    Pass-2 scored 20/20 pictures and 5/7 full sites (was 0/5). The remaining\n    items:\n    - Item 4 (HIGH): site photos now show the SUBJECT — briefs demand\n      loremflickr keyword URLs, srcdoc rewrites relative AND leftover picsum\n      images to alt-text-keyword photos (pizza sites get pizza, roofs get roofs).\n    - Item 5 (HIGH): a website/site/landing-page/portfolio ask ALWAYS builds a\n      site, even when it says \"photo\" — noun-first site asks (no build verb)\n      count, and the image lane/edit-followup yield to website intent (W4\n      wedding-photographer regression).\n    - Item 6 (HIGH): a dead run never renders blank or as a bare time-limit\n      line — honest \"nothing usable was delivered… retry\" with streamed tokens\n      preserved; the time-limit note no longer appears under COMPLETE sites\n      (it showed on 5 of the 7 working ones).\n    - Item 7 (HIGH): briefs ban copying a real business's menu/prices (the Cuban\n      café got a New York Mexican menu) and shipping YOUR_API_KEY/PROJECT_ID\n      placeholders.\n    - Item 9: \"Make reusable\" bubbles show \"Make this reusable: <task>\", never\n      the escaped-JSON wall.\n    - Item 10: the agent Test panel renders markdown and strips internal\n      composite-score lines.\n    - Small screens: the \"Syncing live run status\" note clears on the next\n      successful poll instead of sticking under finished sites.\n    \n    50/50 prelaunch pins green; mozart back to 7/7; nick/wave16 at their\n    pre-existing baselines; tsc clean.\n    \n    Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>\n\n app/chat/[id]/ChatClient.tsx                | 17 ++++++++++----\n app/chat/agents/[agentId]/AgentEditor.tsx   | 14 ++++++++++-\n app/components/workspace/BuildWorkspace.tsx |  5 ++--\n app/components/workspace/MessageList.tsx    |  5 ++--\n app/lib/chat-stream-guard.ts                | 22 +++++++++++++++++-\n app/lib/reusable-request.ts                 | 18 +++++++++++++++\n lib/stationClient.ts                        | 51 +++++++++++++++++++++++++++++++++++------\n tests/prelaunch-build-honesty.test.ts       |  6 +++--\n 8 files changed, 119 insertions(+), 19 deletions(-)",
       "commits": [
         {
-          "sha": "2b1f3edcf0470ce10f13d88bc3aaaaab14e24c60",
-          "short_sha": "2b1f3ed",
-          "author_date_iso": "2026-11-17T12:43:39-05:00",
-          "relative_time": "4 minutes ago",
+          "sha": "f7fc04ed201b9185c923d5c3aa46282d96f1776c",
+          "short_sha": "f7fc04e",
+          "author_date_iso": "2026-11-18T10:51:25-05:00",
+          "relative_time": "2 minutes ago",
           "subject": "feat(v1): add task-profile Speed x Quality x Cost Direct routing on /v1/chat/completions with OpenRouter backup",
           "stat_summary": "2 files changed, 213 insertions(+), 30 deletions(-)",
           "changed_files": [
@@ -154,77 +136,104 @@
             "tests/wave26-linden-v1-api.test.ts | 172 +++++++++++++++++++++++++++++++++++++++++++++"
           ],
           "patch_preview": "",
-          "github_commit_url": "https://github.com/patl4588/railcall-website/commit/2b1f3edcf0470ce10f13d88bc3aaaaab14e24c60"
+          "github_commit_url": "https://github.com/patl4588/railcall-website/commit/f7fc04ed201b9185c923d5c3aa46282d96f1776c"
         },
         {
-          "sha": "b1a4b8e6d09507bb2bc924a75b4946ea010edbc7",
-          "short_sha": "b1a4b8e",
-          "author_date_iso": "2026-11-17T17:58:20+01:00",
-          "relative_time": "50 minutes ago",
-          "subject": "ux(thinking): display instant workflow fast-lane & architect labels on workflow prompts",
-          "stat_summary": "1 file changed, 52 insertions(+), 31 deletions(-)",
+          "sha": "a6e2411f9cf99874b555095e123b1848a7435f3d",
+          "short_sha": "a6e2411",
+          "author_date_iso": "2026-11-18T13:24:48+01:00",
+          "relative_time": "3 hours ago",
+          "subject": "fix(prelaunch): pass-3 quick set — Private honesty, tablet split collapse, title/note leftovers + 0.12.47 pins",
+          "stat_summary": "5 files changed, 58 insertions(+), 17 deletions(-)",
           "changed_files": [
-            "app/components/chat/RailCallThinkingPanel.tsx | 83 ++++++++++++++++++++++-------------"
+            "app/chat/[id]/ChatClient.tsx                  | 16 ++++++++++++++-",
+            "app/components/workspace/WorkspaceShell.tsx   | 38 +++++++++++++++++++++++------------",
+            "app/components/workspace/workspace.module.css |  9 +++++++++",
+            "app/lib/chat-stream-guard.ts                  |  8 +++++++-",
+            "app/lib/direct-download-os.ts                 |  4 ++--"
           ],
           "patch_preview": "",
-          "github_commit_url": "https://github.com/patl4588/railcall-website/commit/b1a4b8e6d09507bb2bc924a75b4946ea010edbc7"
+          "github_commit_url": "https://github.com/patl4588/railcall-website/commit/a6e2411f9cf99874b555095e123b1848a7435f3d"
         },
         {
-          "sha": "e85fa4bd467aa86de09ee57187a21e11f6ce2d6d",
-          "short_sha": "e85fa4b",
-          "author_date_iso": "2026-11-17T11:20:13-05:00",
-          "relative_time": "88 minutes ago",
-          "subject": "feat(webchat): log caller IP per WebChat/guest turn to the usage events log (#14)",
-          "stat_summary": "1 file changed, 11 insertions(+)",
+          "sha": "2bb372738723e6bd767db170960ad0ca2df14d53",
+          "short_sha": "2bb3727",
+          "author_date_iso": "2026-11-18T13:12:23+01:00",
+          "relative_time": "4 hours ago",
+          "subject": "merge: QA pass-3 fixes from the QA session (PR #17)",
+          "stat_summary": "29 files changed, 2131 insertions(+), 71 deletions(-)",
           "changed_files": [
-            "app/api/workspace/conversations/[id]/messages/route.ts | 11 +++++++++++"
+            "AGENTS.md                                               |    9 +",
+            "CLAUDE.md                                               |    1 +",
+            "app/chat/[id]/ChatClient.tsx                            |   20 +-",
+            "app/components/chat/LiveArtifactWorkbench.tsx           |   94 ++-",
+            "app/lib/chat-build-brief.ts                             |   64 ++",
+            "app/lib/live-artifact-workbench.ts                      |   75 +-",
+            "app/lib/workbench-image-synthesis.ts                    |   70 ++",
+            "docs/qa/2026-11-17/01-pass1-pictures-and-builds.pdf     |  Bin 0 -> 1476692 bytes",
+            "docs/qa/2026-11-17/02-fix-list-with-evidence.pdf        |  Bin 0 -> 4389574 bytes",
+            "docs/qa/2026-11-17/03-pass2-after-fixes.pdf             |  Bin 0 -> 2067672 bytes",
+            "docs/qa/2026-11-17/04-pass3-overnight-152-checks.pdf    |  Bin 0 -> 1836722 bytes",
+            "docs/qa/2026-11-17/05-nick-1000-run-results.csv         | 1001 +++++++++++++++++++++++",
+            "docs/qa/2026-11-17/05-nick-1000-run-web-and-desktop.pdf |  Bin 0 -> 2516254 bytes",
+            "docs/qa/2026-11-17/05-nick-1000-run.md                  |   44 +",
+            "docs/qa/2026-11-17/README.md                            |   61 ++",
+            "lib/stationClient.ts                                    |   41 +-",
+            "package.json                                            |    2 +-",
+            "static-landing/tools/__pycache__/charts.cpython-314.pyc |  Bin 0 -> 51111 bytes"
           ],
           "patch_preview": "",
-          "github_commit_url": "https://github.com/patl4588/railcall-website/commit/e85fa4bd467aa86de09ee57187a21e11f6ce2d6d"
+          "github_commit_url": "https://github.com/patl4588/railcall-website/commit/2bb372738723e6bd767db170960ad0ca2df14d53"
         },
         {
-          "sha": "7814ac593da175e28eea98ed84f11653c290981c",
-          "short_sha": "7814ac5",
-          "author_date_iso": "2026-11-17T17:13:38+01:00",
-          "relative_time": "2 hours ago",
-          "subject": "chore(merge): integrate delegated/continuous-improvements (0cd97f9d) desktop parity, local bridge & /v1 fleet",
-          "stat_summary": "21 files changed, 5194 insertions(+), 481 deletions(-)",
+          "sha": "a16cd72f68421681f684f69f7fccd4b134c1fa7e",
+          "short_sha": "a16cd72",
+          "author_date_iso": "2026-11-18T13:07:48+01:00",
+          "relative_time": "4 hours ago",
+          "subject": "merge main into qa17 (resolved: isNounLedWebsiteAsk supersedes noun-first; brief refactor carries pass-2 rules)",
+          "stat_summary": "20 files changed, 491 insertions(+), 31 deletions(-)",
           "changed_files": [
-            "app/api/download/chat/route.ts                      | 156 +++++",
-            "app/chat/[id]/ChatClient.tsx                        | 505 +++++++++++----",
-            "app/components/chat/LiveArtifactWorkbench.tsx       | 183 +++++-",
-            "app/components/home/HomeHero.tsx                    |  65 +-",
-            "app/components/home/hero.module.css                 |  98 +++",
-            "app/components/workspace/ApiKeysModal.tsx           |   1 +",
-            "app/components/workspace/BuildWorkspace.tsx         |   3 +-",
-            "app/components/workspace/Composer.tsx               | 181 +++++-",
-            "app/components/workspace/DesktopSplitStudioDock.tsx | 359 +++++++++++",
-            "app/components/workspace/LocalEngineBridge.tsx      | 925 ++++++++++++++++++++++++++++",
-            "app/components/workspace/MessageList.tsx            |  32 +-",
-            "app/components/workspace/RoutingControlsBar.tsx     | 245 +++++---",
-            "app/components/workspace/WorkspaceShell.tsx         | 721 +++++++++++++++++++---",
-            "app/components/workspace/workspace.module.css       | 735 +++++++++++++++++++++-",
-            "app/lib/direct-download-os.ts                       | 132 ++++",
-            "app/lib/live-artifact-workbench.ts                  | 327 +++++++++-",
-            "app/lib/server/workspace-free-fallback.ts           |  65 +-",
-            "app/page.tsx                                        |   8 +-"
+            "AGENTS.md                                               |   9 ++",
+            "CLAUDE.md                                               |   1 +",
+            "app/chat/[id]/ChatClient.tsx                            |  74 +++++++++---",
+            "app/chat/agents/[agentId]/AgentEditor.tsx               |  14 ++-",
+            "app/components/workspace/BuildWorkspace.tsx             |   5 +-",
+            "app/components/workspace/MessageList.tsx                |   5 +-",
+            "app/lib/chat-build-brief.ts                             |   7 +-",
+            "app/lib/chat-stream-guard.ts                            |  22 +++-",
+            "app/lib/folio-document-renderer.ts                      |   2 +-",
+            "app/lib/reusable-request.ts                             |  18 +++",
+            "lib/stationClient.ts                                    |  44 +++++--",
+            "static-landing/tools/__pycache__/charts.cpython-314.pyc | Bin 0 -> 51111 bytes",
+            "static-landing/tools/__pycache__/meters.cpython-314.pyc | Bin 0 -> 7094 bytes",
+            "static-landing/tools/__pycache__/shell.cpython-314.pyc  | Bin 0 -> 69976 bytes",
+            "static-landing/tools/out_artifact/developers/index.html |  34 ++++++",
+            "static-landing/tools/out_artifact/index.html            | 151 ++++++++++++++++++++++++",
+            "static-landing/tools/out_artifact/pricing/index.html    |  81 +++++++++++++",
+            "static-landing/tools/out_artifact/railhub/index.html    |  43 +++++++"
           ],
           "patch_preview": "",
-          "github_commit_url": "https://github.com/patl4588/railcall-website/commit/7814ac593da175e28eea98ed84f11653c290981c"
+          "github_commit_url": "https://github.com/patl4588/railcall-website/commit/a16cd72f68421681f684f69f7fccd4b134c1fa7e"
         },
         {
-          "sha": "0cd97f9dc09631b434da933f153ae4b4c19cfa3b",
-          "short_sha": "0cd97f9",
-          "author_date_iso": "2026-11-17T10:59:28-05:00",
-          "relative_time": "2 hours ago",
-          "subject": "feat(v1,fallback): wire full direct foundation fleet with 30s circuit-breaker cooldowns ahead of last-resort OpenRouter backup",
-          "stat_summary": "2 files changed, 242 insertions(+), 65 deletions(-)",
+          "sha": "31bd14d64f36cce4e8540c33fc0406472de407c4",
+          "short_sha": "31bd14d",
+          "author_date_iso": "2026-11-18T11:50:51+01:00",
+          "relative_time": "5 hours ago",
+          "subject": "fix(prelaunch): QA pass-2 full report — website photos, routing, blank builds, panels",
+          "stat_summary": "8 files changed, 119 insertions(+), 19 deletions(-)",
           "changed_files": [
-            "app/lib/server/workspace-free-fallback.ts |  65 ++++++++--",
-            "app/v1/chat/completions/route.ts          | 242 +++++++++++++++++++++++++++++---------"
+            "app/chat/[id]/ChatClient.tsx                | 17 ++++++++++---",
+            "app/chat/agents/[agentId]/AgentEditor.tsx   | 14 +++++++++-",
+            "app/components/workspace/BuildWorkspace.tsx |  5 ++--",
+            "app/components/workspace/MessageList.tsx    |  5 ++--",
+            "app/lib/chat-stream-guard.ts                | 22 +++++++++++++++-",
+            "app/lib/reusable-request.ts                 | 18 +++++++++++++",
+            "lib/stationClient.ts                        | 51 ++++++++++++++++++++++++++++++++-----",
+            "tests/prelaunch-build-honesty.test.ts       |  6 +++--"
           ],
           "patch_preview": "",
-          "github_commit_url": "https://github.com/patl4588/railcall-website/commit/0cd97f9dc09631b434da933f153ae4b4c19cfa3b"
+          "github_commit_url": "https://github.com/patl4588/railcall-website/commit/31bd14d64f36cce4e8540c33fc0406472de407c4"
         }
       ]
     },
@@ -237,24 +246,24 @@
       "private_repo_notice": "Private GitHub Repo — sign in to GitHub to open external links, or inspect full commits, file stats & diffs inline below.",
       "available": true,
       "branch": "delegated/continuous-improvements",
-      "head_sha": "83518dba195d87b5a2f8dde562777e7826c7d765",
-      "head_short": "83518db",
+      "head_sha": "78d4108444bac2bf67cdf2a3fc529a4fa82f230f",
+      "head_short": "78d4108",
       "main_ref": "origin/main",
-      "main_sha": "ed101fd0239f02d4e0d1f8e2991a51703f391e38",
-      "main_short": "ed101fd",
+      "main_sha": "d890887db9240fe5aff03dd6f625bc7039c59504",
+      "main_short": "d890887",
       "ahead_count": 6,
       "behind_count": 0,
       "ff_ready": true,
       "github_branch_url": "https://github.com/SamyBchaalia/railcall-chat/tree/delegated/continuous-improvements",
       "github_compare_url": "https://github.com/SamyBchaalia/railcall-chat/compare/main...delegated/continuous-improvements",
       "sami_one_liner": "cd railcall-chat && git fetch origin main delegated/continuous-improvements && git checkout main && git pull --ff-only origin main && git merge --ff-only origin/delegated/continuous-improvements && git push origin main",
-      "git_log_stat_5": "commit 83518dba195d87b5a2f8dde562777e7826c7d765\nAuthor: Patrick Linden <216397820+patl4588@users.noreply.github.com>\nDate:   Tue Nov 17 08:43:27 2026 -0500\n\n    fix(desktop): eliminate false-positive chat guard blocks, unlock reopened threads, and harden offline/PDF/DOCX artifact previews\n\n agent.js                                       |   64 +-\n docx-export.js                                 |  264 ++++++-\n main.js                                        |  456 ++++++++++--\n pdf-orchestration.js                           |   42 +-\n petiw-provider.js                              |   83 ++-\n renderer/artifact-workbench.js                 |   69 +-\n renderer/chat.js                               |  419 +++++++++--\n tests/mozart-delta-desktop-superiority.test.js | 1391 ++++++++++++++++++++++++++++++++++++\n 8 files changed, 2598 insertions(+), 190 deletions(-)\n\ncommit 765e3ce0d999c9cee23ba2f23fabbd6799087984\nAuthor: Patrick Linden <216397820+patl4588@users.noreply.github.com>\nDate:   Mon Nov 16 17:28:59 2026 -0500\n\n    fix(docs): prevent anaphoric PDF context wipeout and add native .docx Word export\n\n agent.js                                         |  15 +-\n docx-export.js                                   | 715 +++++++++++++++++++++++++++++++++++\n main.js                                          | 174 ++++++++-\n package.json                                     |   1 +\n pdf-orchestration.js                             |  80 +++-\n preload.js                                       |   4 +\n renderer/chat.js                                 | 176 +++++++++\n tests/hallucination-docx-and-pdf-context.test.js | 311 +++++++++++++++\n tests/packaging.test.js                          |   1 +\n 9 files changed, 1449 insertions(+), 28 deletions(-)\n\ncommit 20d192675c048da78a6a77b88b277bb4a305286d\nAuthor: Patrick Linden <216397820+patl4588@users.noreply.github.com>\nDate:   Mon Nov 16 17:02:39 2026 -0500\n\n    feat(desktop): native $0.00 governed external website screenshot capture and multi-site preview\n\n main.js                          |  57 ++-\n package.json                     |   1 +\n preload.js                       |   1 +\n renderer/chat.css                | 149 ++++++++\n renderer/chat.js                 | 430 +++++++++++++++++++++++\n tests/website-screenshot.test.js | 274 +++++++++++++++\n website-screenshot.js            | 974 +++++++++++++++++++++++++++++++++++++++++++++++++++\n 7 files changed, 1885 insertions(+), 1 deletion(-)\n\ncommit 9732758c7a129c08c58ff130beafda75ec662d20\nAuthor: Patrick Linden <216397820+patl4588@users.noreply.github.com>\nDate:   Mon Nov 16 16:54:09 2026 -0500\n\n    fix(resilience): eliminate 140s execution_unknown hangs, wedged petiw-runs, and error receipt bugs\n\n cloud-services-sync.js               |  77 ++++---\n main.js                              |  37 +++-\n package.json                         |   1 +\n petiw-provider.js                    | 273 +++++++++++++++++++++++--\n renderer/chat.js                     |  77 ++++---\n renderer/index.html                  |   2 +-\n tests/petiw-chaos-resilience.test.js | 514 +++++++++++++++++++++++++++++++++++++++++++++++\n 7 files changed, 910 insertions(+), 71 deletions(-)\n\ncommit 7432606532392c0464de9a9a9e422b5174e5b777\nAuthor: Patrick Linden <216397820+patl4588@users.noreply.github.com>\nDate:   Mon Nov 16 12:31:49 2026 -0500\n\n    perf(mozart-wave2): wire zero-think loopback Ollama fastpath into Desktop subagent swarm\n\n local-ollama-fastpath.js            | 150 +++++++++++++++++++++++++++++++++++++++++++++---\n subagent-tools.js                   |  31 ++++++++++\n tests/local-ollama-fastpath.test.js |  37 +++++++++---\n 3 files changed, 202 insertions(+), 16 deletions(-)",
+      "git_log_stat_5": "commit 78d4108444bac2bf67cdf2a3fc529a4fa82f230f\nAuthor: Patrick Linden <216397820+patl4588@users.noreply.github.com>\nDate:   Tue Nov 17 08:43:27 2026 -0500\n\n    fix(desktop): eliminate false-positive chat guard blocks, unlock reopened threads, and harden offline/PDF/DOCX artifact previews\n\n agent.js                                       |   64 +-\n docx-export.js                                 |  264 ++++++-\n main.js                                        |  456 ++++++++++--\n pdf-orchestration.js                           |   42 +-\n petiw-provider.js                              |   83 ++-\n renderer/artifact-workbench.js                 |   69 +-\n renderer/chat.js                               |  419 +++++++++--\n tests/mozart-delta-desktop-superiority.test.js | 1391 ++++++++++++++++++++++++++++++++++++\n 8 files changed, 2598 insertions(+), 190 deletions(-)\n\ncommit fc46df93840fcfce3f4f5f072556f3c08622b385\nAuthor: Patrick Linden <216397820+patl4588@users.noreply.github.com>\nDate:   Mon Nov 16 17:28:59 2026 -0500\n\n    fix(docs): prevent anaphoric PDF context wipeout and add native .docx Word export\n\n agent.js                                         |  15 +-\n docx-export.js                                   | 715 +++++++++++++++++++++++++++++++++++\n main.js                                          | 174 ++++++++-\n package.json                                     |   1 +\n pdf-orchestration.js                             |  80 +++-\n preload.js                                       |   4 +\n renderer/chat.js                                 | 176 +++++++++\n tests/hallucination-docx-and-pdf-context.test.js | 311 +++++++++++++++\n tests/packaging.test.js                          |   1 +\n 9 files changed, 1449 insertions(+), 28 deletions(-)\n\ncommit b34152af9bdab3f0e3b97a9cf9bd40e777a79632\nAuthor: Patrick Linden <216397820+patl4588@users.noreply.github.com>\nDate:   Mon Nov 16 17:02:39 2026 -0500\n\n    feat(desktop): native $0.00 governed external website screenshot capture and multi-site preview\n\n main.js                          |  57 ++-\n package.json                     |   1 +\n preload.js                       |   1 +\n renderer/chat.css                | 149 ++++++++\n renderer/chat.js                 | 430 +++++++++++++++++++++++\n tests/website-screenshot.test.js | 274 +++++++++++++++\n website-screenshot.js            | 974 +++++++++++++++++++++++++++++++++++++++++++++++++++\n 7 files changed, 1885 insertions(+), 1 deletion(-)\n\ncommit 0eae9d20379516a393c8ae4e1d465e2884cb51f4\nAuthor: Patrick Linden <216397820+patl4588@users.noreply.github.com>\nDate:   Mon Nov 16 16:54:09 2026 -0500\n\n    fix(resilience): eliminate 140s execution_unknown hangs, wedged petiw-runs, and error receipt bugs\n\n cloud-services-sync.js               |  77 ++++---\n main.js                              |  37 +++-\n package.json                         |   1 +\n petiw-provider.js                    | 273 +++++++++++++++++++++++--\n renderer/chat.js                     |  77 ++++---\n renderer/index.html                  |   2 +-\n tests/petiw-chaos-resilience.test.js | 514 +++++++++++++++++++++++++++++++++++++++++++++++\n 7 files changed, 910 insertions(+), 71 deletions(-)\n\ncommit fcee734ef9f6c7860cdb79cadf05dc572958d081\nAuthor: Patrick Linden <216397820+patl4588@users.noreply.github.com>\nDate:   Mon Nov 16 12:31:49 2026 -0500\n\n    perf(mozart-wave2): wire zero-think loopback Ollama fastpath into Desktop subagent swarm\n\n local-ollama-fastpath.js            | 150 +++++++++++++++++++++++++++++++++++++++++++++---\n subagent-tools.js                   |  31 ++++++++++\n tests/local-ollama-fastpath.test.js |  37 +++++++++---\n 3 files changed, 202 insertions(+), 16 deletions(-)",
       "commits": [
         {
-          "sha": "83518dba195d87b5a2f8dde562777e7826c7d765",
-          "short_sha": "83518db",
-          "author_date_iso": "2026-11-17T08:43:27-05:00",
-          "relative_time": "4 hours ago",
+          "sha": "78d4108444bac2bf67cdf2a3fc529a4fa82f230f",
+          "short_sha": "78d4108",
+          "author_date_iso": "2026-11-18T10:52:01-05:00",
+          "relative_time": "2 minutes ago",
           "subject": "fix(desktop): eliminate false-positive chat guard blocks, unlock reopened threads, and harden offline/PDF/DOCX artifact previews",
           "stat_summary": "8 files changed, 2598 insertions(+), 190 deletions(-)",
           "changed_files": [
@@ -268,13 +277,13 @@
             "tests/mozart-delta-desktop-superiority.test.js | 1391 ++++++++++++++++++++++++++++++++"
           ],
           "patch_preview": "",
-          "github_commit_url": "https://github.com/SamyBchaalia/railcall-chat/commit/83518dba195d87b5a2f8dde562777e7826c7d765"
+          "github_commit_url": "https://github.com/SamyBchaalia/railcall-chat/commit/78d4108444bac2bf67cdf2a3fc529a4fa82f230f"
         },
         {
-          "sha": "765e3ce0d999c9cee23ba2f23fabbd6799087984",
-          "short_sha": "765e3ce",
-          "author_date_iso": "2026-11-16T17:28:59-05:00",
-          "relative_time": "19 hours ago",
+          "sha": "fc46df93840fcfce3f4f5f072556f3c08622b385",
+          "short_sha": "fc46df9",
+          "author_date_iso": "2026-11-18T10:52:01-05:00",
+          "relative_time": "2 minutes ago",
           "subject": "fix(docs): prevent anaphoric PDF context wipeout and add native .docx Word export",
           "stat_summary": "9 files changed, 1449 insertions(+), 28 deletions(-)",
           "changed_files": [
@@ -289,13 +298,13 @@
             "tests/packaging.test.js                          |   1 +"
           ],
           "patch_preview": "",
-          "github_commit_url": "https://github.com/SamyBchaalia/railcall-chat/commit/765e3ce0d999c9cee23ba2f23fabbd6799087984"
+          "github_commit_url": "https://github.com/SamyBchaalia/railcall-chat/commit/fc46df93840fcfce3f4f5f072556f3c08622b385"
         },
         {
-          "sha": "20d192675c048da78a6a77b88b277bb4a305286d",
-          "short_sha": "20d1926",
-          "author_date_iso": "2026-11-16T17:02:39-05:00",
-          "relative_time": "20 hours ago",
+          "sha": "b34152af9bdab3f0e3b97a9cf9bd40e777a79632",
+          "short_sha": "b34152a",
+          "author_date_iso": "2026-11-18T10:52:01-05:00",
+          "relative_time": "2 minutes ago",
           "subject": "feat(desktop): native $0.00 governed external website screenshot capture and multi-site preview",
           "stat_summary": "7 files changed, 1885 insertions(+), 1 deletion(-)",
           "changed_files": [
@@ -308,13 +317,13 @@
             "website-screenshot.js            | 974 +++++++++++++++++++++++++++++++++++++++++++++++"
           ],
           "patch_preview": "",
-          "github_commit_url": "https://github.com/SamyBchaalia/railcall-chat/commit/20d192675c048da78a6a77b88b277bb4a305286d"
+          "github_commit_url": "https://github.com/SamyBchaalia/railcall-chat/commit/b34152af9bdab3f0e3b97a9cf9bd40e777a79632"
         },
         {
-          "sha": "9732758c7a129c08c58ff130beafda75ec662d20",
-          "short_sha": "9732758",
-          "author_date_iso": "2026-11-16T16:54:09-05:00",
-          "relative_time": "20 hours ago",
+          "sha": "0eae9d20379516a393c8ae4e1d465e2884cb51f4",
+          "short_sha": "0eae9d2",
+          "author_date_iso": "2026-11-18T10:52:01-05:00",
+          "relative_time": "2 minutes ago",
           "subject": "fix(resilience): eliminate 140s execution_unknown hangs, wedged petiw-runs, and error receipt bugs",
           "stat_summary": "7 files changed, 910 insertions(+), 71 deletions(-)",
           "changed_files": [
@@ -327,13 +336,13 @@
             "tests/petiw-chaos-resilience.test.js | 514 +++++++++++++++++++++++++++++++++++++++++++"
           ],
           "patch_preview": "",
-          "github_commit_url": "https://github.com/SamyBchaalia/railcall-chat/commit/9732758c7a129c08c58ff130beafda75ec662d20"
+          "github_commit_url": "https://github.com/SamyBchaalia/railcall-chat/commit/0eae9d20379516a393c8ae4e1d465e2884cb51f4"
         },
         {
-          "sha": "7432606532392c0464de9a9a9e422b5174e5b777",
-          "short_sha": "7432606",
-          "author_date_iso": "2026-11-16T12:31:49-05:00",
-          "relative_time": "24 hours ago",
+          "sha": "fcee734ef9f6c7860cdb79cadf05dc572958d081",
+          "short_sha": "fcee734",
+          "author_date_iso": "2026-11-18T10:52:01-05:00",
+          "relative_time": "2 minutes ago",
           "subject": "perf(mozart-wave2): wire zero-think loopback Ollama fastpath into Desktop subagent swarm",
           "stat_summary": "3 files changed, 202 insertions(+), 16 deletions(-)",
           "changed_files": [
@@ -342,7 +351,7 @@
             "tests/local-ollama-fastpath.test.js |  37 ++++++++---"
           ],
           "patch_preview": "",
-          "github_commit_url": "https://github.com/SamyBchaalia/railcall-chat/commit/7432606532392c0464de9a9a9e422b5174e5b777"
+          "github_commit_url": "https://github.com/SamyBchaalia/railcall-chat/commit/fcee734ef9f6c7860cdb79cadf05dc572958d081"
         }
       ]
     },
@@ -372,7 +381,7 @@
           "sha": "4f06b83ae111692bc2cd18c339d662effa11015e",
           "short_sha": "4f06b83ae",
           "author_date_iso": "2026-11-17T12:43:39-05:00",
-          "relative_time": "4 minutes ago",
+          "relative_time": "22 hours ago",
           "subject": "feat(cloud-router,station): implement 48-group 14D Task x Speed x Quality x Cost Pareto ranker with empirical Wilson feedback and Direct-First Station cost_router",
           "stat_summary": "10 files changed, 1107 insertions(+), 67 deletions(-)",
           "changed_files": [
@@ -394,7 +403,7 @@
           "sha": "785c70e024fa221f797684b09c1d12825a304438",
           "short_sha": "785c70e02",
           "author_date_iso": "2026-11-17T10:59:28-05:00",
-          "relative_time": "2 hours ago",
+          "relative_time": "24 hours ago",
           "subject": "feat(cloud-router): build direct-first sovereign routing, native Google Gemini direct, dedicated_gpu replay fix, and OpenRouter emergency backup",
           "stat_summary": "15 files changed, 428 insertions(+), 82 deletions(-)",
           "changed_files": [
@@ -421,7 +430,7 @@
           "sha": "e822ba805da360be20f7248f5997f92c16ab4ddd",
           "short_sha": "e822ba805",
           "author_date_iso": "2026-11-17T09:14:56-05:00",
-          "relative_time": "4 hours ago",
+          "relative_time": "26 hours ago",
           "subject": "perf(station,cloud-router): disable hidden reasoning on fast SSE streams, fix binary preload crash, and wire Tier-0 Dedicated GPU pool",
           "stat_summary": "22 files changed, 1279 insertions(+), 85 deletions(-)",
           "changed_files": [
@@ -451,7 +460,7 @@
           "sha": "6a5f0645952322d7b48b425134a32a7cde0bfd14",
           "short_sha": "6a5f06459",
           "author_date_iso": "2026-11-17T08:14:24-05:00",
-          "relative_time": "5 hours ago",
+          "relative_time": "27 hours ago",
           "subject": "fix(guard): eliminate chat_guard false-positive declines on executive/legal/financial/M&A/coding/workflow prompts while preserving security & red-team rails",
           "stat_summary": "7 files changed, 435 insertions(+), 51 deletions(-)",
           "changed_files": [
@@ -470,7 +479,7 @@
           "sha": "8d82ed54b3b4fec4b8ec03b64c454a1139df46de",
           "short_sha": "8d82ed54b",
           "author_date_iso": "2026-11-16T17:13:18-05:00",
-          "relative_time": "20 hours ago",
+          "relative_time": "2 days ago",
           "subject": "perf(cloud-router): wire sub-second pre-stream failover, priority exchange pool, non-blocking delta traces, and two-phase SIGTERM drain",
           "stat_summary": "7 files changed, 737 insertions(+), 97 deletions(-)",
           "changed_files": [
