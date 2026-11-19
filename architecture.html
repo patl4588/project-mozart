@@ -1,0 +1,1403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RailCall &amp; Project Mozart — Complete Current System Architecture (Ground-Truth Reference)</title>
+  <style>
+    :root {
+      --bg: #0A0C13;
+      --panel: #111420;
+      --panel-elev: #171B2B;
+      --panel-soft: #0E111B;
+      --border: #242939;
+      --border-hi: #353D56;
+      --pink: #FC185E;
+      --orange: #E34E0B;
+      --grad: linear-gradient(135deg, #FC185E 0%, #E34E0B 100%);
+      --green: #10B981;
+      --cyan: #38BDF8;
+      --amber: #F59E0B;
+      --purple: #A855F7;
+      --ink: #F4F6FB;
+      --muted: #9BA3B8;
+      --dim: #6B738A;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      --sans: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background:
+        radial-gradient(900px 420px at 12% 0%, rgba(252, 24, 94, 0.11), transparent 60%),
+        radial-gradient(800px 380px at 88% 4%, rgba(227, 78, 11, 0.09), transparent 60%),
+        var(--bg);
+      color: var(--ink);
+      font-family: var(--sans);
+      line-height: 1.55;
+      padding-bottom: 80px;
+    }
+    a { color: #FF6B98; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    code {
+      font-family: var(--mono);
+      font-size: 0.86em;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      padding: 1px 6px;
+      border-radius: 5px;
+      color: #FDE047;
+    }
+
+    /* Top Sticky Bar */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(10, 12, 19, 0.9);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 24px;
+    }
+    .topbar-inner {
+      max-width: 1380px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      font-weight: 800;
+      font-size: 16px;
+      letter-spacing: -0.02em;
+    }
+    .brand-mark {
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      background: var(--grad);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--mono);
+      font-weight: 900;
+      font-size: 13px;
+      color: #fff;
+      box-shadow: 0 0 18px rgba(252, 24, 94, 0.35);
+    }
+    .nav-links {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .nav-pill {
+      padding: 6px 11px;
+      border-radius: 7px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+      background: var(--panel);
+      border: 1px solid var(--border);
+      transition: all 0.15s;
+    }
+    .nav-pill:hover {
+      color: #fff;
+      border-color: var(--pink);
+      text-decoration: none;
+    }
+    .nav-pill.primary {
+      background: var(--grad);
+      color: #fff;
+      border-color: transparent;
+    }
+
+    .wrap {
+      max-width: 1380px;
+      margin: 0 auto;
+      padding: 28px 24px 0;
+    }
+
+    /* Hero */
+    .hero {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px 30px;
+      margin-bottom: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--grad);
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #FF7AA2;
+      margin-bottom: 10px;
+    }
+    .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 10px var(--green);
+    }
+    h1 {
+      font-size: 30px;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      line-height: 1.2;
+      margin-bottom: 10px;
+    }
+    .hero-sub {
+      color: var(--muted);
+      font-size: 14.5px;
+      max-width: 980px;
+      margin-bottom: 20px;
+    }
+    .kpi-strip {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(185px, 1fr));
+      gap: 12px;
+    }
+    .kpi {
+      background: var(--panel-soft);
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      padding: 13px 15px;
+    }
+    .kpi-val {
+      font-family: var(--mono);
+      font-size: 20px;
+      font-weight: 800;
+      color: #fff;
+    }
+    .kpi-val.pink {
+      background: var(--grad);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .kpi-lbl {
+      font-size: 11.5px;
+      color: var(--muted);
+      margin-top: 3px;
+    }
+
+    /* Section */
+    .section {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 26px 28px;
+      margin-bottom: 24px;
+    }
+    .sec-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 16px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    .sec-num {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--pink);
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      margin-bottom: 4px;
+    }
+    h2 {
+      font-size: 21px;
+      font-weight: 750;
+      letter-spacing: -0.02em;
+    }
+    .sec-desc {
+      font-size: 13.5px;
+      color: var(--muted);
+      margin-top: 4px;
+      max-width: 860px;
+    }
+
+    /* Interactive Master Topology Grid */
+    .topo-layout {
+      display: grid;
+      grid-template-columns: 1fr 390px;
+      gap: 18px;
+      align-items: start;
+    }
+    @media (max-width: 1080px) {
+      .topo-layout { grid-template-columns: 1fr; }
+    }
+    .topo-plane {
+      background: var(--panel-soft);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 12px;
+    }
+    .topo-plane:last-child { margin-bottom: 0; }
+    .plane-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+    .plane-nodes {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 10px;
+    }
+    .node-card {
+      text-align: left;
+      background: var(--panel-elev);
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 11px 13px;
+      color: var(--ink);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .node-card:hover {
+      border-color: #FF6B98;
+      transform: translateY(-1px);
+    }
+    .node-card.active {
+      border-color: var(--pink);
+      box-shadow: 0 0 0 1px var(--pink), 0 8px 24px rgba(252, 24, 94, 0.18);
+      background: #1C2035;
+    }
+    .node-tag {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+      margin-bottom: 6px;
+    }
+    .tag-pink { background: rgba(252, 24, 94, 0.16); color: #FF7AA2; }
+    .tag-cyan { background: rgba(56, 189, 248, 0.15); color: #7DD3FC; }
+    .tag-green { background: rgba(16, 185, 129, 0.16); color: #6EE7B7; }
+    .tag-amber { background: rgba(245, 158, 11, 0.16); color: #FCD34D; }
+    .tag-purple { background: rgba(168, 85, 247, 0.16); color: #D8B4FE; }
+    .node-title {
+      font-size: 13.5px;
+      font-weight: 700;
+      margin-bottom: 3px;
+    }
+    .node-sub {
+      font-size: 11.5px;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+    .plane-connector {
+      text-align: center;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: #FF7AA2;
+      padding: 4px 0;
+    }
+
+    /* Inspector Panel */
+    .inspector {
+      position: sticky;
+      top: 74px;
+      background: var(--panel-elev);
+      border: 1.5px solid var(--border-hi);
+      border-radius: 13px;
+      padding: 18px 20px;
+    }
+    .insp-badge {
+      font-family: var(--mono);
+      font-size: 10.5px;
+      font-weight: 700;
+      color: #6EE7B7;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      margin-bottom: 6px;
+    }
+    .insp-title {
+      font-size: 17px;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+    .insp-repo {
+      font-family: var(--mono);
+      font-size: 11.5px;
+      color: #7DD3FC;
+      margin-bottom: 12px;
+      word-break: break-all;
+    }
+    .insp-desc {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+    .insp-list-lbl {
+      font-family: var(--mono);
+      font-size: 10.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--ink);
+      margin: 12px 0 6px;
+      letter-spacing: 0.06em;
+    }
+    .insp-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .insp-list li {
+      font-size: 12px;
+      color: var(--muted);
+      padding-left: 13px;
+      position: relative;
+    }
+    .insp-list li::before {
+      content: "▸";
+      position: absolute;
+      left: 0;
+      color: var(--pink);
+    }
+
+    /* Sequence Lifecycle Tabs */
+    .tab-bar {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+    .tab-btn {
+      padding: 8px 14px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--panel-soft);
+      color: var(--muted);
+      font-size: 12.5px;
+      font-weight: 650;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .tab-btn:hover { color: #fff; border-color: var(--border-hi); }
+    .tab-btn.active {
+      background: var(--grad);
+      color: #fff;
+      border-color: transparent;
+    }
+    .flow-steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+    }
+    .step-box {
+      background: var(--panel-soft);
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      padding: 14px 15px;
+      position: relative;
+    }
+    .step-num {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--pink);
+      margin-bottom: 5px;
+    }
+    .step-title {
+      font-size: 13.5px;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+    .step-detail {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    /* Deep Repo Cards & Tables */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+    @media (max-width: 980px) {
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    }
+    .subcard {
+      background: var(--panel-soft);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px 20px;
+    }
+    .subcard h3 {
+      font-size: 15.5px;
+      font-weight: 750;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .subcard .meta {
+      font-family: var(--mono);
+      font-size: 11.5px;
+      color: var(--cyan);
+      margin-bottom: 10px;
+    }
+    .module-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+    .mod-chip {
+      font-family: var(--mono);
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 5px;
+      background: var(--panel-elev);
+      border: 1px solid var(--border);
+      color: #D1D5DB;
+    }
+    .mod-list {
+      margin-top: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 12.5px;
+      color: var(--muted);
+    }
+    .mod-list strong { color: var(--ink); }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12.5px;
+    }
+    th, td {
+      text-align: left;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    th {
+      font-family: var(--mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      background: var(--panel-soft);
+    }
+    tr:last-child td { border-bottom: none; }
+    .mono { font-family: var(--mono); }
+    .ok { color: var(--green); font-weight: 700; }
+    .pink-txt { color: #FF7AA2; font-weight: 700; }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation -->
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <span class="brand-mark">RC</span>
+        <span>RailCall &amp; Project Mozart · Current System Architecture</span>
+      </div>
+      <nav class="nav-links">
+        <a class="nav-pill" href="#topology">1. Master Topology</a>
+        <a class="nav-pill" href="#lifecycles">2. Request Lifecycles</a>
+        <a class="nav-pill" href="#repos">3. 4-Repo Module Map</a>
+        <a class="nav-pill" href="#database">4. 65-Model DB Schema</a>
+        <a class="nav-pill" href="#security">5. Security &amp; Airlocks</a>
+        <a class="nav-pill" href="#subagents">6. $0 Qwen Sub-Agents</a>
+        <a class="nav-pill" href="#goals">7. Ongoing Goal Ratchets</a>
+        <a class="nav-pill primary" href="./index.html">← Live Telemetry Hub</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+
+    <!-- Hero Summary -->
+    <section class="hero">
+      <div class="eyebrow"><span class="dot"></span> Ground-Truth Codebase Reference · Verified on Branch mozart/v2-autonomous</div>
+      <h1>Complete Current Architecture of RailCall, Linden, Station &amp; Project Mozart</h1>
+      <p class="hero-sub">
+        Code-verified architectural blueprint across every active service, protocol, IPC channel, database model, cryptographic receipt signer, Pareto routing stage, and local GPU engine. All 4 repositories operate inside air-gapped private forks (<code>patl4588/mozart-*</code>) with <code>upstream push = DISABLED</code> so production stays 100% untouched.
+      </p>
+      <div class="kpi-strip">
+        <div class="kpi">
+          <div class="kpi-val pink">4 Repos · 8 Apps</div>
+          <div class="kpi-lbl">Website · Desktop · Marketplace · Cloud-Router · Gateway · Station</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-val">65 Prisma Models</div>
+          <div class="kpi-lbl">35 NestJS Modules on PostgreSQL / Neon + Local SQLite/JSONL</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-val">68 IPC + 29 Web APIs</div>
+          <div class="kpi-lbl">Electron ContextBridge Channels + Next.js /api/workspace &amp; /v1</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-val">32 Worker Slots</div>
+          <div class="kpi-lbl">Lock-Free Job Claim · &lt;120ms Pre-Stream Failover · SIGTERM Drain</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-val pink">-95.4% Cost</div>
+          <div class="kpi-lbl">48/48 Micro-Groups Pareto-Dominant · -22.4% Latency vs OR</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-val">$0.00 Local Fleet</div>
+          <div class="kpi-lbl">5 Qwen3 / OSS GGUF Models on :11434 (0.8B → 79.7B, 262K Ctx)</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- 1. INTERACTIVE MASTER TOPOLOGY DIAGRAM                             -->
+    <!-- ================================================================== -->
+    <section class="section" id="topology">
+      <div class="sec-head">
+        <div>
+          <div class="sec-num">Section 01 · Interactive End-to-End Topology</div>
+          <h2>Master System Architecture (Click Any Component to Inspect Internals)</h2>
+          <p class="sec-desc">Every live layer from user surfaces down to routing, persistence, cryptographic receipts, local Mac execution, and the Mozart QA Gatekeeper.</p>
+        </div>
+      </div>
+
+      <div class="topo-layout">
+        <div>
+          <!-- Plane 1 -->
+          <div class="topo-plane">
+            <div class="plane-header">
+              <span>Layer 1 · User &amp; Developer Client Surfaces</span>
+              <span>HTTPS / SSE / Electron IPC / OpenAI SDK</span>
+            </div>
+            <div class="plane-nodes">
+              <button class="node-card active" onclick="inspectNode('website', this)">
+                <span class="node-tag tag-pink">Next.js 15 · :3000</span>
+                <div class="node-title">railcall-website</div>
+                <div class="node-sub">161 Pages · WebChat SSE · Workflows/Canvas · /verify · Marketplace UI</div>
+              </button>
+              <button class="node-card" onclick="inspectNode('desktop', this)">
+                <span class="node-tag tag-pink">Electron 33.4 · v0.12.47</span>
+                <div class="node-title">railcall-chat (Desktop)</div>
+                <div class="node-sub">Chat · Sandboxed Artifact Workbench · Tabbed Agents &amp; Workflows · 68 IPCs</div>
+              </button>
+              <button class="node-card" onclick="inspectNode('v1sdk', this)">
+                <span class="node-tag tag-cyan">OpenAI /v1 + CLI + MCP</span>
+                <div class="node-title">Public /v1 API &amp; SDKs</div>
+                <div class="node-sub">railcall.ai/v1 · 127.0.0.1:8799/v1 · Cursor / Claude / Python / TS SDK</div>
+              </button>
+            </div>
+          </div>
+
+          <div class="plane-connector">⬇ HTTPS / Bearer rc_sk_* / Stateless HMAC Cookie (rc_ws) / Signed Visitor IP ⬇</div>
+
+          <!-- Plane 2 -->
+          <div class="topo-plane">
+            <div class="plane-header">
+              <span>Layer 2 · Control Plane, Atomic Metering &amp; Database (railcall-marketplace + gateway)</span>
+              <span>NestJS + Prisma + Neon Postgres</span>
+            </div>
+            <div class="plane-nodes">
+              <button class="node-card" onclick="inspectNode('marketplace', this)">
+                <span class="node-tag tag-cyan">NestJS · 35 Modules</span>
+                <div class="node-title">railcall-marketplace API</div>
+                <div class="node-sub">Auth/SSO/SCIM · Workspace API · Lock-Free AssistantJob Queue · 850+ Apps</div>
+              </button>
+              <button class="node-card" onclick="inspectNode('patsum', this)">
+                <span class="node-tag tag-amber">Atomic Credit Ledger</span>
+                <div class="node-title">Patsum Metering &amp; Gateway</div>
+                <div class="node-sub">$5 Signed IP Cap · Reserve → Settle · COGS Redaction · Stripe/Escrow</div>
+              </button>
+              <button class="node-card" onclick="inspectNode('neon', this)">
+                <span class="node-tag tag-green">Serverless PostgreSQL</span>
+                <div class="node-title">Neon / Postgres (65 Models)</div>
+                <div class="node-sub">Users · WalletTx · AssistantJob · CanvasDraft · WorkspaceImage · Receipts</div>
+              </button>
+            </div>
+          </div>
+
+          <div class="plane-connector">⬇ Lock-Free Job Claim (32 Concurrent Worker Slots) &amp; Direct /v1 Dispatch ⬇</div>
+
+          <!-- Plane 3 -->
+          <div class="topo-plane">
+            <div class="plane-header">
+              <span>Layer 3 · Intelligence Routing, Execution Engines &amp; Cryptographic Truth (linden)</span>
+              <span>Cloud-Router + Provider Mesh + Ed25519</span>
+            </div>
+            <div class="plane-nodes">
+              <button class="node-card" onclick="inspectNode('router', this)">
+                <span class="node-tag tag-pink">48-Group Pareto Engine</span>
+                <div class="node-title">linden / cloud-router</div>
+                <div class="node-sub">Speed×Quality×Cost Scoring · &lt;120ms Pre-Stream Failover · 32-Slot Worker</div>
+              </button>
+              <button class="node-card" onclick="inspectNode('providers', this)">
+                <span class="node-tag tag-purple">Multi-Provider Mesh</span>
+                <div class="node-title">Direct Providers + OR Backup</div>
+                <div class="node-sub">Prefix-Cached Direct Lanes + OpenRouter Fallback + FLUX Image &amp; Video</div>
+              </button>
+              <button class="node-card" onclick="inspectNode('receipts', this)">
+                <span class="node-tag tag-green">Ed25519 + Merkle STH</span>
+                <div class="node-title">Receipts &amp; Witness Ledger</div>
+                <div class="node-sub">Signed Node &amp; Turn Receipts · IssuanceSth Transparency Log · /verify</div>
+              </button>
+            </div>
+          </div>
+
+          <div class="plane-connector">⬇ Loopback Sovereign Execution (127.0.0.1 Only · $0.00 Marginal Compute) ⬇</div>
+
+          <!-- Plane 4 -->
+          <div class="topo-plane">
+            <div class="plane-header">
+              <span>Layer 4 · On-Device Mac Sovereign Plane ($0.00 Compute &amp; Airlocked Tools)</span>
+              <span>127.0.0.1:8799 + 127.0.0.1:11434</span>
+            </div>
+            <div class="plane-nodes">
+              <button class="node-card" onclick="inspectNode('station', this)">
+                <span class="node-tag tag-green">Python HQ · :8799</span>
+                <div class="node-title">linden / station Daemon</div>
+                <div class="node-sub">Local /v1 · Workflow DAG Runner · Plan-Root Pinning · 850+ App Vault</div>
+              </button>
+              <button class="node-card" onclick="inspectNode('ollama', this)">
+                <span class="node-tag tag-green">Apple Silicon GPU · :11434</span>
+                <div class="node-title">5-Tier Qwen / Ollama Fleet</div>
+                <div class="node-sub">router (0.8B) · fast (4B) · security (20B) · core (30B) · coder (79.7B)</div>
+              </button>
+              <button class="node-card" onclick="inspectNode('mozart', this)">
+                <span class="node-tag tag-amber">Autonomous Control Plane</span>
+                <div class="node-title">Project Mozart v2 + QA Gate</div>
+                <div class="node-sub">4 Air-Gapped Forks (mozart/*) · 5-Squad Chaos/Browser Gatekeeper</div>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sticky Right Inspector -->
+        <aside class="inspector" id="node-inspector">
+          <div class="insp-badge" id="insp-badge">Next.js 15 · Port 3000 / Cloud</div>
+          <div class="insp-title" id="insp-title">railcall-website</div>
+          <div class="insp-repo" id="insp-repo">Fork: patl4588/mozart-railcall-website (upstream push: DISABLED)</div>
+          <p class="insp-desc" id="insp-desc"></p>
+          <div class="insp-list-lbl">Key Source Paths &amp; Modules</div>
+          <ul class="insp-list" id="insp-files"></ul>
+          <div class="insp-list-lbl">Verified Interfaces &amp; Tests</div>
+          <ul class="insp-list" id="insp-specs"></ul>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- 2. END-TO-END REQUEST LIFECYCLES                                   -->
+    <!-- ================================================================== -->
+    <section class="section" id="lifecycles">
+      <div class="sec-head">
+        <div>
+          <div class="sec-num">Section 02 · Exact Runtime Execution Paths</div>
+          <h2>4 Core End-to-End Request Lifecycles</h2>
+          <p class="sec-desc">Trace how bytes, auth tokens, credits, tool airlocks, and cryptographic signatures move through the current codebase on every request.</p>
+        </div>
+      </div>
+
+      <div class="tab-bar">
+        <button class="tab-btn active" onclick="selectFlow(0, this)">Flow A · Visual Website / Checkout Build</button>
+        <button class="tab-btn" onclick="selectFlow(1, this)">Flow B · Cloud Chat &amp; /v1 Pareto Routing</button>
+        <button class="tab-btn" onclick="selectFlow(2, this)">Flow C · Governed Workflow DAG &amp; Airlock</button>
+        <button class="tab-btn" onclick="selectFlow(3, this)">Flow D · $0.00 Local Station &amp; Qwen Fastpath</button>
+      </div>
+
+      <div class="flow-steps" id="flow-container"></div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- 3. REPOSITORY-BY-REPOSITORY DEEP INVENTORY                         -->
+    <!-- ================================================================== -->
+    <section class="section" id="repos">
+      <div class="sec-head">
+        <div>
+          <div class="sec-num">Section 03 · Codebase Module Inventory</div>
+          <h2>All 4 Isolated Product Repositories &amp; Internal Subsystems</h2>
+          <p class="sec-desc">Every directory, engine, and responsibility verified directly from disk on branch <code>mozart/v2-autonomous</code>.</p>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <!-- Repo 1 -->
+        <div class="subcard">
+          <h3>
+            <span>1. mozart-linden (Monorepo)</span>
+            <span class="node-tag tag-pink">48/48 Pareto · 100% Dominant</span>
+          </h3>
+          <div class="meta">Fork: patl4588/mozart-linden ← Upstream: patl4588/linden (LOCKED)</div>
+          <div class="mod-list">
+            <div><strong>apps/cloud-router/src/ (45 modules):</strong> <code>router.js</code>, <code>predictive-routing-index.js</code>, <code>task-rating-algo.js</code>, <code>effort.js</code>, <code>provider-failover.js</code> (&lt;120ms pre-stream circuit breaker), <code>marketplace-worker.js</code> (32-slot pool + SIGTERM drain), <code>marketplace-exchange.js</code>, <code>action-workflow.js</code>, <code>workflow-proposal.js</code>, <code>research-document-handlers.js</code>, <code>marketplace-image-bridge.js</code>, <code>video-router.js</code>, <code>visual-qa-edge.js</code>, <code>answer-review.js</code>, <code>job-evidence.js</code>.</div>
+            <div><strong>apps/gateway/ (NestJS + Prisma):</strong> Dedicated <code>patsum</code> high-speed credit reservation, rate-limiting, and atomic settlement service.</div>
+            <div><strong>apps/station/ (Python HQ :8799):</strong> <code>server/hq_server.py</code>, <code>server/railcall_hq.py</code>, <code>server/mcp/</code>, <code>seed_modules/</code>, <code>internal_modules/</code> (<code>local_reason</code>), <code>modules_catalog/</code>, <code>workflows/</code>, <code>transaction_runs/</code>.</div>
+            <div><strong>packages/:</strong> <code>@linden/core</code>, <code>linden-plugin-sdk</code>, <code>artifact-ui</code>.</div>
+          </div>
+        </div>
+
+        <!-- Repo 2 -->
+        <div class="subcard">
+          <h3>
+            <span>2. mozart-railcall-marketplace (Backend)</span>
+            <span class="node-tag tag-cyan">109/109 Specs Green</span>
+          </h3>
+          <div class="meta">Fork: patl4588/mozart-railcall-marketplace ← Upstream: patl4588/railcall-marketplace (LOCKED)</div>
+          <div class="mod-list">
+            <div><strong>Auth, Identity &amp; Enterprise (8 modules):</strong> <code>auth</code> (JWT, RefreshToken, OAuth, SSO), <code>scim</code>, <code>users</code>, <code>identity</code>, <code>org</code>, <code>org-billing</code>, <code>admin</code>, <code>moderation</code>.</div>
+            <div><strong>Assistant, Workspace &amp; /v1 (4 core clusters):</strong> <code>assistant/</code> (21 files: lock-free job queue, <code>patsum.policy.ts</code>, <code>provider-metering.ts</code>, <code>usage-evidence.ts</code>), <code>workspace/</code> (135 files: projects, conversations, canvas, subagents, images), <code>v1/</code> (<code>linden-v1.controller.ts</code>), <code>hub/</code>.</div>
+            <div><strong>Cryptographic Trust &amp; Relay (5 modules):</strong> <code>receipts</code>, <code>witness</code>, <code>transparency</code> (Merkle STH), <code>relay</code>, <code>audit</code>.</div>
+            <div><strong>Commerce &amp; Ecosystem (14 modules):</strong> <code>listings</code>, <code>sellers</code>, <code>carts</code>, <code>purchases</code>, <code>escrow</code>, <code>payouts</code>, <code>licenses</code>, <code>reviews</code>, <code>requests</code>, <code>community</code>, <code>parameter-network</code>, <code>artifacts</code>, <code>telemetry</code>, <code>notifications</code>.</div>
+          </div>
+        </div>
+
+        <!-- Repo 3 -->
+        <div class="subcard">
+          <h3>
+            <span>3. mozart-railcall-website (Web &amp; BFF)</span>
+            <span class="node-tag tag-green">161 Static Pages · 96 Specs</span>
+          </h3>
+          <div class="meta">Fork: patl4588/mozart-railcall-website ← Upstream: patl4588/railcall-website (LOCKED)</div>
+          <div class="mod-list">
+            <div><strong>Workspace &amp; Studio Surfaces:</strong> <code>/chat</code>, <code>/chat/[id]</code> (SSE + Artifact split view), <code>/chat/agents</code> (<code>AgentsHome.tsx</code> Mozart departments), <code>/workspace/workflows</code> (<code>WorkflowsClient.tsx</code>), <code>/workspace/canvas</code>, <code>/workspace/connections</code>, <code>/workspace/monitor</code>, <code>/workspace/usage</code>, <code>/workspace/verify</code>, <code>/console/{keys,logs,audit}</code>.</div>
+            <div><strong>OpenAI /v1 Edge Routes:</strong> <code>/v1/chat/completions</code> (Task-profile Direct routing + OpenRouter backup), <code>/v1/models</code>, <code>/v1/images</code>, <code>/v1/videos</code>.</div>
+            <div><strong>25 /api/workspace/* BFF Endpoints:</strong> <code>session</code>, <code>me</code>, <code>credits</code>, <code>conversations</code>, <code>runs</code>, <code>projects</code>, <code>artifacts</code>, <code>agents</code>, <code>subagents</code>, <code>multi-agent</code>, <code>workflows</code>, <code>canvas</code>, <code>connections</code>, <code>browse</code>, <code>image-generate</code>, <code>video-generate</code>, <code>folio-pdf</code>, <code>entrepreneur-pack</code>.</div>
+            <div><strong>Public Docs &amp; Marketplace:</strong> 22 <code>/docs/*</code> guides, 14 <code>/marketplace/*</code> routes, 10 <code>/legal/*</code> compliance pages.</div>
+          </div>
+        </div>
+
+        <!-- Repo 4 -->
+        <div class="subcard">
+          <h3>
+            <span>4. mozart-railcall-chat (Native Desktop)</span>
+            <span class="node-tag tag-amber">828/828 Tests Green</span>
+          </h3>
+          <div class="meta">Fork: patl4588/mozart-railcall-chat ← Upstream: SamyBchaalia/railcall-chat (LOCKED)</div>
+          <div class="mod-list">
+            <div><strong>Renderer Surface (<code>renderer/</code>):</strong> <code>index.html</code> + <code>chat.js</code> (visual build override guard, tabbed Agents Hub &amp; Workflows Hub, embedded <code>n8n_canvas.html</code>), <code>artifact-workbench.js</code> (strict sandboxed iframe preview), <code>workflow-studio-dock.js</code>, <code>workflow-map.js</code>, <code>integrations-catalog.js</code> (850+ apps).</div>
+            <div><strong>Autonomous Agent &amp; Build Core:</strong> <code>agent.js</code> (tool loop + anti-runaway circuit breaker), <code>project-tools.js</code>, <code>site-kit.js</code>, <code>spec-amplifier.js</code>, <code>render-check.js</code> (390px/1440px), <code>qa-probe.js</code>, <code>qa-contract.js</code>, <code>auto-repair.js</code>.</div>
+            <div><strong>Document &amp; Pack Generators:</strong> <code>pdf.js</code> + <code>pdf-orchestration.js</code> (Executive Folios &amp; Slide Decks), <code>docx-export.js</code> (Word), <code>entrepreneur-pack.js</code>, <code>enterprise-file-intel.js</code> (OCR/CSV/QBO/XLSX).</div>
+            <div><strong>Governed Local Airlocks &amp; $0 Compute:</strong> <code>devbox-tools.js</code>, <code>local-fs-tools.js</code>, <code>browser-tools.js</code>, <code>website-screenshot.js</code>, <code>subagent-tools.js</code>, <code>station.js</code>, <code>local-ollama-fastpath.js</code>, <code>whitelabel-autopull.js</code>.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- 4. DATABASE & PERSISTENCE SCHEMA (65 PRISMA MODELS)                -->
+    <!-- ================================================================== -->
+    <section class="section" id="database">
+      <div class="sec-head">
+        <div>
+          <div class="sec-num">Section 04 · Data Layer &amp; Persistence</div>
+          <h2>PostgreSQL / Neon Schema (All 65 Prisma Models) + Local Desktop Ledger</h2>
+          <p class="sec-desc">Complete data model across cloud Neon Postgres (<code>railcall-marketplace/prisma/schema.prisma</code>) and local desktop persistence.</p>
+        </div>
+      </div>
+
+      <div class="grid-3">
+        <div class="subcard">
+          <h3>Identity, Auth &amp; Enterprise</h3>
+          <div class="meta">10 Models · RBAC + SCIM + Guest HMAC</div>
+          <div class="module-grid">
+            <span class="mod-chip">User</span>
+            <span class="mod-chip">Organization</span>
+            <span class="mod-chip">Membership</span>
+            <span class="mod-chip">OrgSubscription</span>
+            <span class="mod-chip">OrgAuditLog</span>
+            <span class="mod-chip">ApiKey</span>
+            <span class="mod-chip">RefreshToken</span>
+            <span class="mod-chip">Invitation</span>
+            <span class="mod-chip">GuestSession</span>
+            <span class="mod-chip">DesignPartnerApplication</span>
+          </div>
+        </div>
+
+        <div class="subcard">
+          <h3>Assistant Queue, Workspace &amp; Canvas</h3>
+          <div class="meta">13 Models · Lock-Free Job Claim + DAG</div>
+          <div class="module-grid">
+            <span class="mod-chip">AssistantJob</span>
+            <span class="mod-chip">AssistantWorker</span>
+            <span class="mod-chip">AssistantState</span>
+            <span class="mod-chip">WorkspaceProject</span>
+            <span class="mod-chip">WorkspaceProjectFile</span>
+            <span class="mod-chip">WorkspaceConversation</span>
+            <span class="mod-chip">WorkspaceImage</span>
+            <span class="mod-chip">CanvasDraft</span>
+            <span class="mod-chip">CanvasExecution</span>
+            <span class="mod-chip">StepAttempt</span>
+            <span class="mod-chip">RouterDecision</span>
+            <span class="mod-chip">SubworkflowRevision</span>
+            <span class="mod-chip">Conversation / Message</span>
+          </div>
+        </div>
+
+        <div class="subcard">
+          <h3>Wallet, Metering, Commerce &amp; Escrow</h3>
+          <div class="meta">14 Models · Atomic Credit Settlement</div>
+          <div class="module-grid">
+            <span class="mod-chip">WalletTransaction</span>
+            <span class="mod-chip">Subscription</span>
+            <span class="mod-chip">Cart</span>
+            <span class="mod-chip">CartItem</span>
+            <span class="mod-chip">Purchase</span>
+            <span class="mod-chip">PurchaseClaim</span>
+            <span class="mod-chip">EscrowHold</span>
+            <span class="mod-chip">ListingTransfer</span>
+            <span class="mod-chip">Payout</span>
+            <span class="mod-chip">SellerProfile</span>
+            <span class="mod-chip">Listing</span>
+            <span class="mod-chip">ListingNote</span>
+            <span class="mod-chip">ListingReport</span>
+            <span class="mod-chip">Review</span>
+          </div>
+        </div>
+
+        <div class="subcard">
+          <h3>Cryptographic Receipts &amp; Witness</h3>
+          <div class="meta">9 Models · Ed25519 + Merkle STH</div>
+          <div class="module-grid">
+            <span class="mod-chip">Receipt</span>
+            <span class="mod-chip">WitnessAnchor</span>
+            <span class="mod-chip">IssuanceLogEntry</span>
+            <span class="mod-chip">IssuanceSth</span>
+            <span class="mod-chip">TeamManifest</span>
+            <span class="mod-chip">TeamPolicyBundle</span>
+            <span class="mod-chip">RelayRoute</span>
+            <span class="mod-chip">RelayEvent</span>
+            <span class="mod-chip">RelaySequence</span>
+          </div>
+        </div>
+
+        <div class="subcard">
+          <h3>Station Telemetry &amp; Community</h3>
+          <div class="meta">19 Models · Releases, Modules &amp; Forum</div>
+          <div class="module-grid">
+            <span class="mod-chip">StationRelease</span>
+            <span class="mod-chip">StationInstall</span>
+            <span class="mod-chip">StationActivityDay</span>
+            <span class="mod-chip">StationEvent</span>
+            <span class="mod-chip">StudioDownload</span>
+            <span class="mod-chip">ModuleInstall</span>
+            <span class="mod-chip">ModuleRequest</span>
+            <span class="mod-chip">ModuleProposal</span>
+            <span class="mod-chip">ForumThread</span>
+            <span class="mod-chip">ForumPost</span>
+            <span class="mod-chip">ForumAttachment</span>
+            <span class="mod-chip">ForumCredit</span>
+            <span class="mod-chip">ForumReport</span>
+            <span class="mod-chip">Notification</span>
+            <span class="mod-chip">NotificationPreference</span>
+            <span class="mod-chip">PageView</span>
+          </div>
+        </div>
+
+        <div class="subcard">
+          <h3>Local Mac Sovereign Storage</h3>
+          <div class="meta">Zero-Cloud Private Desktop State</div>
+          <div class="module-grid">
+            <span class="mod-chip">run_ledger.jsonl</span>
+            <span class="mod-chip">conversations/*.json</span>
+            <span class="mod-chip">railcall-db.js (SQLite)</span>
+            <span class="mod-chip">projects/&lt;id&gt;/index.html</span>
+            <span class="mod-chip">transaction_runs/</span>
+            <span class="mod-chip">rc.customAgents.v1</span>
+            <span class="mod-chip">Station Keychain Vault</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- 5. SECURITY, CRYPTOGRAPHY & AIRLOCK BOUNDARIES                     -->
+    <!-- ================================================================== -->
+    <section class="section" id="security">
+      <div class="sec-head">
+        <div>
+          <div class="sec-num">Section 05 · Defense-in-Depth &amp; Verification</div>
+          <h2>7 Enforced Security, Billing &amp; Cryptographic Boundaries</h2>
+          <p class="sec-desc">Hard invariants verified continuously across unit tests and the 5-Squad Adversarial QA Gatekeeper.</p>
+        </div>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Boundary</th>
+            <th>Where Enforced</th>
+            <th>Exact Mechanism</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>1. Ed25519 Signed Receipts &amp; Merkle Log</strong></td>
+            <td class="mono">cloud-router/job-evidence.js · station · /workspace/verify</td>
+            <td>Every model hop, tool call, and DAG node emits a canonical payload signed with Ed25519 and anchored to <code>IssuanceSth</code>; public <code>/verify</code> validates signatures client-side.</td>
+            <td class="ok">ENFORCED</td>
+          </tr>
+          <tr>
+            <td><strong>2. Stateless Split-Brain Session &amp; IP Cap</strong></td>
+            <td class="mono">marketplace/workspace + launch_metered</td>
+            <td><code>rc_ws</code> cookie uses shared HMAC-SHA256 seal across non-sticky instances; signed visitor IP enforces strict $5.00 trial cap with 401 gates on image/video/<code>/v1</code> and zero unmetered fallback.</td>
+            <td class="ok">ENFORCED</td>
+          </tr>
+          <tr>
+            <td><strong>3. Operator COGS Redaction</strong></td>
+            <td class="mono">assistant/provider-metering.ts · chat.js</td>
+            <td>Internal wholesale <code>operator_cogs_usd</code> and upstream vendor keys are stripped before customer serialization; customers see governed retail Run Tokens / USD.</td>
+            <td class="ok">ENFORCED</td>
+          </tr>
+          <tr>
+            <td><strong>4. Strict Artifact Iframe Sandbox</strong></td>
+            <td class="mono">renderer/index.html · artifact-workbench.js</td>
+            <td><code>#artifact-frame</code> enforces <code>sandbox="allow-scripts allow-forms"</code> with <strong>zero</strong> <code>allow-same-origin</code>, isolating generated websites from Electron IPC and host storage.</td>
+            <td class="ok">ENFORCED</td>
+          </tr>
+          <tr>
+            <td><strong>5. External Write &amp; Devbox Airlocks</strong></td>
+            <td class="mono">station DAG · devbox-tools.js · browser-tools.js</td>
+            <td>Reads run immediately; any external send (email, Slack, webhook, git push) or Devbox create/push halts behind explicit user click approval; <code>main</code> branch pushes are refused; packaged builds ignore <code>RC_AUTO_APPROVE_*</code>.</td>
+            <td class="ok">ENFORCED</td>
+          </tr>
+          <tr>
+            <td><strong>6. SSRF &amp; Isolated Screenshot Partition</strong></td>
+            <td class="mono">railcall-chat/website-screenshot.js</td>
+            <td>Blocks RFC1918, loopback, link-local, and cloud metadata IPs before navigation; renders inside ephemeral <code>temp-rc-site-shot</code> partition with <code>contextIsolation: true</code>.</td>
+            <td class="ok">ENFORCED</td>
+          </tr>
+          <tr>
+            <td><strong>7. Mozart Upstream Git Push-Lock</strong></td>
+            <td class="mono">git remote · run-qa-gate.mjs · publish_hourly.sh</td>
+            <td>All 4 local repos lock <code>upstream</code> push URL to <code>DISABLED</code> and push exclusively to <code>patl4588/mozart-*</code> on branch <code>mozart/v2-autonomous</code>.</td>
+            <td class="ok">ENFORCED</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- 6. $0.00 LOCAL RAILCALL + QWEN/OLLAMA SUB-AGENT HIERARCHY          -->
+    <!-- ================================================================== -->
+    <section class="section" id="subagents">
+      <div class="sec-head">
+        <div>
+          <div class="sec-num">Section 06 · Hybrid Orchestration &amp; Local GPU Fleet</div>
+          <h2>Command Hierarchy &amp; 5-Tier $0.00 RailCall + Qwen/Ollama Sub-Agent Swarm</h2>
+          <p class="sec-desc">Benchmarked live on Apple Silicon Unified Memory (<code>127.0.0.1:8799/v1</code> Station + <code>127.0.0.1:11434</code> Ollama) via <code>mozart_local_swarm.py</code>.</p>
+        </div>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Hierarchy Level</th>
+            <th>Model / Identifier</th>
+            <th>Weights &amp; Footprint</th>
+            <th>Live Speed</th>
+            <th>Primary Responsibility</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="pink-txt">Tier 0 · Sovereign</span></td>
+            <td class="mono">Patrick &amp; Sami</td>
+            <td>Human Governance</td>
+            <td>—</td>
+            <td>Product direction &amp; growth (Patrick); <code>upstream/main</code> merges &amp; live production deploys (Sami).</td>
+          </tr>
+          <tr>
+            <td><span class="pink-txt">Tier 1 · Lead Architect</span></td>
+            <td class="mono">Antigravity + Mozart Control Plane</td>
+            <td>Multi-Repo Orchestrator</td>
+            <td>Real-time</td>
+            <td>Cross-repo architecture, complex surgical edits, visual browser verification, and 5-Squad QA Gate orchestration.</td>
+          </tr>
+          <tr>
+            <td><strong>Sub-Agent L1 · Router</strong></td>
+            <td class="mono">railcall-router:latest</td>
+            <td><code>qwen3.5:0.8b</code> · 1.0 GB</td>
+            <td class="ok mono">258.3 tok/s ($0)</td>
+            <td>Sub-100ms JSON intent classification, repo targeting, and file-slice dispatch (<code>--subagent router</code>).</td>
+          </tr>
+          <tr>
+            <td><strong>Sub-Agent L2 · Fast Scout</strong></td>
+            <td class="mono">railcall-fast:latest</td>
+            <td><code>qwen3.5:4b</code> · 3.4 GB</td>
+            <td class="ok mono">130.0 tok/s ($0)</td>
+            <td>Dead-link scanning, DOM/CSS selector lint, and JSON contract validation (<code>--subagent fast</code>).</td>
+          </tr>
+          <tr>
+            <td><strong>Sub-Agent L3 · Security</strong></td>
+            <td class="mono">gpt-oss:20b</td>
+            <td><code>gpt-oss:20b</code> · 13 GB</td>
+            <td class="ok mono">108.7 tok/s ($0)</td>
+            <td>Adversarial SSRF, HMAC cookie split-brain, and auth airlock test synthesis (<code>--subagent security</code>).</td>
+          </tr>
+          <tr>
+            <td><strong>Sub-Agent L4 · Core Coder</strong></td>
+            <td class="mono">railcall-core:latest</td>
+            <td><code>qwen3-coder:30b</code> MoE · 18 GB · 262K ctx</td>
+            <td class="ok mono">118.9 tok/s ($0)</td>
+            <td>TypeScript / NestJS / Next.js / Electron feature scaffolding &amp; unit test authoring (<code>--subagent core</code>).</td>
+          </tr>
+          <tr>
+            <td><strong>Sub-Agent L5 · Deep Auditor</strong></td>
+            <td class="mono">railcall-coder:latest</td>
+            <td><code>qwen3-coder-next</code> 79.7B · 51 GB · 262K ctx</td>
+            <td class="ok mono">On-Demand ($0)</td>
+            <td>Deep multi-file AST synthesis, surgical diff verification &amp; cross-repo PR audit (<code>--subagent coder</code>).</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- 7. ONGOING COMPOUNDING GOAL RATCHETS                               -->
+    <!-- ================================================================== -->
+    <section class="section" id="goals">
+      <div class="sec-head">
+        <div>
+          <div class="sec-num">Section 07 · Perpetual Autonomous Roadmap</div>
+          <h2>Ongoing Compounding Goal Ratchets ("Never Stop Building")</h2>
+          <p class="sec-desc">Every wave rebases on <code>upstream/main</code>, ratchets KPIs strictly upward on <code>mozart/v2-autonomous</code>, and must pass all 5 Adversarial QA Squads before publishing.</p>
+        </div>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Track</th>
+            <th>Current Baseline (Verified)</th>
+            <th>Wave +1 Target</th>
+            <th>Wave +2 Target</th>
+            <th>Perpetual North Star</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>1. Router Pareto &amp; Speed</strong><br/><span class="mono">mozart-linden</span></td>
+            <td>48/48 groups · -95.4% vs Frontier · -22.4% latency vs OR</td>
+            <td>96 workload groups · prefix-cache hit telemetry · p95 TTFT &lt;380ms</td>
+            <td>150+ workloads · 85%+ cache hit · &lt;120ms pre-stream failover</td>
+            <td>200+ live-calibrated workloads · sub-250ms TTFT · 100% signed hops</td>
+          </tr>
+          <tr>
+            <td><strong>2. Visual Builder &amp; Hubs UX</strong><br/><span class="mono">chat + website</span></td>
+            <td>828 desktop + 96 web specs · Tabbed Hubs + Visual Override Guard</td>
+            <td>Full Web/Desktop UI parity on Workflows &amp; Agents · &lt;15s first-pixel preview</td>
+            <td>50+ vertical site/checkout/PDF kits · 0 broken links (390/768/1440px)</td>
+            <td>Sub-10s live preview · visual point-and-edit + 1-click deploy</td>
+          </tr>
+          <tr>
+            <td><strong>3. Marketplace &amp; Connectors</strong><br/><span class="mono">mozart-marketplace</span></td>
+            <td>109/109 specs · Stateless HMAC · 65 Prisma models</td>
+            <td>Top-25 SaaS connectors (Stripe, Slack, Gmail, Neon, Linear) dry-run probes</td>
+            <td>1,000-RPS burst queue soak · zero-drift idempotent credit audit</td>
+            <td>Multi-region HA + tamper-evident clearing house across 850+ apps</td>
+          </tr>
+          <tr>
+            <td><strong>4. $0 Qwen Factory &amp; QA</strong><br/><span class="mono">project-mozart</span></td>
+            <td>5 local models live · 29/29 5-Squad Gate · 1,033+ assertions</td>
+            <td>Automated L2+L4 pre-gate sweep · 1,250+ automated assertions</td>
+            <td>75%+ grunt work offloaded to $0 GPU · 1,500+ assertions</td>
+            <td>24/7 autonomous scout → build → fuzz → verify → publish loop</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+  </main>
+
+  <script>
+    const NODES = {
+      website: {
+        badge: "Next.js 15 · Port 3000 / Cloud",
+        title: "railcall-website (Web App & BFF)",
+        repo: "Fork: patl4588/mozart-railcall-website (upstream: patl4588/railcall-website · push DISABLED)",
+        desc: "Unified marketing site, WebChat SSE streaming workspace, departmental Agents & Workflows studios, browser DAG canvas, public /v1 OpenAI-compatible edge routes, and client-side Ed25519 /verify inspector.",
+        files: [
+          "app/chat/[id]/ChatClient.tsx — Streaming SSE chat & live artifact split view",
+          "app/chat/agents/AgentsHome.tsx — Departmental specialist presets & builder",
+          "app/workspace/workflows/WorkflowsClient.tsx — Starter blueprints & MyWorkflows",
+          "app/workspace/canvas/ — Browser DAG editor + localStorage sync",
+          "app/v1/{chat,models,images,videos} — Task-profile Direct + OR backup /v1 API",
+          "app/api/workspace/* — 25 BFF endpoints (session, credits, runs, folio-pdf, browse)"
+        ],
+        specs: [
+          "161/161 Next.js static & dynamic pages generated cleanly",
+          "67/67 QA specs + 29/29 integration specs passing",
+          "Client-side Ed25519 receipt verification at /workspace/verify"
+        ]
+      },
+      desktop: {
+        badge: "Electron 33.4.11 · Native Mac App v0.12.47",
+        title: "railcall-chat (Desktop App)",
+        repo: "Fork: patl4588/mozart-railcall-chat (upstream: SamyBchaalia/railcall-chat · push DISABLED)",
+        desc: "Local-first macOS desktop workspace combining streaming AI chat, 1-pass website/app scaffold workbench, tabbed Specialized Agents & Workflows hubs, embedded n8n visual canvas, native PDF/DOCX export, and airlocked computer/browser tools.",
+        files: [
+          "main.js + preload.js — 68 governed ContextBridge IPC handlers",
+          "agent.js (12.7K LOC) — Autonomous goal & tool loop with anti-loop guards",
+          "renderer/chat.js (15.5K LOC) — Visual build override guard + tabbed hubs",
+          "renderer/artifact-workbench.js — Sandboxed 390px/1440px live preview & ZIP export",
+          "renderer/workflow-studio-dock.js + n8n_canvas.html — Visual DAG studio",
+          "pdf.js, docx-export.js, website-screenshot.js, devbox-tools.js, subagent-tools.js"
+        ],
+        specs: [
+          "828/828 automated node:test desktop assertions passing (9 suites)",
+          "Strict iframe sandbox='allow-scripts allow-forms' (no allow-same-origin)",
+          "Automatic visual build override prevents Automation Mode from hijacking site builds"
+        ]
+      },
+      v1sdk: {
+        badge: "OpenAI-Compatible /v1 + CLI + MCP",
+        title: "Public /v1 API, SDKs & Extensions",
+        repo: "Endpoints: https://railcall.ai/v1 & http://127.0.0.1:8799/v1",
+        desc: "Drop-in OpenAI SDK replacement allowing Python, TypeScript, Cursor, Claude Code, VS Code, and MCP clients to route through RailCall's Pareto engine (84%–95% lower cloud compute or $0.00 local Mac execution) with cryptographic receipts.",
+        files: [
+          "railcall-marketplace/src/v1/linden-v1.controller.ts — Cloud /v1 ingress",
+          "railcall-website/app/v1/chat/completions/route.ts — Edge task-profile router",
+          "linden/apps/station/server/mcp/ — Local MCP server & /v1 loopback endpoint",
+          "public/railcall-vscode.vsix & railcall.dxt — Editor & desktop extensions"
+        ],
+        specs: [
+          "Supports streaming SSE, JSON schema mode, tool calling, images & video",
+          "Bearer rc_sk_* API key auth + automatic receipt_id header/body injection"
+        ]
+      },
+      marketplace: {
+        badge: "NestJS + Prisma · 35 Backend Modules",
+        title: "railcall-marketplace (Control Plane)",
+        repo: "Fork: patl4588/mozart-railcall-marketplace (upstream: patl4588/railcall-marketplace · push DISABLED)",
+        desc: "Central NestJS backend governing authentication, organization RBAC/SCIM, workspace project/canvas persistence, lock-free AssistantJob queueing for the 32-slot worker fleet, 850+ connector metadata, and module marketplace commerce.",
+        files: [
+          "src/assistant/ — Lock-free AssistantJob queue, monitor watchdog & admission policies",
+          "src/workspace/ (135 files) — Projects, files, conversations, canvas & images",
+          "src/auth/ + src/org/ + src/scim/ — JWT, OAuth, SSO, enterprise SCIM provisioning",
+          "src/listings/ + src/purchases/ + src/escrow/ + src/payouts/ — Creator marketplace",
+          "src/receipts/ + src/witness/ + src/transparency/ — Ed25519 & Merkle STH ledger"
+        ],
+        specs: [
+          "79/79 core unit specs + 30/30 adversarial QA specs passing",
+          "Zero-deadlock worker contention verified in worker-contention-and-deadlock.spec.ts"
+        ]
+      },
+      patsum: {
+        badge: "Atomic Credit & Allowance Engine",
+        title: "Patsum Metering & Gateway",
+        repo: "linden/apps/gateway + marketplace/src/assistant/patsum.policy.ts",
+        desc: "Enforces pre-execution credit reservation, per-turn cost caps ($≤ slider), signed per-IP $5.00 launch_metered guest allowances, atomic post-turn settlement, and wholesale operator_cogs_usd redaction.",
+        files: [
+          "linden/apps/gateway/src/ — Standalone NestJS atomic credit gateway",
+          "marketplace/src/assistant/patsum.policy.ts — Allowance & admission gates",
+          "marketplace/src/assistant/provider-metering.ts — Retail token settlement & COGS strip",
+          "railcall-chat/run-tokens.js — Client Run Token display & budget cap parser"
+        ],
+        specs: [
+          "401 auth gates enforced on unauthenticated image/video/v1 endpoints",
+          "Zero unmetered fallback paths; exact idempotent settlement per turnId"
+        ]
+      },
+      neon: {
+        badge: "Serverless PostgreSQL · 65 Prisma Models",
+        title: "Neon / PostgreSQL Database",
+        repo: "Schema: railcall-marketplace/prisma/schema.prisma",
+        desc: "Serverless PostgreSQL persistence backing accounts, organizations, API keys, wallet transactions, lock-free assistant jobs, workspace projects/images, canvas DAG revisions, and cryptographic receipts.",
+        files: [
+          "Identity: User, Organization, Membership, ApiKey, GuestSession, RefreshToken",
+          "Execution: AssistantJob, AssistantWorker, WorkspaceProject, WorkspaceImage, CanvasExecution",
+          "Ledger: WalletTransaction, Purchase, Subscription, EscrowHold, Payout",
+          "Trust: Receipt, WitnessAnchor, IssuanceLogEntry, IssuanceSth"
+        ],
+        specs: [
+          "Prisma schema validated & generated cleanly (including WorkspaceImage)",
+          "Instant serverless branching & connection pooling ready"
+        ]
+      },
+      router: {
+        badge: "48-Group Pareto Router · 32 Worker Slots",
+        title: "linden / cloud-router",
+        repo: "Fork: patl4588/mozart-linden/apps/cloud-router",
+        desc: "Evaluates incoming prompts across 48 task micro-groups and routes across Speed × Quality × Cost weightings, paired with a 32-slot concurrent job worker, pre-stream failover, research synthesis, and automated quality review.",
+        files: [
+          "src/router.js + predictive-routing-index.js + task-rating-algo.js",
+          "src/provider-failover.js — Pre-stream 5xx & TTFT timeout failover (<120ms)",
+          "src/marketplace-worker.js — 32-slot concurrent runner with SIGTERM drain",
+          "src/action-workflow.js + workflow-proposal.js — v2 workflow DAG synthesis",
+          "src/visual-qa-edge.js + answer-review.js — Automated rubric verification"
+        ],
+        specs: [
+          "48/48 micro-groups evaluated: 100% Pareto-dominant",
+          "22.4% faster & 16.1% cheaper than OpenRouter; 95.4% cheaper than Frontier"
+        ]
+      },
+      providers: {
+        badge: "Low-Latency Direct + Fallback Mesh",
+        title: "Multi-Provider Inference Mesh",
+        repo: "linden/apps/cloud-router/src/providers/",
+        desc: "Connects directly to ultra-fast wafer-scale/LPU and frontier model endpoints with prefix-caching, falling back to OpenRouter within <120ms if an upstream returns 5xx or stalls before first token.",
+        files: [
+          "Direct high-speed lanes (Cerebras, Groq, DeepSeek, Fireworks, Together)",
+          "Direct frontier & multimodal lanes (Gemini, Anthropic, OpenAI, FLUX image, Video)",
+          "OpenRouter universal backup lane with automatic model mapping",
+          "Prefix-cache key affinity for multi-turn agent & code loops"
+        ],
+        specs: [
+          "Squad 3 & Squad 4 chaos proxy tests verify 0 dropped streams on upstream 502/504"
+        ]
+      },
+      receipts: {
+        badge: "Ed25519 Signatures + Merkle Transparency",
+        title: "Cryptographic Receipts & /verify",
+        repo: "cloud-router/src/job-evidence.js + marketplace/src/transparency/",
+        desc: "Every AI turn, workflow node, web search, and artifact build produces a tamper-evident receipt containing model route, token counts, hashes, blast-radius summary, and an Ed25519 signature.",
+        files: [
+          "cloud-router/src/job-evidence.js — Canonical receipt hashing & Ed25519 signing",
+          "marketplace/src/receipts/ & transparency/ — IssuanceLogEntry + Signed Tree Head (STH)",
+          "website/app/workspace/verify/ — Public zero-trust signature verifier",
+          "railcall-chat/renderer/chat.js — Desktop Receipts Ledger view & badge counter"
+        ],
+        specs: [
+          "Tampered payload bytes immediately fail Ed25519 verification in Squad 4 QA Gate"
+        ]
+      },
+      station: {
+        badge: "Python Sovereign Daemon · 127.0.0.1:8799",
+        title: "linden / station (Local Mac HQ)",
+        repo: "linden/apps/station/server/hq_server.py",
+        desc: "Runs locally on 127.0.0.1:8799, exposing a local OpenAI /v1 endpoint, MCP server, local credential vault for 850+ integrations, and the governed DAG executor with plan_root pinning and human approval gates.",
+        files: [
+          "server/hq_server.py & railcall_hq.py — Local HTTP & /v1 loopback server",
+          "internal_modules/ — Built-in local_reason, search, docgen & connector runners",
+          "workflows/ — Deterministic DAG planner, blast_radius calculator & live whitelist",
+          "transaction_runs/ — Local Ed25519 node receipts & execution logs"
+        ],
+        specs: [
+          "Loopback-only binding (127.0.0.1); external sends halt until explicit approval"
+        ]
+      },
+      ollama: {
+        badge: "Apple Silicon Unified Memory · 127.0.0.1:11434",
+        title: "5-Tier Local Qwen / Ollama GPU Fleet",
+        repo: "mozart_local_swarm.py + railcall-chat/whitelabel-autopull.js",
+        desc: "Zero-marginal-cost ($0.00) local inference and sub-agent fleet running natively on Metal/llamacpp with up to 262,144-token context windows and native tool calling.",
+        files: [
+          "L1 railcall-router:latest (qwen3.5:0.8b · 1.0GB) — 258.3 tok/s triage",
+          "L2 railcall-fast:latest (qwen3.5:4b · 3.4GB) — 130.0 tok/s selector/JSON lint",
+          "L3 gpt-oss:20b (13GB) — 108.7 tok/s security & edge-case fuzzing",
+          "L4 railcall-core:latest (qwen3-coder:30b MoE · 18GB · 262K ctx) — 118.9 tok/s",
+          "L5 railcall-coder:latest (qwen3-coder-next 79.7B · 51GB · 262K ctx) — Deep AST audit"
+        ],
+        specs: [
+          "whitelabel-autopull.js sizes downloads safely by machine RAM & free disk headroom"
+        ]
+      },
+      mozart: {
+        badge: "Air-Gapped Autonomous Engineering Hub",
+        title: "Project Mozart v2 & 5-Squad QA Gatekeeper",
+        repo: "patl4588/project-mozart (main) → patl4588/mozart-* (mozart/v2-autonomous)",
+        desc: "Orchestrates continuous improvements across isolated forks with upstream pushes disabled, backed by local Qwen sub-agents and a fail-closed 5-Squad Adversarial QA Gatekeeper.",
+        files: [
+          "mozart_local_swarm.py — 5-tier $0 RailCall/Qwen sub-agent CLI & telemetry sweep",
+          "qa-gate/run-qa-gate.mjs — Split-Brain, DB Lock, SSE Chaos, Pareto & Chromium Gate",
+          "qa-gate/build-repo-commits-feed.mjs — Inline SHA, stat & patch feed builder",
+          "publish_hourly.sh — Fail-closed verifier & GitHub Pages publisher"
+        ],
+        specs: [
+          "29/29 adversarial QA gate checks + 1,033+ repo unit/integration tests enforced"
+        ]
+      }
+    };
+
+    const FLOWS = [
+      [
+        { num: "STEP 01 · INTENT GUARD", title: "Visual Build Override", detail: "User types 'make me a visual checkout page...' in Chat. chat.js matches BUILD_RX (websites, checkout/pricing pages, dashboards) and automatically clears any stale workflowActive state." },
+        { num: "STEP 02 · PARALLEL SCAFFOLD", title: "t=0 Asset Pre-Warm + 1-Pass Bundle", detail: "project:start creates an isolated project folder, overlaps parallel FLUX hero/card imagery at t=0, and synthesizes HTML/CSS/JS in a single unifiedScaffold pass." },
+        { num: "STEP 03 · RENDER & QA PROBE", title: "390px & 1440px Headless Verification", detail: "render-check.js + qa-contract.js inspect layout, links, and interactive formulas at mobile (390px) and desktop (1440px). If any check fails, auto-repair.js patches surgically." },
+        { num: "STEP 04 · SANDBOXED PREVIEW", title: "Workbench Dock + Signed Receipt", detail: "artifact-workbench.js streams draft & verified preview inside strict sandbox='allow-scripts allow-forms', enables Point & Edit + .zip export, and logs an Ed25519 receipt." }
+      ],
+      [
+        { num: "STEP 01 · AUTH & SEAL", title: "Bearer Key or Stateless HMAC", detail: "Request hits /v1/chat/completions or /api/workspace/runs. Marketplace validates rc_sk_* API key or stateless rc_ws HMAC cookie + signed visitor IP allowance." },
+        { num: "STEP 02 · ATOMIC RESERVE", title: "Patsum Credit Pre-Authorization", detail: "patsum.policy.ts verifies wallet balance or $5 trial cap and atomically reserves budget before enqueueing an AssistantJob in Neon Postgres." },
+        { num: "STEP 03 · PARETO + FAILOVER", title: "32-Slot Claim & 48-Group Router", detail: "cloud-router claims the job lock-free, classifies into 1 of 48 task micro-groups, picks the Pareto-optimal provider, and fails over in <120ms on pre-stream 5xx/timeout." },
+        { num: "STEP 04 · SETTLE & SIGN", title: "SSE Stream, COGS Strip & Ed25519", detail: "Tokens stream over SSE with heartbeat watchdogs. provider-metering.ts settles exact spend, strips operator_cogs_usd, and attaches the Ed25519 Receipt + Merkle STH." }
+      ],
+      [
+        { num: "STEP 01 · DAG SYNTHESIS", title: "Plain-English or Canvas to v2 Spec", detail: "User builds in the tabbed Workflows Hub (Studio & AI Builder or embedded n8n Visual Canvas). workflow-proposal.js compiles a typed v2 trigger → steps → condition spec." },
+        { num: "STEP 02 · SETUP & BLAST RADIUS", title: "Readiness & Dry-Run Contract", detail: "Station (:8799) computes connected-app readiness, missing required fields, egress_domains, systems_touched, and spend_cents—nothing leaves the machine during dry-run." },
+        { num: "STEP 03 · PLAN-ROOT PINNING", title: "Cryptographic Plan Hash Lock", detail: "Approving a workflow pins its exact plan_root hash in Station policy. Any subsequent edit to steps or connectors invalidates the pin and requires re-approval." },
+        { num: "STEP 04 · AIRLOCKED EXECUTION", title: "Reads Run Now · Writes Ask Approval", detail: "Read connectors execute immediately; external writes (email, Slack, Stripe, DB mutation) pause at a human approval card and emit per-node Ed25519 receipts." }
+      ],
+      [
+        { num: "STEP 01 · HARDWARE SIZING", title: "RAM & Disk-Aware Provisioning", detail: "whitelabel-autopull.js inspects Apple Silicon unified RAM and free disk headroom to provision matching Qwen GGUF tiers into 127.0.0.1:11434 with zero vendor jargon." },
+        { num: "STEP 02 · LOOPBACK ROUTING", title: "Station :8799/v1 or Fastpath", detail: "When Price=$0 or offline mode is active, station.js / local-ollama-fastpath.js routes prompts strictly over 127.0.0.1 to railcall-router, railcall-fast, core (30B), or coder (79.7B)." },
+        { num: "STEP 03 · SUB-AGENT SWARM", title: "Mozart & Desktop Parallel Dispatch", detail: "mozart_local_swarm.py and subagent-tools.js fan out triage (258 tok/s), lint (130 tok/s), security fuzzing (109 tok/s), and 262K-ctx code synthesis (119 tok/s) at $0.00 COGS." },
+        { num: "STEP 04 · LOCAL LEDGER", title: "Zero-Egress Audit Trail", detail: "Station signs local node receipts in transaction_runs/ and appends turn metrics to run_ledger.jsonl—zero prompt or file bytes ever leave the Mac." }
+      ]
+    ];
+
+    function inspectNode(key, btnEl) {
+      document.querySelectorAll('.node-card').forEach(el => el.classList.remove('active'));
+      if (btnEl) btnEl.classList.add('active');
+      const d = NODES[key];
+      if (!d) return;
+      document.getElementById('insp-badge').textContent = d.badge;
+      document.getElementById('insp-title').textContent = d.title;
+      document.getElementById('insp-repo').textContent = d.repo;
+      document.getElementById('insp-desc').textContent = d.desc;
+      document.getElementById('insp-files').innerHTML = d.files.map(f => `<li>${f}</li>`).join('');
+      document.getElementById('insp-specs').innerHTML = d.specs.map(s => `<li>${s}</li>`).join('');
+    }
+
+    function selectFlow(idx, btnEl) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      if (btnEl) btnEl.classList.add('active');
+      const steps = FLOWS[idx] || [];
+      document.getElementById('flow-container').innerHTML = steps.map(s => `
+        <div class="step-box">
+          <div class="step-num">${s.num}</div>
+          <div class="step-title">${s.title}</div>
+          <div class="step-detail">${s.detail}</div>
+        </div>
+      `).join('');
+    }
+
+    inspectNode('website', document.querySelector('.node-card'));
+    selectFlow(0, document.querySelector('.tab-btn'));
+  </script>
+</body>
+</html>
