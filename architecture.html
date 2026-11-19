@@ -3,1401 +3,1267 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>RailCall &amp; Project Mozart — Complete Current System Architecture (Ground-Truth Reference)</title>
+  <title>RailCall &amp; Project Mozart — Master Architectural Plans (Print &amp; Planning Edition)</title>
   <style>
     :root {
-      --bg: #0A0C13;
-      --panel: #111420;
-      --panel-elev: #171B2B;
-      --panel-soft: #0E111B;
-      --border: #242939;
-      --border-hi: #353D56;
-      --pink: #FC185E;
-      --orange: #E34E0B;
-      --grad: linear-gradient(135deg, #FC185E 0%, #E34E0B 100%);
-      --green: #10B981;
-      --cyan: #38BDF8;
-      --amber: #F59E0B;
-      --purple: #A855F7;
-      --ink: #F4F6FB;
-      --muted: #9BA3B8;
-      --dim: #6B738A;
+      --paper: #FFFFFF;
+      --screen-bg: #EEF2F6;
+      --ink: #0F172A;
+      --ink-mid: #334155;
+      --ink-muted: #64748B;
+      --line: #CBD5E1;
+      --line-dark: #94A3B8;
+      --tint-slate: #F8FAFC;
+      --tint-blue: #EFF6FF;
+      --tint-green: #ECFDF5;
+      --tint-amber: #FFFBEB;
+      --tint-pink: #FFF1F2;
+      --brand: #E11D48;
+      --brand-orange: #EA580C;
+      --navy: #1E3A8A;
+      --green: #047857;
+      --amber: #B45309;
       --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      --sans: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif;
+      --sans: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body {
-      background:
-        radial-gradient(900px 420px at 12% 0%, rgba(252, 24, 94, 0.11), transparent 60%),
-        radial-gradient(800px 380px at 88% 4%, rgba(227, 78, 11, 0.09), transparent 60%),
-        var(--bg);
+      background: var(--screen-bg);
       color: var(--ink);
       font-family: var(--sans);
-      line-height: 1.55;
-      padding-bottom: 80px;
-    }
-    a { color: #FF6B98; text-decoration: none; }
-    a:hover { text-decoration: underline; }
-    code {
-      font-family: var(--mono);
-      font-size: 0.86em;
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.09);
-      padding: 1px 6px;
-      border-radius: 5px;
-      color: #FDE047;
+      font-size: 12.5px;
+      line-height: 1.45;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
     }
 
-    /* Top Sticky Bar */
-    .topbar {
+    code {
+      font-family: var(--mono);
+      font-size: 0.9em;
+      background: #F1F5F9;
+      border: 1px solid #E2E8F0;
+      padding: 1px 5px;
+      border-radius: 3px;
+      color: #0F172A;
+    }
+
+    /* Screen-Only Action Toolbar */
+    .screen-toolbar {
       position: sticky;
       top: 0;
-      z-index: 50;
-      background: rgba(10, 12, 19, 0.9);
-      backdrop-filter: blur(14px);
-      border-bottom: 1px solid var(--border);
+      z-index: 100;
+      background: #0F172A;
+      color: #FFFFFF;
       padding: 12px 24px;
+      border-bottom: 3px solid var(--brand);
+      box-shadow: 0 4px 16px rgba(15, 23, 42, 0.18);
     }
-    .topbar-inner {
-      max-width: 1380px;
+    .toolbar-inner {
+      max-width: 1060px;
       margin: 0 auto;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 16px;
+      gap: 14px;
       flex-wrap: wrap;
     }
-    .brand {
+    .toolbar-title {
       display: flex;
       align-items: center;
-      gap: 11px;
-      font-weight: 800;
-      font-size: 16px;
-      letter-spacing: -0.02em;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 14px;
     }
-    .brand-mark {
-      width: 30px;
-      height: 30px;
-      border-radius: 8px;
-      background: var(--grad);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
+    .rc-badge {
+      background: linear-gradient(135deg, #FC185E 0%, #E34E0B 100%);
+      color: #fff;
       font-family: var(--mono);
       font-weight: 900;
-      font-size: 13px;
-      color: #fff;
-      box-shadow: 0 0 18px rgba(252, 24, 94, 0.35);
+      font-size: 12px;
+      padding: 4px 8px;
+      border-radius: 5px;
     }
-    .nav-links {
+    .toolbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 13px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+    }
+    .btn:hover { background: rgba(255, 255, 255, 0.16); }
+    .btn-print {
+      background: linear-gradient(135deg, #FC185E 0%, #E34E0B 100%);
+      border-color: transparent;
+    }
+    .sheet-jump {
+      max-width: 1060px;
+      margin: 12px auto 0;
+      padding: 0 24px;
       display: flex;
       gap: 6px;
       flex-wrap: wrap;
     }
-    .nav-pill {
-      padding: 6px 11px;
-      border-radius: 7px;
-      font-size: 12px;
+    .jump-pill {
+      font-size: 11.5px;
       font-weight: 600;
-      color: var(--muted);
-      background: var(--panel);
-      border: 1px solid var(--border);
-      transition: all 0.15s;
-    }
-    .nav-pill:hover {
-      color: #fff;
-      border-color: var(--pink);
+      color: var(--ink-mid);
+      background: #fff;
+      border: 1px solid var(--line);
+      padding: 4px 10px;
+      border-radius: 999px;
       text-decoration: none;
     }
-    .nav-pill.primary {
-      background: var(--grad);
-      color: #fff;
-      border-color: transparent;
-    }
+    .jump-pill:hover { border-color: var(--brand); color: var(--brand); }
 
-    .wrap {
-      max-width: 1380px;
-      margin: 0 auto;
-      padding: 28px 24px 0;
+    /* Architectural Printable Sheets */
+    .binder {
+      max-width: 1060px;
+      margin: 18px auto 60px;
+      padding: 0 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
     }
-
-    /* Hero */
-    .hero {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 28px 30px;
-      margin-bottom: 24px;
+    .sheet {
+      background: var(--paper);
+      border: 1.5px solid var(--ink);
+      box-shadow: 0 6px 24px rgba(15, 23, 42, 0.08);
+      padding: 26px 30px;
       position: relative;
-      overflow: hidden;
+      page-break-after: always;
+      break-after: page;
     }
-    .hero::before {
-      content: "";
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 3px;
-      background: var(--grad);
+    .sheet:last-child {
+      page-break-after: auto;
+      break-after: auto;
     }
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
+
+    /* Architectural Title Block Header on Every Sheet */
+    .title-block {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 16px;
+      border-bottom: 2px solid var(--ink);
+      padding-bottom: 12px;
+      margin-bottom: 16px;
+      align-items: end;
+    }
+    .sheet-kicker {
       font-family: var(--mono);
-      font-size: 11px;
-      font-weight: 700;
+      font-size: 10.5px;
+      font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      color: #FF7AA2;
-      margin-bottom: 10px;
+      color: var(--brand);
+      margin-bottom: 3px;
     }
-    .dot {
-      width: 8px; height: 8px; border-radius: 50%;
-      background: var(--green);
-      box-shadow: 0 0 10px var(--green);
-    }
-    h1 {
-      font-size: 30px;
-      font-weight: 800;
-      letter-spacing: -0.025em;
-      line-height: 1.2;
-      margin-bottom: 10px;
-    }
-    .hero-sub {
-      color: var(--muted);
-      font-size: 14.5px;
-      max-width: 980px;
-      margin-bottom: 20px;
-    }
-    .kpi-strip {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(185px, 1fr));
-      gap: 12px;
-    }
-    .kpi {
-      background: var(--panel-soft);
-      border: 1px solid var(--border);
-      border-radius: 11px;
-      padding: 13px 15px;
-    }
-    .kpi-val {
-      font-family: var(--mono);
+    .sheet-title {
       font-size: 20px;
-      font-weight: 800;
-      color: #fff;
+      font-weight: 850;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      line-height: 1.15;
     }
-    .kpi-val.pink {
-      background: var(--grad);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    .kpi-lbl {
-      font-size: 11.5px;
-      color: var(--muted);
+    .sheet-subtitle {
+      font-size: 12px;
+      color: var(--ink-mid);
       margin-top: 3px;
     }
-
-    /* Section */
-    .section {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 26px 28px;
-      margin-bottom: 24px;
-    }
-    .sec-head {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 16px;
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 16px;
-      margin-bottom: 20px;
-      flex-wrap: wrap;
-    }
-    .sec-num {
+    .stamp-box {
+      border: 1.5px solid var(--ink);
+      padding: 6px 12px;
+      text-align: right;
       font-family: var(--mono);
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--pink);
-      text-transform: uppercase;
-      letter-spacing: 0.09em;
-      margin-bottom: 4px;
+      background: var(--tint-slate);
+      min-width: 170px;
     }
-    h2 {
-      font-size: 21px;
-      font-weight: 750;
-      letter-spacing: -0.02em;
-    }
-    .sec-desc {
-      font-size: 13.5px;
-      color: var(--muted);
-      margin-top: 4px;
-      max-width: 860px;
-    }
-
-    /* Interactive Master Topology Grid */
-    .topo-layout {
-      display: grid;
-      grid-template-columns: 1fr 390px;
-      gap: 18px;
-      align-items: start;
-    }
-    @media (max-width: 1080px) {
-      .topo-layout { grid-template-columns: 1fr; }
-    }
-    .topo-plane {
-      background: var(--panel-soft);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 14px 16px;
-      margin-bottom: 12px;
-    }
-    .topo-plane:last-child { margin-bottom: 0; }
-    .plane-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      font-family: var(--mono);
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--muted);
-      margin-bottom: 10px;
-    }
-    .plane-nodes {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-      gap: 10px;
-    }
-    .node-card {
-      text-align: left;
-      background: var(--panel-elev);
-      border: 1.5px solid var(--border);
-      border-radius: 10px;
-      padding: 11px 13px;
+    .stamp-num {
+      font-size: 12px;
+      font-weight: 900;
       color: var(--ink);
-      cursor: pointer;
-      transition: all 0.15s ease;
     }
-    .node-card:hover {
-      border-color: #FF6B98;
-      transform: translateY(-1px);
+    .stamp-meta {
+      font-size: 10px;
+      color: var(--ink-muted);
+      margin-top: 2px;
     }
-    .node-card.active {
-      border-color: var(--pink);
-      box-shadow: 0 0 0 1px var(--pink), 0 8px 24px rgba(252, 24, 94, 0.18);
-      background: #1C2035;
+
+    /* Legend Strip */
+    .status-legend {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      padding: 8px 12px;
+      background: var(--tint-slate);
+      border: 1px solid var(--line);
+      margin-bottom: 14px;
+      font-size: 11.5px;
+      font-weight: 600;
     }
-    .node-tag {
+    .pill {
       display: inline-block;
       font-family: var(--mono);
       font-size: 10px;
-      font-weight: 700;
+      font-weight: 800;
       padding: 2px 6px;
-      border-radius: 4px;
-      margin-bottom: 6px;
-    }
-    .tag-pink { background: rgba(252, 24, 94, 0.16); color: #FF7AA2; }
-    .tag-cyan { background: rgba(56, 189, 248, 0.15); color: #7DD3FC; }
-    .tag-green { background: rgba(16, 185, 129, 0.16); color: #6EE7B7; }
-    .tag-amber { background: rgba(245, 158, 11, 0.16); color: #FCD34D; }
-    .tag-purple { background: rgba(168, 85, 247, 0.16); color: #D8B4FE; }
-    .node-title {
-      font-size: 13.5px;
-      font-weight: 700;
-      margin-bottom: 3px;
-    }
-    .node-sub {
-      font-size: 11.5px;
-      color: var(--muted);
-      line-height: 1.4;
-    }
-    .plane-connector {
-      text-align: center;
-      font-family: var(--mono);
-      font-size: 11px;
-      color: #FF7AA2;
-      padding: 4px 0;
-    }
-
-    /* Inspector Panel */
-    .inspector {
-      position: sticky;
-      top: 74px;
-      background: var(--panel-elev);
-      border: 1.5px solid var(--border-hi);
-      border-radius: 13px;
-      padding: 18px 20px;
-    }
-    .insp-badge {
-      font-family: var(--mono);
-      font-size: 10.5px;
-      font-weight: 700;
-      color: #6EE7B7;
+      border-radius: 3px;
       text-transform: uppercase;
-      letter-spacing: 0.07em;
-      margin-bottom: 6px;
+      letter-spacing: 0.04em;
+      border: 1px solid transparent;
     }
-    .insp-title {
-      font-size: 17px;
-      font-weight: 800;
-      margin-bottom: 6px;
-    }
-    .insp-repo {
-      font-family: var(--mono);
-      font-size: 11.5px;
-      color: #7DD3FC;
-      margin-bottom: 12px;
-      word-break: break-all;
-    }
-    .insp-desc {
-      font-size: 13px;
-      color: var(--muted);
-      margin-bottom: 14px;
-    }
-    .insp-list-lbl {
-      font-family: var(--mono);
-      font-size: 10.5px;
-      font-weight: 700;
-      text-transform: uppercase;
-      color: var(--ink);
-      margin: 12px 0 6px;
-      letter-spacing: 0.06em;
-    }
-    .insp-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-    }
-    .insp-list li {
-      font-size: 12px;
-      color: var(--muted);
-      padding-left: 13px;
-      position: relative;
-    }
-    .insp-list li::before {
-      content: "▸";
-      position: absolute;
-      left: 0;
-      color: var(--pink);
-    }
+    .pill-now { background: var(--tint-green); color: var(--green); border-color: #A7F3D0; }
+    .pill-next { background: var(--tint-blue); color: var(--navy); border-color: #BFDBFE; }
+    .pill-scale { background: var(--tint-amber); color: var(--amber); border-color: #FDE68A; }
+    .pill-lock { background: var(--tint-pink); color: var(--brand); border-color: #FECDD3; }
 
-    /* Sequence Lifecycle Tabs */
-    .tab-bar {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin-bottom: 16px;
-    }
-    .tab-btn {
-      padding: 8px 14px;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      background: var(--panel-soft);
-      color: var(--muted);
-      font-size: 12.5px;
-      font-weight: 650;
-      cursor: pointer;
-      transition: all 0.15s;
-    }
-    .tab-btn:hover { color: #fff; border-color: var(--border-hi); }
-    .tab-btn.active {
-      background: var(--grad);
-      color: #fff;
-      border-color: transparent;
-    }
-    .flow-steps {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 12px;
-    }
-    .step-box {
-      background: var(--panel-soft);
-      border: 1px solid var(--border);
-      border-radius: 11px;
-      padding: 14px 15px;
-      position: relative;
-    }
-    .step-num {
-      font-family: var(--mono);
-      font-size: 11px;
-      font-weight: 800;
-      color: var(--pink);
-      margin-bottom: 5px;
-    }
-    .step-title {
-      font-size: 13.5px;
-      font-weight: 700;
-      margin-bottom: 5px;
-    }
-    .step-detail {
-      font-size: 12px;
-      color: var(--muted);
-      line-height: 1.5;
-    }
+    /* Grids & Boxes */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
 
-    /* Deep Repo Cards & Tables */
-    .grid-2 {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
+    .arch-box {
+      border: 1.5px solid var(--line-dark);
+      border-radius: 6px;
+      padding: 12px 14px;
+      background: #fff;
+      break-inside: avoid;
     }
-    .grid-3 {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-    }
-    @media (max-width: 980px) {
-      .grid-2, .grid-3 { grid-template-columns: 1fr; }
-    }
-    .subcard {
-      background: var(--panel-soft);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 18px 20px;
-    }
-    .subcard h3 {
-      font-size: 15.5px;
-      font-weight: 750;
-      margin-bottom: 4px;
+    .arch-box.have-now { border-left: 4px solid var(--green); }
+    .arch-box.building-next { border-left: 4px solid var(--navy); background: #FAFCFF; }
+    .arch-box.locked { border-left: 4px solid var(--brand); }
+
+    .box-head {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 8px;
-      flex-wrap: wrap;
+      margin-bottom: 6px;
+      border-bottom: 1px solid #E2E8F0;
+      padding-bottom: 5px;
     }
-    .subcard .meta {
-      font-family: var(--mono);
-      font-size: 11.5px;
-      color: var(--cyan);
-      margin-bottom: 10px;
+    .box-title {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--ink);
     }
-    .module-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 8px;
+    .box-body {
+      font-size: 11.8px;
+      color: var(--ink-mid);
     }
-    .mod-chip {
-      font-family: var(--mono);
-      font-size: 11px;
-      padding: 3px 8px;
-      border-radius: 5px;
-      background: var(--panel-elev);
-      border: 1px solid var(--border);
-      color: #D1D5DB;
+    .box-body ul {
+      padding-left: 15px;
+      margin-top: 4px;
     }
-    .mod-list {
-      margin-top: 10px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      font-size: 12.5px;
-      color: var(--muted);
-    }
-    .mod-list strong { color: var(--ink); }
+    .box-body li { margin-bottom: 3px; }
 
+    /* Architectural Diagram Frame */
+    .diagram-frame {
+      border: 1.5px solid var(--ink);
+      background: var(--tint-slate);
+      padding: 14px;
+      margin-bottom: 14px;
+      break-inside: avoid;
+    }
+    .diagram-caption {
+      font-family: var(--mono);
+      font-size: 10.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: var(--ink-mid);
+      margin-bottom: 8px;
+      letter-spacing: 0.06em;
+    }
+
+    /* Clean Blueprint Tables */
     table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 12.5px;
+      font-size: 11.5px;
+      margin-top: 6px;
     }
     th, td {
+      border: 1px solid var(--line-dark);
+      padding: 7px 9px;
       text-align: left;
-      padding: 10px 12px;
-      border-bottom: 1px solid var(--border);
       vertical-align: top;
     }
     th {
+      background: #E2E8F0;
+      color: var(--ink);
       font-family: var(--mono);
-      font-size: 11px;
+      font-size: 10.5px;
+      font-weight: 800;
       text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--muted);
-      background: var(--panel-soft);
+      letter-spacing: 0.04em;
     }
-    tr:last-child td { border-bottom: none; }
-    .mono { font-family: var(--mono); }
-    .ok { color: var(--green); font-weight: 700; }
-    .pink-txt { color: #FF7AA2; font-weight: 700; }
+    tr { break-inside: avoid; }
+
+    /* Flow Pipeline Row */
+    .pipeline {
+      border: 1px solid var(--line-dark);
+      border-radius: 6px;
+      padding: 10px 12px;
+      margin-bottom: 10px;
+      background: #fff;
+      break-inside: avoid;
+    }
+    .pipeline-head {
+      font-weight: 800;
+      font-size: 12.5px;
+      margin-bottom: 7px;
+      color: var(--ink);
+      display: flex;
+      justify-content: space-between;
+    }
+    .pipe-steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+    .pipe-step {
+      background: var(--tint-slate);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 7px 9px;
+      font-size: 11px;
+    }
+    .pipe-step strong {
+      display: block;
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--brand);
+      margin-bottom: 2px;
+    }
+
+    /* Printable Worksheet Notes Grid */
+    .notes-grid {
+      height: 185px;
+      border: 1.5px solid var(--ink);
+      background-image: linear-gradient(to bottom, transparent 23px, #CBD5E1 24px);
+      background-size: 100% 24px;
+      padding: 6px 12px;
+      margin-top: 8px;
+    }
+    .chk {
+      font-family: var(--mono);
+      font-size: 13px;
+      font-weight: 700;
+      margin-right: 4px;
+    }
+
+    .sheet-footer {
+      margin-top: 14px;
+      padding-top: 8px;
+      border-top: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--ink-muted);
+    }
+
+    @media (max-width: 820px) {
+      .grid-2, .grid-3, .grid-4, .pipe-steps { grid-template-columns: 1fr; }
+    }
+
+    /* PRINT RULES — Crisp US Letter Architectural Plans */
+    @page {
+      size: letter portrait;
+      margin: 0.42in;
+    }
+    @media print {
+      body { background: #FFFFFF; font-size: 11px; }
+      .screen-toolbar, .sheet-jump { display: none !important; }
+      .binder { max-width: 100%; margin: 0; padding: 0; gap: 0; }
+      .sheet {
+        box-shadow: none;
+        border: 1.5px solid #000;
+        padding: 18px 22px;
+        margin: 0;
+      }
+    }
   </style>
 </head>
 <body>
 
-  <!-- Top Navigation -->
-  <header class="topbar">
-    <div class="topbar-inner">
-      <div class="brand">
-        <span class="brand-mark">RC</span>
-        <span>RailCall &amp; Project Mozart · Current System Architecture</span>
+  <!-- Screen-Only Toolbar -->
+  <div class="screen-toolbar">
+    <div class="toolbar-inner">
+      <div class="toolbar-title">
+        <span class="rc-badge">RC</span>
+        <span>RailCall &amp; Project Mozart — Master Architectural Plans (8 Print-Ready Sheets)</span>
       </div>
-      <nav class="nav-links">
-        <a class="nav-pill" href="#topology">1. Master Topology</a>
-        <a class="nav-pill" href="#lifecycles">2. Request Lifecycles</a>
-        <a class="nav-pill" href="#repos">3. 4-Repo Module Map</a>
-        <a class="nav-pill" href="#database">4. 65-Model DB Schema</a>
-        <a class="nav-pill" href="#security">5. Security &amp; Airlocks</a>
-        <a class="nav-pill" href="#subagents">6. $0 Qwen Sub-Agents</a>
-        <a class="nav-pill" href="#goals">7. Ongoing Goal Ratchets</a>
-        <a class="nav-pill primary" href="./index.html">← Live Telemetry Hub</a>
-      </nav>
+      <div class="toolbar-actions">
+        <button class="btn btn-print" onclick="window.print()">🖨️ Print All 8 Sheets (⌘P)</button>
+        <a class="btn" href="./RailCall_Master_Architectural_Plans.pdf" target="_blank">📄 Open Ready-Made PDF</a>
+        <a class="btn" href="./index.html">← Back to Live Telemetry Hub</a>
+      </div>
     </div>
-  </header>
+  </div>
 
-  <main class="wrap">
+  <!-- Quick Sheet Jump Bar (Hidden on Print) -->
+  <nav class="sheet-jump">
+    <a class="jump-pill" href="#sheet-1">Sheet 1: Whole System Map</a>
+    <a class="jump-pill" href="#sheet-2">Sheet 2: Forks &amp; $0 Qwen Hierarchy</a>
+    <a class="jump-pill" href="#sheet-3">Sheet 3: Desktop &amp; Website</a>
+    <a class="jump-pill" href="#sheet-4">Sheet 4: Marketplace &amp; Database</a>
+    <a class="jump-pill" href="#sheet-5">Sheet 5: Router, /v1 &amp; Receipts</a>
+    <a class="jump-pill" href="#sheet-6">Sheet 6: 4 Step-by-Step Flows</a>
+    <a class="jump-pill" href="#sheet-7">Sheet 7: Now vs. Building Roadmap</a>
+    <a class="jump-pill" href="#sheet-8">Sheet 8: Print Sign-Off &amp; Notes</a>
+  </nav>
 
-    <!-- Hero Summary -->
-    <section class="hero">
-      <div class="eyebrow"><span class="dot"></span> Ground-Truth Codebase Reference · Verified on Branch mozart/v2-autonomous</div>
-      <h1>Complete Current Architecture of RailCall, Linden, Station &amp; Project Mozart</h1>
-      <p class="hero-sub">
-        Code-verified architectural blueprint across every active service, protocol, IPC channel, database model, cryptographic receipt signer, Pareto routing stage, and local GPU engine. All 4 repositories operate inside air-gapped private forks (<code>patl4588/mozart-*</code>) with <code>upstream push = DISABLED</code> so production stays 100% untouched.
-      </p>
-      <div class="kpi-strip">
-        <div class="kpi">
-          <div class="kpi-val pink">4 Repos · 8 Apps</div>
-          <div class="kpi-lbl">Website · Desktop · Marketplace · Cloud-Router · Gateway · Station</div>
-        </div>
-        <div class="kpi">
-          <div class="kpi-val">65 Prisma Models</div>
-          <div class="kpi-lbl">35 NestJS Modules on PostgreSQL / Neon + Local SQLite/JSONL</div>
-        </div>
-        <div class="kpi">
-          <div class="kpi-val">68 IPC + 29 Web APIs</div>
-          <div class="kpi-lbl">Electron ContextBridge Channels + Next.js /api/workspace &amp; /v1</div>
-        </div>
-        <div class="kpi">
-          <div class="kpi-val">32 Worker Slots</div>
-          <div class="kpi-lbl">Lock-Free Job Claim · &lt;120ms Pre-Stream Failover · SIGTERM Drain</div>
-        </div>
-        <div class="kpi">
-          <div class="kpi-val pink">-95.4% Cost</div>
-          <div class="kpi-lbl">48/48 Micro-Groups Pareto-Dominant · -22.4% Latency vs OR</div>
-        </div>
-        <div class="kpi">
-          <div class="kpi-val">$0.00 Local Fleet</div>
-          <div class="kpi-lbl">5 Qwen3 / OSS GGUF Models on :11434 (0.8B → 79.7B, 262K Ctx)</div>
-        </div>
-      </div>
-    </section>
+  <main class="binder">
 
     <!-- ================================================================== -->
-    <!-- 1. INTERACTIVE MASTER TOPOLOGY DIAGRAM                             -->
+    <!-- SHEET 1 OF 8: EXECUTIVE MASTER OVERVIEW                            -->
     <!-- ================================================================== -->
-    <section class="section" id="topology">
-      <div class="sec-head">
+    <section class="sheet" id="sheet-1">
+      <div class="title-block">
         <div>
-          <div class="sec-num">Section 01 · Interactive End-to-End Topology</div>
-          <h2>Master System Architecture (Click Any Component to Inspect Internals)</h2>
-          <p class="sec-desc">Every live layer from user surfaces down to routing, persistence, cryptographic receipts, local Mac execution, and the Mozart QA Gatekeeper.</p>
+          <div class="sheet-kicker">RailCall Architectural Blueprint · Master Plan</div>
+          <div class="sheet-title">1. Executive System Map — Everything We Have Today on One Page</div>
+          <div class="sheet-subtitle">Plain-English &amp; technical map of all 4 repositories, how they connect, and what is live right now vs. what we are building next.</div>
+        </div>
+        <div class="stamp-box">
+          <div class="stamp-num">SHEET 01 OF 08</div>
+          <div class="stamp-meta">BRANCH: mozart/v2-autonomous</div>
         </div>
       </div>
 
-      <div class="topo-layout">
-        <div>
-          <!-- Plane 1 -->
-          <div class="topo-plane">
-            <div class="plane-header">
-              <span>Layer 1 · User &amp; Developer Client Surfaces</span>
-              <span>HTTPS / SSE / Electron IPC / OpenAI SDK</span>
-            </div>
-            <div class="plane-nodes">
-              <button class="node-card active" onclick="inspectNode('website', this)">
-                <span class="node-tag tag-pink">Next.js 15 · :3000</span>
-                <div class="node-title">railcall-website</div>
-                <div class="node-sub">161 Pages · WebChat SSE · Workflows/Canvas · /verify · Marketplace UI</div>
-              </button>
-              <button class="node-card" onclick="inspectNode('desktop', this)">
-                <span class="node-tag tag-pink">Electron 33.4 · v0.12.47</span>
-                <div class="node-title">railcall-chat (Desktop)</div>
-                <div class="node-sub">Chat · Sandboxed Artifact Workbench · Tabbed Agents &amp; Workflows · 68 IPCs</div>
-              </button>
-              <button class="node-card" onclick="inspectNode('v1sdk', this)">
-                <span class="node-tag tag-cyan">OpenAI /v1 + CLI + MCP</span>
-                <div class="node-title">Public /v1 API &amp; SDKs</div>
-                <div class="node-sub">railcall.ai/v1 · 127.0.0.1:8799/v1 · Cursor / Claude / Python / TS SDK</div>
-              </button>
-            </div>
-          </div>
-
-          <div class="plane-connector">⬇ HTTPS / Bearer rc_sk_* / Stateless HMAC Cookie (rc_ws) / Signed Visitor IP ⬇</div>
-
-          <!-- Plane 2 -->
-          <div class="topo-plane">
-            <div class="plane-header">
-              <span>Layer 2 · Control Plane, Atomic Metering &amp; Database (railcall-marketplace + gateway)</span>
-              <span>NestJS + Prisma + Neon Postgres</span>
-            </div>
-            <div class="plane-nodes">
-              <button class="node-card" onclick="inspectNode('marketplace', this)">
-                <span class="node-tag tag-cyan">NestJS · 35 Modules</span>
-                <div class="node-title">railcall-marketplace API</div>
-                <div class="node-sub">Auth/SSO/SCIM · Workspace API · Lock-Free AssistantJob Queue · 850+ Apps</div>
-              </button>
-              <button class="node-card" onclick="inspectNode('patsum', this)">
-                <span class="node-tag tag-amber">Atomic Credit Ledger</span>
-                <div class="node-title">Patsum Metering &amp; Gateway</div>
-                <div class="node-sub">$5 Signed IP Cap · Reserve → Settle · COGS Redaction · Stripe/Escrow</div>
-              </button>
-              <button class="node-card" onclick="inspectNode('neon', this)">
-                <span class="node-tag tag-green">Serverless PostgreSQL</span>
-                <div class="node-title">Neon / Postgres (65 Models)</div>
-                <div class="node-sub">Users · WalletTx · AssistantJob · CanvasDraft · WorkspaceImage · Receipts</div>
-              </button>
-            </div>
-          </div>
-
-          <div class="plane-connector">⬇ Lock-Free Job Claim (32 Concurrent Worker Slots) &amp; Direct /v1 Dispatch ⬇</div>
-
-          <!-- Plane 3 -->
-          <div class="topo-plane">
-            <div class="plane-header">
-              <span>Layer 3 · Intelligence Routing, Execution Engines &amp; Cryptographic Truth (linden)</span>
-              <span>Cloud-Router + Provider Mesh + Ed25519</span>
-            </div>
-            <div class="plane-nodes">
-              <button class="node-card" onclick="inspectNode('router', this)">
-                <span class="node-tag tag-pink">48-Group Pareto Engine</span>
-                <div class="node-title">linden / cloud-router</div>
-                <div class="node-sub">Speed×Quality×Cost Scoring · &lt;120ms Pre-Stream Failover · 32-Slot Worker</div>
-              </button>
-              <button class="node-card" onclick="inspectNode('providers', this)">
-                <span class="node-tag tag-purple">Multi-Provider Mesh</span>
-                <div class="node-title">Direct Providers + OR Backup</div>
-                <div class="node-sub">Prefix-Cached Direct Lanes + OpenRouter Fallback + FLUX Image &amp; Video</div>
-              </button>
-              <button class="node-card" onclick="inspectNode('receipts', this)">
-                <span class="node-tag tag-green">Ed25519 + Merkle STH</span>
-                <div class="node-title">Receipts &amp; Witness Ledger</div>
-                <div class="node-sub">Signed Node &amp; Turn Receipts · IssuanceSth Transparency Log · /verify</div>
-              </button>
-            </div>
-          </div>
-
-          <div class="plane-connector">⬇ Loopback Sovereign Execution (127.0.0.1 Only · $0.00 Marginal Compute) ⬇</div>
-
-          <!-- Plane 4 -->
-          <div class="topo-plane">
-            <div class="plane-header">
-              <span>Layer 4 · On-Device Mac Sovereign Plane ($0.00 Compute &amp; Airlocked Tools)</span>
-              <span>127.0.0.1:8799 + 127.0.0.1:11434</span>
-            </div>
-            <div class="plane-nodes">
-              <button class="node-card" onclick="inspectNode('station', this)">
-                <span class="node-tag tag-green">Python HQ · :8799</span>
-                <div class="node-title">linden / station Daemon</div>
-                <div class="node-sub">Local /v1 · Workflow DAG Runner · Plan-Root Pinning · 850+ App Vault</div>
-              </button>
-              <button class="node-card" onclick="inspectNode('ollama', this)">
-                <span class="node-tag tag-green">Apple Silicon GPU · :11434</span>
-                <div class="node-title">5-Tier Qwen / Ollama Fleet</div>
-                <div class="node-sub">router (0.8B) · fast (4B) · security (20B) · core (30B) · coder (79.7B)</div>
-              </button>
-              <button class="node-card" onclick="inspectNode('mozart', this)">
-                <span class="node-tag tag-amber">Autonomous Control Plane</span>
-                <div class="node-title">Project Mozart v2 + QA Gate</div>
-                <div class="node-sub">4 Air-Gapped Forks (mozart/*) · 5-Squad Chaos/Browser Gatekeeper</div>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Sticky Right Inspector -->
-        <aside class="inspector" id="node-inspector">
-          <div class="insp-badge" id="insp-badge">Next.js 15 · Port 3000 / Cloud</div>
-          <div class="insp-title" id="insp-title">railcall-website</div>
-          <div class="insp-repo" id="insp-repo">Fork: patl4588/mozart-railcall-website (upstream push: DISABLED)</div>
-          <p class="insp-desc" id="insp-desc"></p>
-          <div class="insp-list-lbl">Key Source Paths &amp; Modules</div>
-          <ul class="insp-list" id="insp-files"></ul>
-          <div class="insp-list-lbl">Verified Interfaces &amp; Tests</div>
-          <ul class="insp-list" id="insp-specs"></ul>
-        </aside>
-      </div>
-    </section>
-
-    <!-- ================================================================== -->
-    <!-- 2. END-TO-END REQUEST LIFECYCLES                                   -->
-    <!-- ================================================================== -->
-    <section class="section" id="lifecycles">
-      <div class="sec-head">
-        <div>
-          <div class="sec-num">Section 02 · Exact Runtime Execution Paths</div>
-          <h2>4 Core End-to-End Request Lifecycles</h2>
-          <p class="sec-desc">Trace how bytes, auth tokens, credits, tool airlocks, and cryptographic signatures move through the current codebase on every request.</p>
-        </div>
+      <div class="status-legend">
+        <span>Legend:</span>
+        <span><span class="pill pill-now">☑ HAVE NOW</span> Live &amp; Passing Tests Today</span>
+        <span><span class="pill pill-next">🔨 BUILDING WAVE +1</span> Immediate Next Upgrade</span>
+        <span><span class="pill pill-scale">🎯 WAVE +2 / SCALE</span> Compounding Expansion</span>
+        <span><span class="pill pill-lock">🔒 LOCKED</span> Sami Production Boundary</span>
       </div>
 
-      <div class="tab-bar">
-        <button class="tab-btn active" onclick="selectFlow(0, this)">Flow A · Visual Website / Checkout Build</button>
-        <button class="tab-btn" onclick="selectFlow(1, this)">Flow B · Cloud Chat &amp; /v1 Pareto Routing</button>
-        <button class="tab-btn" onclick="selectFlow(2, this)">Flow C · Governed Workflow DAG &amp; Airlock</button>
-        <button class="tab-btn" onclick="selectFlow(3, this)">Flow D · $0.00 Local Station &amp; Qwen Fastpath</button>
+      <!-- Full-Width Clean SVG Master Blueprint Diagram -->
+      <div class="diagram-frame">
+        <div class="diagram-caption">Figure 1.1 — Master 4-Layer System Schematic (Customer Front Doors → Business Brain → Smart Router → Local Mac)</div>
+        <svg viewBox="0 0 940 330" width="100%" height="auto" xmlns="http://www.w3.org/2000/svg" style="font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;">
+          <!-- Layer 1 -->
+          <rect x="8" y="8" width="924" height="68" rx="6" fill="#FFFFFF" stroke="#0F172A" stroke-width="1.5"/>
+          <text x="20" y="25" font-size="10" font-weight="800" fill="#E11D48">LAYER 1 · CUSTOMER FRONT DOORS (HOW USERS USE RAILCALL)</text>
+          <rect x="20" y="33" width="285" height="34" rx="4" fill="#ECFDF5" stroke="#047857"/>
+          <text x="30" y="48" font-size="11" font-weight="800" fill="#0F172A">1A. Website &amp; WebChat (railcall-website)</text>
+          <text x="30" y="61" font-size="9.5" fill="#334155">161 pages · Chat · Workflows · /verify · Marketplace</text>
+
+          <rect x="322" y="33" width="295" height="34" rx="4" fill="#ECFDF5" stroke="#047857"/>
+          <text x="332" y="48" font-size="11" font-weight="800" fill="#0F172A">1B. Mac Desktop App (railcall-chat v0.12.47)</text>
+          <text x="332" y="61" font-size="9.5" fill="#334155">Live Site Workbench · Tabbed Agents &amp; Workflows · 828 tests</text>
+
+          <rect x="634" y="33" width="284" height="34" rx="4" fill="#ECFDF5" stroke="#047857"/>
+          <text x="644" y="48" font-size="11" font-weight="800" fill="#0F172A">1C. Public /v1 Developer API &amp; SDKs</text>
+          <text x="644" y="61" font-size="9.5" fill="#334155">railcall.ai/v1 · Drop-in OpenAI SDK · Cursor / Claude / CLI</text>
+
+          <!-- Arrows 1->2 -->
+          <text x="470" y="90" text-anchor="middle" font-size="10" font-weight="700" fill="#334155">⬇ Auth Cookie (rc_ws HMAC) / API Key (rc_sk_*) / $5 Signed Trial IP ⬇</text>
+
+          <!-- Layer 2 -->
+          <rect x="8" y="98" width="924" height="68" rx="6" fill="#FFFFFF" stroke="#0F172A" stroke-width="1.5"/>
+          <text x="20" y="115" font-size="10" font-weight="800" fill="#1E3A8A">LAYER 2 · BUSINESS BRAIN, CREDITS &amp; DATABASE (railcall-marketplace + gateway)</text>
+          <rect x="20" y="123" width="285" height="34" rx="4" fill="#EFF6FF" stroke="#1E3A8A"/>
+          <text x="30" y="138" font-size="11" font-weight="800" fill="#0F172A">2A. NestJS Control Plane (35 Modules)</text>
+          <text x="30" y="151" font-size="9.5" fill="#334155">Logins, Orgs, Lock-Free Job Queue, 850+ App Catalog</text>
+
+          <rect x="322" y="123" width="295" height="34" rx="4" fill="#FFFBEB" stroke="#B45309"/>
+          <text x="332" y="138" font-size="11" font-weight="800" fill="#0F172A">2B. Patsum Credit Vault ($5 / $15 / $99 Tiers)</text>
+          <text x="332" y="151" font-size="9.5" fill="#334155">Reserves credits before run · settles exact spend · hides COGS</text>
+
+          <rect x="634" y="123" width="284" height="34" rx="4" fill="#ECFDF5" stroke="#047857"/>
+          <text x="644" y="138" font-size="11" font-weight="800" fill="#0F172A">2C. Neon Postgres Cloud DB (65 Tables)</text>
+          <text x="644" y="151" font-size="9.5" fill="#334155">Users, Wallets, Jobs, Projects, Canvas, Signed Receipts</text>
+
+          <!-- Arrows 2->3 -->
+          <text x="470" y="180" text-anchor="middle" font-size="10" font-weight="700" fill="#334155">⬇ 32 Parallel Worker Slots Claim Jobs &amp; Route Across 48 Task Types ⬇</text>
+
+          <!-- Layer 3 -->
+          <rect x="8" y="188" width="924" height="68" rx="6" fill="#FFFFFF" stroke="#0F172A" stroke-width="1.5"/>
+          <text x="20" y="205" font-size="10" font-weight="800" fill="#E11D48">LAYER 3 · SMART PARETO ROUTER &amp; CRYPTOGRAPHIC RECEIPTS (linden / cloud-router)</text>
+          <rect x="20" y="213" width="285" height="34" rx="4" fill="#ECFDF5" stroke="#047857"/>
+          <text x="30" y="228" font-size="11" font-weight="800" fill="#0F172A">3A. 48-Group Pareto Router (-95.4% Cost)</text>
+          <text x="30" y="241" font-size="9.5" fill="#334155">Scores Speed × Quality × Cost · &lt;120ms instant failover</text>
+
+          <rect x="322" y="213" width="295" height="34" rx="4" fill="#EFF6FF" stroke="#1E3A8A"/>
+          <text x="332" y="228" font-size="11" font-weight="800" fill="#0F172A">3B. Direct Cloud Providers + Backup</text>
+          <text x="332" y="241" font-size="9.5" fill="#334155">Cerebras, Groq, DeepSeek, Frontier, FLUX Images &amp; Video</text>
+
+          <rect x="634" y="213" width="284" height="34" rx="4" fill="#ECFDF5" stroke="#047857"/>
+          <text x="644" y="228" font-size="11" font-weight="800" fill="#0F172A">3C. Ed25519 Signed Receipts &amp; Merkle Log</text>
+          <text x="644" y="241" font-size="9.5" fill="#334155">Cryptographic proof of every AI run &amp; workflow step</text>
+
+          <!-- Layer 4 -->
+          <rect x="8" y="266" width="924" height="56" rx="6" fill="#F8FAFC" stroke="#0F172A" stroke-width="1.5"/>
+          <text x="20" y="282" font-size="10" font-weight="800" fill="#047857">LAYER 4 · PRIVATE $0.00 ON-DEVICE MAC ENGINE + PROJECT MOZART AUTONOMOUS FACTORY</text>
+          <text x="20" y="299" font-size="10.5" fill="#0F172A"><tspan font-weight="800">Local Station (127.0.0.1:8799)</tspan> + <tspan font-weight="800">5 Local Qwen/Ollama Models (127.0.0.1:11434 · 0.8B to 79.7B)</tspan> + <tspan font-weight="800">Project Mozart 5-Squad QA Gate</tspan></text>
+          <text x="20" y="313" font-size="9.5" fill="#475569">Runs customer $0 local tasks AND powers Mozart's $0 local coding/QA sub-agents on isolated mozart/* forks.</text>
+        </svg>
       </div>
 
-      <div class="flow-steps" id="flow-container"></div>
-    </section>
-
-    <!-- ================================================================== -->
-    <!-- 3. REPOSITORY-BY-REPOSITORY DEEP INVENTORY                         -->
-    <!-- ================================================================== -->
-    <section class="section" id="repos">
-      <div class="sec-head">
-        <div>
-          <div class="sec-num">Section 03 · Codebase Module Inventory</div>
-          <h2>All 4 Isolated Product Repositories &amp; Internal Subsystems</h2>
-          <p class="sec-desc">Every directory, engine, and responsibility verified directly from disk on branch <code>mozart/v2-autonomous</code>.</p>
-        </div>
-      </div>
-
+      <!-- Plain-English Summary Cards: Have Now vs Building Next -->
       <div class="grid-2">
-        <!-- Repo 1 -->
-        <div class="subcard">
-          <h3>
-            <span>1. mozart-linden (Monorepo)</span>
-            <span class="node-tag tag-pink">48/48 Pareto · 100% Dominant</span>
-          </h3>
-          <div class="meta">Fork: patl4588/mozart-linden ← Upstream: patl4588/linden (LOCKED)</div>
-          <div class="mod-list">
-            <div><strong>apps/cloud-router/src/ (45 modules):</strong> <code>router.js</code>, <code>predictive-routing-index.js</code>, <code>task-rating-algo.js</code>, <code>effort.js</code>, <code>provider-failover.js</code> (&lt;120ms pre-stream circuit breaker), <code>marketplace-worker.js</code> (32-slot pool + SIGTERM drain), <code>marketplace-exchange.js</code>, <code>action-workflow.js</code>, <code>workflow-proposal.js</code>, <code>research-document-handlers.js</code>, <code>marketplace-image-bridge.js</code>, <code>video-router.js</code>, <code>visual-qa-edge.js</code>, <code>answer-review.js</code>, <code>job-evidence.js</code>.</div>
-            <div><strong>apps/gateway/ (NestJS + Prisma):</strong> Dedicated <code>patsum</code> high-speed credit reservation, rate-limiting, and atomic settlement service.</div>
-            <div><strong>apps/station/ (Python HQ :8799):</strong> <code>server/hq_server.py</code>, <code>server/railcall_hq.py</code>, <code>server/mcp/</code>, <code>seed_modules/</code>, <code>internal_modules/</code> (<code>local_reason</code>), <code>modules_catalog/</code>, <code>workflows/</code>, <code>transaction_runs/</code>.</div>
-            <div><strong>packages/:</strong> <code>@linden/core</code>, <code>linden-plugin-sdk</code>, <code>artifact-ui</code>.</div>
+        <div class="arch-box have-now">
+          <div class="box-head">
+            <span class="box-title">☑ What We Have Built &amp; Verified Today</span>
+            <span class="pill pill-now">1,081+ Tests Passing</span>
+          </div>
+          <div class="box-body">
+            <ul>
+              <li><strong>Website (`railcall-website`):</strong> 161 static/dynamic pages, live Chat, `/v1` API, Docs, Pricing, and `/verify` receipt checker (96/96 specs green).</li>
+              <li><strong>Desktop App (`railcall-chat`):</strong> Live website builder, PDF/Word exporter, $0 screenshots, and newly organized tabbed <strong>Workflows Hub</strong> &amp; <strong>Agents Hub</strong> (828/828 tests green).</li>
+              <li><strong>Backend (`railcall-marketplace`):</strong> 35 NestJS modules + 65 Neon Postgres tables, $5 trial lock, wallet/escrow, lock-free queue (109/109 specs green).</li>
+              <li><strong>Router (`linden`):</strong> Wins 48/48 task groups (95.4% cheaper than Frontier, 22.4% faster than OpenRouter) + local Station (`:8799`).</li>
+            </ul>
           </div>
         </div>
 
-        <!-- Repo 2 -->
-        <div class="subcard">
-          <h3>
-            <span>2. mozart-railcall-marketplace (Backend)</span>
-            <span class="node-tag tag-cyan">109/109 Specs Green</span>
-          </h3>
-          <div class="meta">Fork: patl4588/mozart-railcall-marketplace ← Upstream: patl4588/railcall-marketplace (LOCKED)</div>
-          <div class="mod-list">
-            <div><strong>Auth, Identity &amp; Enterprise (8 modules):</strong> <code>auth</code> (JWT, RefreshToken, OAuth, SSO), <code>scim</code>, <code>users</code>, <code>identity</code>, <code>org</code>, <code>org-billing</code>, <code>admin</code>, <code>moderation</code>.</div>
-            <div><strong>Assistant, Workspace &amp; /v1 (4 core clusters):</strong> <code>assistant/</code> (21 files: lock-free job queue, <code>patsum.policy.ts</code>, <code>provider-metering.ts</code>, <code>usage-evidence.ts</code>), <code>workspace/</code> (135 files: projects, conversations, canvas, subagents, images), <code>v1/</code> (<code>linden-v1.controller.ts</code>), <code>hub/</code>.</div>
-            <div><strong>Cryptographic Trust &amp; Relay (5 modules):</strong> <code>receipts</code>, <code>witness</code>, <code>transparency</code> (Merkle STH), <code>relay</code>, <code>audit</code>.</div>
-            <div><strong>Commerce &amp; Ecosystem (14 modules):</strong> <code>listings</code>, <code>sellers</code>, <code>carts</code>, <code>purchases</code>, <code>escrow</code>, <code>payouts</code>, <code>licenses</code>, <code>reviews</code>, <code>requests</code>, <code>community</code>, <code>parameter-network</code>, <code>artifacts</code>, <code>telemetry</code>, <code>notifications</code>.</div>
+        <div class="arch-box building-next">
+          <div class="box-head">
+            <span class="box-title">🔨 What Mozart Is Building Next (Isolated Branch)</span>
+            <span class="pill pill-next">mozart/v2-autonomous</span>
+          </div>
+          <div class="box-body">
+            <ul>
+              <li><strong>1. Full Desktop ↔ Web UX Parity:</strong> Bring the clean 4-tab Workflows Hub &amp; 3-tab Agents Hub layout to the Web App (`/workspace/workflows` &amp; `/chat/agents`).</li>
+              <li><strong>2. Sub-15s Visual Site &amp; Checkout Kits:</strong> Expand 1-tap visual templates (SaaS, checkout, real estate, CRM) with zero broken links across mobile/desktop.</li>
+              <li><strong>3. Router 48 → 96+ Workloads &amp; Cache:</strong> Push prefix-cache hit rate above 80% and p95 first-token latency under 380ms.</li>
+              <li><strong>4. Top-25 Business App Connectors:</strong> Live 1-click OAuth/key dry-run verification for Stripe, Gmail, Slack, QuickBooks, HubSpot, Linear, and Neon.</li>
+            </ul>
           </div>
         </div>
+      </div>
 
-        <!-- Repo 3 -->
-        <div class="subcard">
-          <h3>
-            <span>3. mozart-railcall-website (Web &amp; BFF)</span>
-            <span class="node-tag tag-green">161 Static Pages · 96 Specs</span>
-          </h3>
-          <div class="meta">Fork: patl4588/mozart-railcall-website ← Upstream: patl4588/railcall-website (LOCKED)</div>
-          <div class="mod-list">
-            <div><strong>Workspace &amp; Studio Surfaces:</strong> <code>/chat</code>, <code>/chat/[id]</code> (SSE + Artifact split view), <code>/chat/agents</code> (<code>AgentsHome.tsx</code> Mozart departments), <code>/workspace/workflows</code> (<code>WorkflowsClient.tsx</code>), <code>/workspace/canvas</code>, <code>/workspace/connections</code>, <code>/workspace/monitor</code>, <code>/workspace/usage</code>, <code>/workspace/verify</code>, <code>/console/{keys,logs,audit}</code>.</div>
-            <div><strong>OpenAI /v1 Edge Routes:</strong> <code>/v1/chat/completions</code> (Task-profile Direct routing + OpenRouter backup), <code>/v1/models</code>, <code>/v1/images</code>, <code>/v1/videos</code>.</div>
-            <div><strong>25 /api/workspace/* BFF Endpoints:</strong> <code>session</code>, <code>me</code>, <code>credits</code>, <code>conversations</code>, <code>runs</code>, <code>projects</code>, <code>artifacts</code>, <code>agents</code>, <code>subagents</code>, <code>multi-agent</code>, <code>workflows</code>, <code>canvas</code>, <code>connections</code>, <code>browse</code>, <code>image-generate</code>, <code>video-generate</code>, <code>folio-pdf</code>, <code>entrepreneur-pack</code>.</div>
-            <div><strong>Public Docs &amp; Marketplace:</strong> 22 <code>/docs/*</code> guides, 14 <code>/marketplace/*</code> routes, 10 <code>/legal/*</code> compliance pages.</div>
-          </div>
-        </div>
-
-        <!-- Repo 4 -->
-        <div class="subcard">
-          <h3>
-            <span>4. mozart-railcall-chat (Native Desktop)</span>
-            <span class="node-tag tag-amber">828/828 Tests Green</span>
-          </h3>
-          <div class="meta">Fork: patl4588/mozart-railcall-chat ← Upstream: SamyBchaalia/railcall-chat (LOCKED)</div>
-          <div class="mod-list">
-            <div><strong>Renderer Surface (<code>renderer/</code>):</strong> <code>index.html</code> + <code>chat.js</code> (visual build override guard, tabbed Agents Hub &amp; Workflows Hub, embedded <code>n8n_canvas.html</code>), <code>artifact-workbench.js</code> (strict sandboxed iframe preview), <code>workflow-studio-dock.js</code>, <code>workflow-map.js</code>, <code>integrations-catalog.js</code> (850+ apps).</div>
-            <div><strong>Autonomous Agent &amp; Build Core:</strong> <code>agent.js</code> (tool loop + anti-runaway circuit breaker), <code>project-tools.js</code>, <code>site-kit.js</code>, <code>spec-amplifier.js</code>, <code>render-check.js</code> (390px/1440px), <code>qa-probe.js</code>, <code>qa-contract.js</code>, <code>auto-repair.js</code>.</div>
-            <div><strong>Document &amp; Pack Generators:</strong> <code>pdf.js</code> + <code>pdf-orchestration.js</code> (Executive Folios &amp; Slide Decks), <code>docx-export.js</code> (Word), <code>entrepreneur-pack.js</code>, <code>enterprise-file-intel.js</code> (OCR/CSV/QBO/XLSX).</div>
-            <div><strong>Governed Local Airlocks &amp; $0 Compute:</strong> <code>devbox-tools.js</code>, <code>local-fs-tools.js</code>, <code>browser-tools.js</code>, <code>website-screenshot.js</code>, <code>subagent-tools.js</code>, <code>station.js</code>, <code>local-ollama-fastpath.js</code>, <code>whitelabel-autopull.js</code>.</div>
-          </div>
-        </div>
+      <div class="sheet-footer">
+        <span>RAILCALL MASTER ARCHITECTURAL PLANS · CONFIDENTIAL</span>
+        <span>SHEET 01 — EXECUTIVE SYSTEM MAP</span>
       </div>
     </section>
 
     <!-- ================================================================== -->
-    <!-- 4. DATABASE & PERSISTENCE SCHEMA (65 PRISMA MODELS)                -->
+    <!-- SHEET 2 OF 8: FORK ISOLATION & AGENT HIERARCHY                     -->
     <!-- ================================================================== -->
-    <section class="section" id="database">
-      <div class="sec-head">
+    <section class="sheet" id="sheet-2">
+      <div class="title-block">
         <div>
-          <div class="sec-num">Section 04 · Data Layer &amp; Persistence</div>
-          <h2>PostgreSQL / Neon Schema (All 65 Prisma Models) + Local Desktop Ledger</h2>
-          <p class="sec-desc">Complete data model across cloud Neon Postgres (<code>railcall-marketplace/prisma/schema.prisma</code>) and local desktop persistence.</p>
+          <div class="sheet-kicker">Governance, Git Isolation &amp; Local GPU Workforce</div>
+          <div class="sheet-title">2. Team, Git Fork Isolation &amp; $0.00 Qwen/Ollama Sub-Agent Hierarchy</div>
+          <div class="sheet-subtitle">How we keep Sami's production repos 100% clean while Project Mozart builds non-stop on isolated forks.</div>
+        </div>
+        <div class="stamp-box">
+          <div class="stamp-num">SHEET 02 OF 08</div>
+          <div class="stamp-meta">UPSTREAM PUSH: DISABLED</div>
         </div>
       </div>
 
-      <div class="grid-3">
-        <div class="subcard">
-          <h3>Identity, Auth &amp; Enterprise</h3>
-          <div class="meta">10 Models · RBAC + SCIM + Guest HMAC</div>
-          <div class="module-grid">
-            <span class="mod-chip">User</span>
-            <span class="mod-chip">Organization</span>
-            <span class="mod-chip">Membership</span>
-            <span class="mod-chip">OrgSubscription</span>
-            <span class="mod-chip">OrgAuditLog</span>
-            <span class="mod-chip">ApiKey</span>
-            <span class="mod-chip">RefreshToken</span>
-            <span class="mod-chip">Invitation</span>
-            <span class="mod-chip">GuestSession</span>
-            <span class="mod-chip">DesignPartnerApplication</span>
-          </div>
-        </div>
+      <div class="diagram-frame">
+        <div class="diagram-caption">Figure 2.1 — Command Chain &amp; Air-Gapped Git Fork Topology</div>
+        <svg viewBox="0 0 940 195" width="100%" height="auto" xmlns="http://www.w3.org/2000/svg" style="font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;">
+          <rect x="15" y="12" width="270" height="72" rx="6" fill="#FFF1F2" stroke="#E11D48" stroke-width="1.5"/>
+          <text x="27" y="30" font-size="10" font-weight="800" fill="#E11D48">ORIGINAL PRODUCTION REPOS (SAMI)</text>
+          <text x="27" y="46" font-size="10.5" font-weight="700" fill="#0F172A">patl4588/{website, marketplace, linden}</text>
+          <text x="27" y="61" font-size="10.5" font-weight="700" fill="#0F172A">SamyBchaalia/railcall-chat</text>
+          <text x="27" y="76" font-size="9.5" font-weight="800" fill="#E11D48">🔒 git remote push = DISABLED (Untouched)</text>
 
-        <div class="subcard">
-          <h3>Assistant Queue, Workspace &amp; Canvas</h3>
-          <div class="meta">13 Models · Lock-Free Job Claim + DAG</div>
-          <div class="module-grid">
-            <span class="mod-chip">AssistantJob</span>
-            <span class="mod-chip">AssistantWorker</span>
-            <span class="mod-chip">AssistantState</span>
-            <span class="mod-chip">WorkspaceProject</span>
-            <span class="mod-chip">WorkspaceProjectFile</span>
-            <span class="mod-chip">WorkspaceConversation</span>
-            <span class="mod-chip">WorkspaceImage</span>
-            <span class="mod-chip">CanvasDraft</span>
-            <span class="mod-chip">CanvasExecution</span>
-            <span class="mod-chip">StepAttempt</span>
-            <span class="mod-chip">RouterDecision</span>
-            <span class="mod-chip">SubworkflowRevision</span>
-            <span class="mod-chip">Conversation / Message</span>
-          </div>
-        </div>
+          <text x="355" y="44" text-anchor="middle" font-size="10" font-weight="700" fill="#0F172A">Read-Only Sync ➔</text>
+          <text x="355" y="58" text-anchor="middle" font-size="9" fill="#64748B">(git fetch upstream main)</text>
 
-        <div class="subcard">
-          <h3>Wallet, Metering, Commerce &amp; Escrow</h3>
-          <div class="meta">14 Models · Atomic Credit Settlement</div>
-          <div class="module-grid">
-            <span class="mod-chip">WalletTransaction</span>
-            <span class="mod-chip">Subscription</span>
-            <span class="mod-chip">Cart</span>
-            <span class="mod-chip">CartItem</span>
-            <span class="mod-chip">Purchase</span>
-            <span class="mod-chip">PurchaseClaim</span>
-            <span class="mod-chip">EscrowHold</span>
-            <span class="mod-chip">ListingTransfer</span>
-            <span class="mod-chip">Payout</span>
-            <span class="mod-chip">SellerProfile</span>
-            <span class="mod-chip">Listing</span>
-            <span class="mod-chip">ListingNote</span>
-            <span class="mod-chip">ListingReport</span>
-            <span class="mod-chip">Review</span>
-          </div>
-        </div>
+          <rect x="425" y="12" width="275" height="72" rx="6" fill="#ECFDF5" stroke="#047857" stroke-width="1.5"/>
+          <text x="437" y="30" font-size="10" font-weight="800" fill="#047857">ISOLATED MOZART FORKS (PATRICK)</text>
+          <text x="437" y="46" font-size="10.5" font-weight="700" fill="#0F172A">patl4588/mozart-railcall-{website,chat}</text>
+          <text x="437" y="61" font-size="10.5" font-weight="700" fill="#0F172A">patl4588/mozart-{railcall-marketplace,linden}</text>
+          <text x="437" y="76" font-size="9.5" font-weight="800" fill="#047857">✓ Active Branch: mozart/v2-autonomous</text>
 
-        <div class="subcard">
-          <h3>Cryptographic Receipts &amp; Witness</h3>
-          <div class="meta">9 Models · Ed25519 + Merkle STH</div>
-          <div class="module-grid">
-            <span class="mod-chip">Receipt</span>
-            <span class="mod-chip">WitnessAnchor</span>
-            <span class="mod-chip">IssuanceLogEntry</span>
-            <span class="mod-chip">IssuanceSth</span>
-            <span class="mod-chip">TeamManifest</span>
-            <span class="mod-chip">TeamPolicyBundle</span>
-            <span class="mod-chip">RelayRoute</span>
-            <span class="mod-chip">RelayEvent</span>
-            <span class="mod-chip">RelaySequence</span>
-          </div>
-        </div>
+          <text x="735" y="48" text-anchor="middle" font-size="12" font-weight="800" fill="#0F172A">➔</text>
 
-        <div class="subcard">
-          <h3>Station Telemetry &amp; Community</h3>
-          <div class="meta">19 Models · Releases, Modules &amp; Forum</div>
-          <div class="module-grid">
-            <span class="mod-chip">StationRelease</span>
-            <span class="mod-chip">StationInstall</span>
-            <span class="mod-chip">StationActivityDay</span>
-            <span class="mod-chip">StationEvent</span>
-            <span class="mod-chip">StudioDownload</span>
-            <span class="mod-chip">ModuleInstall</span>
-            <span class="mod-chip">ModuleRequest</span>
-            <span class="mod-chip">ModuleProposal</span>
-            <span class="mod-chip">ForumThread</span>
-            <span class="mod-chip">ForumPost</span>
-            <span class="mod-chip">ForumAttachment</span>
-            <span class="mod-chip">ForumCredit</span>
-            <span class="mod-chip">ForumReport</span>
-            <span class="mod-chip">Notification</span>
-            <span class="mod-chip">NotificationPreference</span>
-            <span class="mod-chip">PageView</span>
-          </div>
-        </div>
+          <rect x="760" y="12" width="165" height="72" rx="6" fill="#EFF6FF" stroke="#1E3A8A" stroke-width="1.5"/>
+          <text x="772" y="30" font-size="10" font-weight="800" fill="#1E3A8A">5-SQUAD QA GATE</text>
+          <text x="772" y="46" font-size="10" fill="#0F172A">29/29 Chaos &amp; E2E</text>
+          <text x="772" y="61" font-size="10" fill="#0F172A">Publishes Diffs to</text>
+          <text x="772" y="76" font-size="9.5" font-weight="800" fill="#1E3A8A">project-mozart Hub</text>
 
-        <div class="subcard">
-          <h3>Local Mac Sovereign Storage</h3>
-          <div class="meta">Zero-Cloud Private Desktop State</div>
-          <div class="module-grid">
-            <span class="mod-chip">run_ledger.jsonl</span>
-            <span class="mod-chip">conversations/*.json</span>
-            <span class="mod-chip">railcall-db.js (SQLite)</span>
-            <span class="mod-chip">projects/&lt;id&gt;/index.html</span>
-            <span class="mod-chip">transaction_runs/</span>
-            <span class="mod-chip">rc.customAgents.v1</span>
-            <span class="mod-chip">Station Keychain Vault</span>
-          </div>
-        </div>
-      </div>
-    </section>
+          <!-- Sub-Agent Bar -->
+          <rect x="15" y="104" width="910" height="78" rx="6" fill="#FFFFFF" stroke="#0F172A" stroke-width="1.5"/>
+          <text x="27" y="122" font-size="10" font-weight="800" fill="#0F172A">AGENT COMMAND HIERARCHY: LEAD ARCHITECT (ANTIGRAVITY) ➔ 5 LOCAL $0.00 RAILCALL + QWEN/OLLAMA SUB-AGENTS</text>
+          <rect x="27" y="131" width="170" height="40" rx="4" fill="#F8FAFC" stroke="#94A3B8"/>
+          <text x="35" y="147" font-size="10" font-weight="800">L1 · railcall-router</text>
+          <text x="35" y="162" font-size="9.5" fill="#047857">qwen3.5 0.8B · 258 tok/s</text>
 
-    <!-- ================================================================== -->
-    <!-- 5. SECURITY, CRYPTOGRAPHY & AIRLOCK BOUNDARIES                     -->
-    <!-- ================================================================== -->
-    <section class="section" id="security">
-      <div class="sec-head">
-        <div>
-          <div class="sec-num">Section 05 · Defense-in-Depth &amp; Verification</div>
-          <h2>7 Enforced Security, Billing &amp; Cryptographic Boundaries</h2>
-          <p class="sec-desc">Hard invariants verified continuously across unit tests and the 5-Squad Adversarial QA Gatekeeper.</p>
-        </div>
+          <rect x="206" y="131" width="170" height="40" rx="4" fill="#F8FAFC" stroke="#94A3B8"/>
+          <text x="214" y="147" font-size="10" font-weight="800">L2 · railcall-fast</text>
+          <text x="214" y="162" font-size="9.5" fill="#047857">qwen3.5 4B · 130 tok/s</text>
+
+          <rect x="385" y="131" width="170" height="40" rx="4" fill="#F8FAFC" stroke="#94A3B8"/>
+          <text x="393" y="147" font-size="10" font-weight="800">L3 · gpt-oss:20b</text>
+          <text x="393" y="162" font-size="9.5" fill="#047857">20B Security · 109 tok/s</text>
+
+          <rect x="564" y="131" width="172" height="40" rx="4" fill="#F8FAFC" stroke="#94A3B8"/>
+          <text x="572" y="147" font-size="10" font-weight="800">L4 · railcall-core</text>
+          <text x="572" y="162" font-size="9.5" fill="#047857">qwen3-coder 30B · 119 t/s</text>
+
+          <rect x="745" y="131" width="168" height="40" rx="4" fill="#F8FAFC" stroke="#94A3B8"/>
+          <text x="753" y="147" font-size="10" font-weight="800">L5 · railcall-coder</text>
+          <text x="753" y="162" font-size="9.5" fill="#047857">qwen3-next 79.7B · 262K</text>
+        </svg>
       </div>
 
       <table>
         <thead>
           <tr>
-            <th>Boundary</th>
-            <th>Where Enforced</th>
-            <th>Exact Mechanism</th>
-            <th>Status</th>
+            <th>Component</th>
+            <th>Original Repo (Read-Only Upstream)</th>
+            <th>Isolated Mozart Fork (Active Origin)</th>
+            <th>Active Branch &amp; Protection</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td><strong>1. Ed25519 Signed Receipts &amp; Merkle Log</strong></td>
-            <td class="mono">cloud-router/job-evidence.js · station · /workspace/verify</td>
-            <td>Every model hop, tool call, and DAG node emits a canonical payload signed with Ed25519 and anchored to <code>IssuanceSth</code>; public <code>/verify</code> validates signatures client-side.</td>
-            <td class="ok">ENFORCED</td>
+            <td><strong>Website &amp; WebChat</strong></td>
+            <td><code>patl4588/railcall-website</code> (LOCKED)</td>
+            <td><code>patl4588/mozart-railcall-website</code></td>
+            <td><code>mozart/v2-autonomous</code> · Upstream push = <code>DISABLED</code></td>
           </tr>
           <tr>
-            <td><strong>2. Stateless Split-Brain Session &amp; IP Cap</strong></td>
-            <td class="mono">marketplace/workspace + launch_metered</td>
-            <td><code>rc_ws</code> cookie uses shared HMAC-SHA256 seal across non-sticky instances; signed visitor IP enforces strict $5.00 trial cap with 401 gates on image/video/<code>/v1</code> and zero unmetered fallback.</td>
-            <td class="ok">ENFORCED</td>
+            <td><strong>Mac Desktop App</strong></td>
+            <td><code>SamyBchaalia/railcall-chat</code> (LOCKED)</td>
+            <td><code>patl4588/mozart-railcall-chat</code></td>
+            <td><code>mozart/v2-autonomous</code> · Upstream push = <code>DISABLED</code></td>
           </tr>
           <tr>
-            <td><strong>3. Operator COGS Redaction</strong></td>
-            <td class="mono">assistant/provider-metering.ts · chat.js</td>
-            <td>Internal wholesale <code>operator_cogs_usd</code> and upstream vendor keys are stripped before customer serialization; customers see governed retail Run Tokens / USD.</td>
-            <td class="ok">ENFORCED</td>
+            <td><strong>Marketplace API</strong></td>
+            <td><code>patl4588/railcall-marketplace</code> (LOCKED)</td>
+            <td><code>patl4588/mozart-railcall-marketplace</code></td>
+            <td><code>mozart/v2-autonomous</code> · Upstream push = <code>DISABLED</code></td>
           </tr>
           <tr>
-            <td><strong>4. Strict Artifact Iframe Sandbox</strong></td>
-            <td class="mono">renderer/index.html · artifact-workbench.js</td>
-            <td><code>#artifact-frame</code> enforces <code>sandbox="allow-scripts allow-forms"</code> with <strong>zero</strong> <code>allow-same-origin</code>, isolating generated websites from Electron IPC and host storage.</td>
-            <td class="ok">ENFORCED</td>
-          </tr>
-          <tr>
-            <td><strong>5. External Write &amp; Devbox Airlocks</strong></td>
-            <td class="mono">station DAG · devbox-tools.js · browser-tools.js</td>
-            <td>Reads run immediately; any external send (email, Slack, webhook, git push) or Devbox create/push halts behind explicit user click approval; <code>main</code> branch pushes are refused; packaged builds ignore <code>RC_AUTO_APPROVE_*</code>.</td>
-            <td class="ok">ENFORCED</td>
-          </tr>
-          <tr>
-            <td><strong>6. SSRF &amp; Isolated Screenshot Partition</strong></td>
-            <td class="mono">railcall-chat/website-screenshot.js</td>
-            <td>Blocks RFC1918, loopback, link-local, and cloud metadata IPs before navigation; renders inside ephemeral <code>temp-rc-site-shot</code> partition with <code>contextIsolation: true</code>.</td>
-            <td class="ok">ENFORCED</td>
-          </tr>
-          <tr>
-            <td><strong>7. Mozart Upstream Git Push-Lock</strong></td>
-            <td class="mono">git remote · run-qa-gate.mjs · publish_hourly.sh</td>
-            <td>All 4 local repos lock <code>upstream</code> push URL to <code>DISABLED</code> and push exclusively to <code>patl4588/mozart-*</code> on branch <code>mozart/v2-autonomous</code>.</td>
-            <td class="ok">ENFORCED</td>
+            <td><strong>Linden Router &amp; Station</strong></td>
+            <td><code>patl4588/linden</code> (LOCKED)</td>
+            <td><code>patl4588/mozart-linden</code></td>
+            <td><code>mozart/v2-autonomous</code> · Upstream push = <code>DISABLED</code></td>
           </tr>
         </tbody>
       </table>
-    </section>
 
-    <!-- ================================================================== -->
-    <!-- 6. $0.00 LOCAL RAILCALL + QWEN/OLLAMA SUB-AGENT HIERARCHY          -->
-    <!-- ================================================================== -->
-    <section class="section" id="subagents">
-      <div class="sec-head">
-        <div>
-          <div class="sec-num">Section 06 · Hybrid Orchestration &amp; Local GPU Fleet</div>
-          <h2>Command Hierarchy &amp; 5-Tier $0.00 RailCall + Qwen/Ollama Sub-Agent Swarm</h2>
-          <p class="sec-desc">Benchmarked live on Apple Silicon Unified Memory (<code>127.0.0.1:8799/v1</code> Station + <code>127.0.0.1:11434</code> Ollama) via <code>mozart_local_swarm.py</code>.</p>
-        </div>
-      </div>
-
-      <table>
+      <table style="margin-top: 12px;">
         <thead>
           <tr>
             <th>Hierarchy Level</th>
-            <th>Model / Identifier</th>
-            <th>Weights &amp; Footprint</th>
-            <th>Live Speed</th>
-            <th>Primary Responsibility</th>
+            <th>Engine / Model</th>
+            <th>RAM / Context</th>
+            <th>Verified Speed / Cost</th>
+            <th>Exact Role in Continuous Building</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td><span class="pink-txt">Tier 0 · Sovereign</span></td>
-            <td class="mono">Patrick &amp; Sami</td>
-            <td>Human Governance</td>
+            <td><strong>Tier 0 · Sovereign</strong></td>
+            <td>Patrick &amp; Sami</td>
+            <td>Human Sign-Off</td>
             <td>—</td>
-            <td>Product direction &amp; growth (Patrick); <code>upstream/main</code> merges &amp; live production deploys (Sami).</td>
+            <td>Patrick sets product/growth goals; Sami cherry-picks/merges verified commits into production <code>main</code>.</td>
           </tr>
           <tr>
-            <td><span class="pink-txt">Tier 1 · Lead Architect</span></td>
-            <td class="mono">Antigravity + Mozart Control Plane</td>
-            <td>Multi-Repo Orchestrator</td>
-            <td>Real-time</td>
-            <td>Cross-repo architecture, complex surgical edits, visual browser verification, and 5-Squad QA Gate orchestration.</td>
+            <td><strong>Tier 1 · Lead Architect</strong></td>
+            <td>Antigravity Orchestrator</td>
+            <td>Full Cross-Repo</td>
+            <td>Lead Brain</td>
+            <td>Designs architecture, writes cross-repo code, verifies UI visually, and commands the local sub-agents.</td>
           </tr>
           <tr>
-            <td><strong>Sub-Agent L1 · Router</strong></td>
-            <td class="mono">railcall-router:latest</td>
-            <td><code>qwen3.5:0.8b</code> · 1.0 GB</td>
-            <td class="ok mono">258.3 tok/s ($0)</td>
-            <td>Sub-100ms JSON intent classification, repo targeting, and file-slice dispatch (<code>--subagent router</code>).</td>
+            <td><strong>Sub-Agent L1</strong></td>
+            <td><code>railcall-router:latest</code></td>
+            <td>1.0 GB · Qwen3.5 0.8B</td>
+            <td><strong>258.3 tok/s · $0.00</strong></td>
+            <td>Instant task triage, repo selection, and file-slice routing (<code>--subagent router</code>).</td>
           </tr>
           <tr>
-            <td><strong>Sub-Agent L2 · Fast Scout</strong></td>
-            <td class="mono">railcall-fast:latest</td>
-            <td><code>qwen3.5:4b</code> · 3.4 GB</td>
-            <td class="ok mono">130.0 tok/s ($0)</td>
-            <td>Dead-link scanning, DOM/CSS selector lint, and JSON contract validation (<code>--subagent fast</code>).</td>
+            <td><strong>Sub-Agent L2</strong></td>
+            <td><code>railcall-fast:latest</code></td>
+            <td>3.4 GB · Qwen3.5 4B</td>
+            <td><strong>130.0 tok/s · $0.00</strong></td>
+            <td>Dead-link sweeps, CSS/DOM selector checks, and JSON schema validation (<code>--subagent fast</code>).</td>
           </tr>
           <tr>
-            <td><strong>Sub-Agent L3 · Security</strong></td>
-            <td class="mono">gpt-oss:20b</td>
-            <td><code>gpt-oss:20b</code> · 13 GB</td>
-            <td class="ok mono">108.7 tok/s ($0)</td>
-            <td>Adversarial SSRF, HMAC cookie split-brain, and auth airlock test synthesis (<code>--subagent security</code>).</td>
+            <td><strong>Sub-Agent L3</strong></td>
+            <td><code>gpt-oss:20b</code></td>
+            <td>13 GB · 20B Reasoning</td>
+            <td><strong>108.7 tok/s · $0.00</strong></td>
+            <td>Adversarial security fuzzing: SSRF, HMAC cookies, auth airlocks (<code>--subagent security</code>).</td>
           </tr>
           <tr>
-            <td><strong>Sub-Agent L4 · Core Coder</strong></td>
-            <td class="mono">railcall-core:latest</td>
-            <td><code>qwen3-coder:30b</code> MoE · 18 GB · 262K ctx</td>
-            <td class="ok mono">118.9 tok/s ($0)</td>
-            <td>TypeScript / NestJS / Next.js / Electron feature scaffolding &amp; unit test authoring (<code>--subagent core</code>).</td>
+            <td><strong>Sub-Agent L4</strong></td>
+            <td><code>railcall-core:latest</code></td>
+            <td>18 GB · 30.5B · 262K ctx</td>
+            <td><strong>118.9 tok/s · $0.00</strong></td>
+            <td>Writes TypeScript/NestJS/Next.js/Electron unit tests &amp; feature modules (<code>--subagent core</code>).</td>
           </tr>
           <tr>
-            <td><strong>Sub-Agent L5 · Deep Auditor</strong></td>
-            <td class="mono">railcall-coder:latest</td>
-            <td><code>qwen3-coder-next</code> 79.7B · 51 GB · 262K ctx</td>
-            <td class="ok mono">On-Demand ($0)</td>
-            <td>Deep multi-file AST synthesis, surgical diff verification &amp; cross-repo PR audit (<code>--subagent coder</code>).</td>
+            <td><strong>Sub-Agent L5</strong></td>
+            <td><code>railcall-coder:latest</code></td>
+            <td>51 GB · 79.7B · 262K ctx</td>
+            <td><strong>On-Demand · $0.00</strong></td>
+            <td>Deep multi-file AST audits, surgical diff review, and pre-PR verification (<code>--subagent coder</code>).</td>
           </tr>
         </tbody>
       </table>
+
+      <div class="sheet-footer">
+        <span>RAILCALL MASTER ARCHITECTURAL PLANS · CONFIDENTIAL</span>
+        <span>SHEET 02 — FORK ISOLATION &amp; $0 QWEN HIERARCHY</span>
+      </div>
     </section>
 
     <!-- ================================================================== -->
-    <!-- 7. ONGOING COMPOUNDING GOAL RATCHETS                               -->
+    <!-- SHEET 3 OF 8: FRONTEND SURFACES (DESKTOP & WEBSITE)                -->
     <!-- ================================================================== -->
-    <section class="section" id="goals">
-      <div class="sec-head">
+    <section class="sheet" id="sheet-3">
+      <div class="title-block">
         <div>
-          <div class="sec-num">Section 07 · Perpetual Autonomous Roadmap</div>
-          <h2>Ongoing Compounding Goal Ratchets ("Never Stop Building")</h2>
-          <p class="sec-desc">Every wave rebases on <code>upstream/main</code>, ratchets KPIs strictly upward on <code>mozart/v2-autonomous</code>, and must pass all 5 Adversarial QA Squads before publishing.</p>
+          <div class="sheet-kicker">Customer-Facing Applications · UI &amp; Local Workbench</div>
+          <div class="sheet-title">3. Desktop App (`railcall-chat`) &amp; Web App (`railcall-website`) Architecture</div>
+          <div class="sheet-subtitle">Exact modules inside the Mac Desktop app and Next.js Web app — what exists today vs. what we are building next.</div>
+        </div>
+        <div class="stamp-box">
+          <div class="stamp-num">SHEET 03 OF 08</div>
+          <div class="stamp-meta">828 DESKTOP + 96 WEB TESTS</div>
+        </div>
+      </div>
+
+      <div class="grid-2" style="margin-bottom: 12px;">
+        <div class="arch-box have-now">
+          <div class="box-head">
+            <span class="box-title">Mac Desktop App (`mozart-railcall-chat` · Electron 33)</span>
+            <span class="pill pill-now">☑ HAVE NOW</span>
+          </div>
+          <div class="box-body">
+            <ul>
+              <li><strong>Main Chat &amp; Visual Builder (`chat.js` + `artifact-workbench.js`):</strong> Builds live HTML/CSS/JS websites, checkout pages, and dashboards inside a strict sandboxed preview (<code>390px</code> / <code>768px</code> / <code>1440px</code>) with Point &amp; Edit and <code>.zip</code> export. Automatically overrides stuck Automation Mode on visual requests.</li>
+              <li><strong>Reorganized 4-Tab Workflows Hub:</strong> (1) Studio &amp; AI Builder, (2) Embedded Visual Node Canvas (<code>n8n_canvas.html</code>), (3) Ready Routines, (4) Saved &amp; History.</li>
+              <li><strong>Reorganized 3-Tab Agents Hub:</strong> (1) Specialist Fleet (Web, PDF, Video, DB, $0 Code, Receipts), (2) AI Agent Architect, (3) Custom Agents.</li>
+              <li><strong>Document &amp; Screenshot Engines:</strong> Cited Executive PDFs &amp; Slide Decks (<code>pdf.js</code>), native Word <code>.docx</code> (<code>docx-export.js</code>), $0 parallel external website screenshots (<code>website-screenshot.js</code>).</li>
+              <li><strong>68 Governed IPC Channels &amp; Airlocks:</strong> Human-approved Devbox terminal (blocks <code>main</code> push), step-approved Chrome browser automation, RAM-sized auto-pull for local Qwen models.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="arch-box have-now">
+          <div class="box-head">
+            <span class="box-title">Web App &amp; Edge API (`mozart-railcall-website` · Next.js 15)</span>
+            <span class="pill pill-now">☑ HAVE NOW</span>
+          </div>
+          <div class="box-body">
+            <ul>
+              <li><strong>Public Marketing, Docs &amp; Marketplace (161 Pages):</strong> Landing hero, Pricing, Models, Network, 850+ Integrations catalog, 22 Developer Docs sections, 14 Creator Marketplace pages, 10 Legal/DPA pages.</li>
+              <li><strong>Browser Workspace (`/chat` &amp; `/workspace/*`):</strong> Streaming SSE WebChat with split-pane artifact preview, Departmental Agents (<code>AgentsHome.tsx</code>), Workflows library (<code>WorkflowsClient.tsx</code>), Browser Canvas, Connections, Usage Monitor, and Console (API keys, logs, audit).</li>
+              <li><strong>Zero-Trust Receipt Inspector (`/workspace/verify`):</strong> Client-side cryptographic verification of Ed25519 receipt signatures.</li>
+              <li><strong>25 `/api/workspace/*` BFF Routes + Public `/v1/*`:</strong> Handles guest HMAC sessions, credits, runs, projects, subagents, PDF folios, images, videos, and drop-in OpenAI <code>/v1/chat/completions</code>.</li>
+            </ul>
+          </div>
         </div>
       </div>
 
       <table>
         <thead>
           <tr>
-            <th>Track</th>
-            <th>Current Baseline (Verified)</th>
-            <th>Wave +1 Target</th>
-            <th>Wave +2 Target</th>
-            <th>Perpetual North Star</th>
+            <th>Frontend Area</th>
+            <th>☑ What We Have Right Now</th>
+            <th>🔨 What We Are Building Next (Wave +1 / +2)</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td><strong>1. Router Pareto &amp; Speed</strong><br/><span class="mono">mozart-linden</span></td>
-            <td>48/48 groups · -95.4% vs Frontier · -22.4% latency vs OR</td>
-            <td>96 workload groups · prefix-cache hit telemetry · p95 TTFT &lt;380ms</td>
-            <td>150+ workloads · 85%+ cache hit · &lt;120ms pre-stream failover</td>
-            <td>200+ live-calibrated workloads · sub-250ms TTFT · 100% signed hops</td>
+            <td><strong>Workflows &amp; Agents Organization</strong></td>
+            <td>Clean 4-tab Workflows Hub &amp; 3-tab Agents Hub live in Desktop App; Canvas consolidated inside Workflows; <code>✕ Exit to Chat</code> pill added.</td>
+            <td>Bring the exact same clean tabbed Workflows &amp; Agents navigation to the Web App (<code>/workspace/workflows</code> &amp; <code>/chat/agents</code>) so Web and Desktop feel identical.</td>
           </tr>
           <tr>
-            <td><strong>2. Visual Builder &amp; Hubs UX</strong><br/><span class="mono">chat + website</span></td>
-            <td>828 desktop + 96 web specs · Tabbed Hubs + Visual Override Guard</td>
-            <td>Full Web/Desktop UI parity on Workflows &amp; Agents · &lt;15s first-pixel preview</td>
-            <td>50+ vertical site/checkout/PDF kits · 0 broken links (390/768/1440px)</td>
-            <td>Sub-10s live preview · visual point-and-edit + 1-click deploy</td>
+            <td><strong>Visual Website &amp; Checkout Builder</strong></td>
+            <td>1-pass scaffold + parallel FLUX images + 390px/1440px render check + checkout/pricing page intent override.</td>
+            <td>Cut first-pixel preview under <strong>15 seconds</strong>; ship 50+ verified industry starter kits (checkout, SaaS, real estate, clinic, legal); zero dead links/buttons.</td>
           </tr>
           <tr>
-            <td><strong>3. Marketplace &amp; Connectors</strong><br/><span class="mono">mozart-marketplace</span></td>
-            <td>109/109 specs · Stateless HMAC · 65 Prisma models</td>
-            <td>Top-25 SaaS connectors (Stripe, Slack, Gmail, Neon, Linear) dry-run probes</td>
-            <td>1,000-RPS burst queue soak · zero-drift idempotent credit audit</td>
-            <td>Multi-region HA + tamper-evident clearing house across 850+ apps</td>
-          </tr>
-          <tr>
-            <td><strong>4. $0 Qwen Factory &amp; QA</strong><br/><span class="mono">project-mozart</span></td>
-            <td>5 local models live · 29/29 5-Squad Gate · 1,033+ assertions</td>
-            <td>Automated L2+L4 pre-gate sweep · 1,250+ automated assertions</td>
-            <td>75%+ grunt work offloaded to $0 GPU · 1,500+ assertions</td>
-            <td>24/7 autonomous scout → build → fuzz → verify → publish loop</td>
+            <td><strong>Cloud ↔ Desktop Sync</strong></td>
+            <td>Conversations, local projects, and <code>cloud-services-sync.js</code> integration keys.</td>
+            <td>Seamless 2-way sync of Custom Agents and Saved Workflows between Web Workspace and Mac Desktop App.</td>
           </tr>
         </tbody>
       </table>
+
+      <div class="sheet-footer">
+        <span>RAILCALL MASTER ARCHITECTURAL PLANS · CONFIDENTIAL</span>
+        <span>SHEET 03 — DESKTOP &amp; WEBSITE ARCHITECTURE</span>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- SHEET 4 OF 8: MARKETPLACE BACKEND & NEON DATABASE                  -->
+    <!-- ================================================================== -->
+    <section class="sheet" id="sheet-4">
+      <div class="title-block">
+        <div>
+          <div class="sheet-kicker">Core Cloud Backend, Billing &amp; Persistence</div>
+          <div class="sheet-title">4. Marketplace Backend (`railcall-marketplace`) &amp; Neon Postgres Schema (65 Models)</div>
+          <div class="sheet-subtitle">How accounts, pricing tiers ($5 / $15 / $99), job queues, connectors, and database tables are organized today.</div>
+        </div>
+        <div class="stamp-box">
+          <div class="stamp-num">SHEET 04 OF 08</div>
+          <div class="stamp-meta">35 MODULES · 65 DB TABLES</div>
+        </div>
+      </div>
+
+      <div class="grid-3" style="margin-bottom: 12px;">
+        <div class="arch-box have-now">
+          <div class="box-head">
+            <span class="box-title">1. Identity, Orgs &amp; Trial Gate</span>
+            <span class="pill pill-now">10 Tables</span>
+          </div>
+          <div class="box-body">
+            <code>User</code>, <code>Organization</code>, <code>Membership</code>, <code>OrgSubscription</code>, <code>OrgAuditLog</code>, <code>ApiKey</code>, <code>RefreshToken</code>, <code>GuestSession</code>.
+            <ul>
+              <li>Stateless <code>rc_ws</code> HMAC cookie works across multi-instance servers with zero 404 split-brain.</li>
+              <li>Signed per-IP <strong>$5.00 trial cap</strong> (<code>launch_metered</code>) with strict 401 gates on media/<code>/v1</code>.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="arch-box have-now">
+          <div class="box-head">
+            <span class="box-title">2. Patsum Wallet &amp; Commerce</span>
+            <span class="pill pill-now">14 Tables</span>
+          </div>
+          <div class="box-body">
+            <code>WalletTransaction</code>, <code>Subscription</code>, <code>Purchase</code>, <code>PurchaseClaim</code>, <code>Cart</code>, <code>EscrowHold</code>, <code>Payout</code>, <code>Listing</code>.
+            <ul>
+              <li>Supports <strong>$5 Pay-As-You-Go</strong>, <strong>$15/mo Basic</strong>, and <strong>$99/mo Pro</strong> tiers.</li>
+              <li>Reserves credits before LLM call, settles exact spend after, and strips wholesale <code>operator_cogs_usd</code>.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="arch-box have-now">
+          <div class="box-head">
+            <span class="box-title">3. Job Queue, Projects &amp; Trust</span>
+            <span class="pill pill-now">41 Tables</span>
+          </div>
+          <div class="box-body">
+            <code>AssistantJob</code>, <code>AssistantWorker</code>, <code>WorkspaceProject</code>, <code>WorkspaceImage</code>, <code>CanvasDraft</code>, <code>CanvasExecution</code>, <code>Receipt</code>, <code>WitnessAnchor</code>, <code>IssuanceSth</code>.
+            <ul>
+              <li>Lock-free job claim feeds the 32-slot worker pool with zero database deadlocks.</li>
+              <li>Stores Merkle-anchored Ed25519 receipts &amp; module marketplace data.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Backend Subsystem</th>
+            <th>☑ What We Have Right Now</th>
+            <th>🔨 What We Are Building Next (Wave +1 / +2)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Job Queue &amp; Concurrency (`src/assistant/`)</strong></td>
+            <td>Lock-free claim/exchange, stale-worker watchdog, SSE stream recovery, verified 0 deadlocks across 109/109 test specs.</td>
+            <td>500 → 1,000 RPS burst load soak tests + real-time queue depth &amp; p99 wait-time telemetry on the Mozart Hub.</td>
+          </tr>
+          <tr>
+            <td><strong>Pricing, Credits &amp; Stripe (`patsum` + `purchases`)</strong></td>
+            <td>Atomic pre-turn reservation &amp; settlement, per-turn <code>$≤</code> budget cap support, $5 IP trial lock, wholesale COGS redaction.</td>
+            <td>Self-serve checkout polish for $5 One-Time Pack / $15 Basic / $99 Pro + automated zero-drift ledger reconciliation audit.</td>
+          </tr>
+          <tr>
+            <td><strong>850+ App Connectors (`workspace` + `hub`)</strong></td>
+            <td>850+ provider schemas (OAuth/API Key/MCP), shared key sync across Web &amp; Desktop, read vs. approval-gated write classification.</td>
+            <td>Live dry-run &amp; health verification suite for Top 25 business connectors (Stripe, Gmail, Outlook, Slack, QuickBooks, Shopify, HubSpot, Linear, GitHub, Neon).</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="sheet-footer">
+        <span>RAILCALL MASTER ARCHITECTURAL PLANS · CONFIDENTIAL</span>
+        <span>SHEET 04 — MARKETPLACE BACKEND &amp; NEON DATABASE</span>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- SHEET 5 OF 8: LINDEN ROUTER, STATION & RECEIPTS                    -->
+    <!-- ================================================================== -->
+    <section class="sheet" id="sheet-5">
+      <div class="title-block">
+        <div>
+          <div class="sheet-kicker">Core Intelligence Moat · Cost, Speed &amp; Verifiable Truth</div>
+          <div class="sheet-title">5. Linden Monorepo — Pareto Cloud-Router, Local Station (`:8799`) &amp; Ed25519 Receipts</div>
+          <div class="sheet-subtitle">How RailCall delivers frontier-grade results at 95.4% lower cost and 22.4% faster latency with cryptographic proof.</div>
+        </div>
+        <div class="stamp-box">
+          <div class="stamp-num">SHEET 05 OF 08</div>
+          <div class="stamp-meta">48/48 PARETO DOMINANT</div>
+        </div>
+      </div>
+
+      <div class="diagram-frame">
+        <div class="diagram-caption">Figure 5.1 — Inside `linden`: Prompt Classification → Pareto Selection → Failover → Quality Check → Ed25519 Receipt</div>
+        <svg viewBox="0 0 940 120" width="100%" height="auto" xmlns="http://www.w3.org/2000/svg" style="font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;">
+          <rect x="10" y="18" width="170" height="84" rx="5" fill="#FFFFFF" stroke="#0F172A" stroke-width="1.5"/>
+          <text x="20" y="38" font-size="10" font-weight="800" fill="#E11D48">1. CLASSIFY TASK</text>
+          <text x="20" y="55" font-size="10" fill="#0F172A">48 Task Micro-Groups</text>
+          <text x="20" y="70" font-size="9.5" fill="#475569">Code, UI, Math, Legal,</text>
+          <text x="20" y="83" font-size="9.5" fill="#475569">Research, JSON, Video</text>
+
+          <text x="191" y="62" font-size="13" font-weight="800">➔</text>
+
+          <rect x="204" y="18" width="182" height="84" rx="5" fill="#ECFDF5" stroke="#047857" stroke-width="1.5"/>
+          <text x="214" y="38" font-size="10" font-weight="800" fill="#047857">2. PARETO SCORE</text>
+          <text x="214" y="55" font-size="10" fill="#0F172A">Speed × Quality × Cost</text>
+          <text x="214" y="70" font-size="9.5" fill="#334155">-95.4% vs Frontier</text>
+          <text x="214" y="83" font-size="9.5" fill="#334155">-22.4% faster vs OR</text>
+
+          <text x="397" y="62" font-size="13" font-weight="800">➔</text>
+
+          <rect x="410" y="18" width="180" height="84" rx="5" fill="#EFF6FF" stroke="#1E3A8A" stroke-width="1.5"/>
+          <text x="420" y="38" font-size="10" font-weight="800" fill="#1E3A8A">3. EXECUTE + FAILOVER</text>
+          <text x="420" y="55" font-size="10" fill="#0F172A">Direct Lane or $0 Mac</text>
+          <text x="420" y="70" font-size="9.5" fill="#334155">&lt;120ms pre-stream swap</text>
+          <text x="420" y="83" font-size="9.5" fill="#334155">on 5xx or slow TTFT</text>
+
+          <text x="601" y="62" font-size="13" font-weight="800">➔</text>
+
+          <rect x="614" y="18" width="150" height="84" rx="5" fill="#FFFBEB" stroke="#B45309" stroke-width="1.5"/>
+          <text x="624" y="38" font-size="10" font-weight="800" fill="#B45309">4. QUALITY RUBRIC</text>
+          <text x="624" y="55" font-size="10" fill="#0F172A">answer-review.js</text>
+          <text x="624" y="70" font-size="9.5" fill="#334155">visual-qa-edge.js</text>
+          <text x="624" y="83" font-size="9.5" fill="#334155">Checks output &gt;=4/5</text>
+
+          <text x="775" y="62" font-size="13" font-weight="800">➔</text>
+
+          <rect x="788" y="18" width="142" height="84" rx="5" fill="#ECFDF5" stroke="#047857" stroke-width="1.5"/>
+          <text x="798" y="38" font-size="10" font-weight="800" fill="#047857">5. SIGN RECEIPT</text>
+          <text x="798" y="55" font-size="10" fill="#0F172A">Ed25519 Signature</text>
+          <text x="798" y="70" font-size="9.5" fill="#334155">+ Merkle Tree STH</text>
+          <text x="798" y="83" font-size="9.5" fill="#334155">Publicly verifiable</text>
+        </svg>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>`linden` Subsystem</th>
+            <th>Key Files on Disk</th>
+            <th>☑ What We Have Right Now</th>
+            <th>🔨 What We Are Building Next</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Pareto Cloud-Router</strong></td>
+            <td><code>apps/cloud-router/src/router.js</code>, <code>task-rating-algo.js</code>, <code>provider-failover.js</code></td>
+            <td>48/48 task micro-groups Pareto-dominant; Direct provider lanes + OpenRouter backup; &lt;120ms pre-stream failover.</td>
+            <td>Expand benchmark &amp; routing matrix from <strong>48 → 96 → 200</strong> real-world task groups; live rolling latency auto-tuning.</td>
+          </tr>
+          <tr>
+            <td><strong>32-Slot Worker &amp; Prefix Cache</strong></td>
+            <td><code>marketplace-worker.js</code>, <code>marketplace-runner.js</code></td>
+            <td>32 concurrent execution slots with clean <code>SIGTERM</code> in-flight drain during deploys; prefix caching on `/v1`.</td>
+            <td>Push multi-turn prefix-cache hit rate above <strong>85%</strong> to cut agent loop latency &amp; COGS another 30%+.</td>
+          </tr>
+          <tr>
+            <td><strong>Local Mac Station (`:8799`)</strong></td>
+            <td><code>apps/station/server/hq_server.py</code>, <code>workflows/</code>, <code>mcp/</code></td>
+            <td>Loopback `/v1` API, MCP server, blast-radius dry-run calculator, <code>plan_root</code> hash pinning, human write airlock.</td>
+            <td>1-click standing schedule templates + exportable compliance receipt bundles for enterprise teams.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="sheet-footer">
+        <span>RAILCALL MASTER ARCHITECTURAL PLANS · CONFIDENTIAL</span>
+        <span>SHEET 05 — LINDEN ROUTER, STATION &amp; RECEIPTS</span>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- SHEET 6 OF 8: ALL 4 RUNTIME FLOWS ON ONE SHEET                     -->
+    <!-- ================================================================== -->
+    <section class="sheet" id="sheet-6">
+      <div class="title-block">
+        <div>
+          <div class="sheet-kicker">End-to-End Operational Pipelines · Zero Hidden Tabs</div>
+          <div class="sheet-title">6. How Every Core User Action Flows Through the Architecture</div>
+          <div class="sheet-subtitle">All 4 primary customer &amp; developer journeys printed side-by-side from click to signed receipt.</div>
+        </div>
+        <div class="stamp-box">
+          <div class="stamp-num">SHEET 06 OF 08</div>
+          <div class="stamp-meta">4 LIVE FLOW PIPELINES</div>
+        </div>
+      </div>
+
+      <div class="pipeline">
+        <div class="pipeline-head">
+          <span>FLOW A · Building a Visual Website, Checkout Page, or App</span>
+          <span class="pill pill-now">☑ LIVE TODAY</span>
+        </div>
+        <div class="pipe-steps">
+          <div class="pipe-step"><strong>STEP 1 · INTENT GUARD</strong>User prompts for a website, checkout page, or pricing page. <code>BUILD_RX</code> matches and auto-exits Automation Mode if stuck.</div>
+          <div class="pipe-step"><strong>STEP 2 · 1-PASS SCAFFOLD</strong><code>project:start</code> pre-warms parallel FLUX images at <code>t=0</code> and synthesizes complete HTML/CSS/JS in 1 pass.</div>
+          <div class="pipe-step"><strong>STEP 3 · 390px/1440px QA</strong><code>render-check.js</code> &amp; <code>qa-contract.js</code> verify mobile/desktop layout &amp; math; <code>auto-repair.js</code> fixes any defect.</div>
+          <div class="pipe-step"><strong>STEP 4 · LIVE WORKBENCH</strong>Opens inside strict sandboxed preview with Point &amp; Edit, Code/Diff tabs, <code>.zip</code> download, and signed receipt.</div>
+        </div>
+      </div>
+
+      <div class="pipeline">
+        <div class="pipeline-head">
+          <span>FLOW B · Cloud Chat &amp; Public `/v1/chat/completions` API Request</span>
+          <span class="pill pill-now">☑ LIVE TODAY</span>
+        </div>
+        <div class="pipe-steps">
+          <div class="pipe-step"><strong>STEP 1 · AUTH &amp; IP SEAL</strong>Validates <code>rc_sk_*</code> API key or stateless <code>rc_ws</code> HMAC cookie + signed $5.00 trial IP cap.</div>
+          <div class="pipe-step"><strong>STEP 2 · CREDIT RESERVE</strong><code>patsum</code> atomically reserves wallet/allowance budget and writes lock-free <code>AssistantJob</code> to Neon DB.</div>
+          <div class="pipe-step"><strong>STEP 3 · PARETO + FAILOVER</strong>32-slot worker claims job, scores 48 task groups, routes to fastest/cheapest model (&lt;120ms failover on 5xx).</div>
+          <div class="pipe-step"><strong>STEP 4 · SETTLE &amp; SIGN</strong>Streams SSE response, settles exact spend, strips wholesale COGS, and signs Ed25519 receipt + Merkle STH.</div>
+        </div>
+      </div>
+
+      <div class="pipeline">
+        <div class="pipeline-head">
+          <span>FLOW C · Governed Multi-Step Workflow Automation (e.g., Stripe → Slack → Neon DB)</span>
+          <span class="pill pill-now">☑ LIVE TODAY</span>
+        </div>
+        <div class="pipe-steps">
+          <div class="pipe-step"><strong>STEP 1 · DESIGN IN HUB</strong>User creates routine in the 4-tab Workflows Hub (AI Chat Builder, Step Editor, or Visual Node Canvas).</div>
+          <div class="pipe-step"><strong>STEP 2 · DRY-RUN CONTRACT</strong>Station (<code>:8799</code>) checks connected app keys and shows blast radius (egress domains, spend) with zero live side effects.</div>
+          <div class="pipe-step"><strong>STEP 3 · PLAN-ROOT PIN</strong>User approves workflow, pinning its cryptographic <code>plan_root</code> hash. Any step change forces re-approval.</div>
+          <div class="pipe-step"><strong>STEP 4 · WRITE AIRLOCK</strong>Reads run immediately; external writes (email, Slack, DB write) pause for human approval and emit node receipts.</div>
+        </div>
+      </div>
+
+      <div class="pipeline" style="margin-bottom: 0;">
+        <div class="pipeline-head">
+          <span>FLOW D · $0.00 Private On-Device Mac Execution &amp; Mozart Sub-Agents</span>
+          <span class="pill pill-now">☑ LIVE TODAY</span>
+        </div>
+        <div class="pipe-steps">
+          <div class="pipe-step"><strong>STEP 1 · AUTO-SIZE PACK</strong><code>whitelabel-autopull.js</code> checks Mac RAM &amp; free disk to install matching Qwen GGUF models on <code>127.0.0.1:11434</code>.</div>
+          <div class="pipe-step"><strong>STEP 2 · LOOPBACK ROUTE</strong><code>$0 Local</code> mode or <code>mozart_local_swarm.py</code> routes strictly over <code>127.0.0.1</code> (<code>:8799/v1</code> / <code>:11434</code>).</div>
+          <div class="pipe-step"><strong>STEP 3 · GPU EXECUTION</strong>Runs 0.8B (258 t/s), 4B (130 t/s), 20B (109 t/s), 30.5B Coder (119 t/s), or 79.7B Coder (262K ctx) at $0.00.</div>
+          <div class="pipe-step"><strong>STEP 4 · ZERO EGRESS LOG</strong>Saves local Ed25519 receipt in <code>transaction_runs/</code> and <code>run_ledger.jsonl</code>; zero bytes leave the Mac.</div>
+        </div>
+      </div>
+
+      <div class="sheet-footer">
+        <span>RAILCALL MASTER ARCHITECTURAL PLANS · CONFIDENTIAL</span>
+        <span>SHEET 06 — 4 END-TO-END OPERATIONAL PIPELINES</span>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- SHEET 7 OF 8: MASTER ROADMAP (HAVE NOW vs WAVE 1 vs WAVE 2)        -->
+    <!-- ================================================================== -->
+    <section class="sheet" id="sheet-7">
+      <div class="title-block">
+        <div>
+          <div class="sheet-kicker">Compounding Engineering Plan · Never Stop Building</div>
+          <div class="sheet-title">7. Master Build Matrix — What We Have Now vs. What Mozart Builds Next</div>
+          <div class="sheet-subtitle">Clear separation of verified current capabilities vs. upcoming ratcheting waves on <code>mozart/v2-autonomous</code>.</div>
+        </div>
+        <div class="stamp-box">
+          <div class="stamp-num">SHEET 07 OF 08</div>
+          <div class="stamp-meta">RATCHETING KPI LADDER</div>
+        </div>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 17%;">Product Track</th>
+            <th style="width: 27%;">☑ Have Right Now (Built &amp; Tested)</th>
+            <th style="width: 28%;">☐ Building Wave +1 (Immediate)</th>
+            <th style="width: 28%;">☐ Building Wave +2 &amp; North Star</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Track 1<br/>Visual Builder, Workflows &amp; Agents UX</strong><br/><code>chat</code> + <code>website</code></td>
+            <td>
+              ☑ 828 desktop + 96 web specs green<br/>
+              ☑ Visual checkout/pricing override guard<br/>
+              ☑ 4-Tab Desktop Workflows Hub + embedded Canvas<br/>
+              ☑ 3-Tab Desktop Agents Hub + `✕ Exit` pill
+            </td>
+            <td>
+              ☐ Port 4-Tab Workflows &amp; 3-Tab Agents layout to Web App for 100% parity<br/>
+              ☐ Cut first-pixel website preview to <strong>&lt;15s</strong><br/>
+              ☐ Add 25+ 1-tap checkout, SaaS &amp; local business site blueprints
+            </td>
+            <td>
+              ☐ 50+ vertical templates + instant visual diff/undo<br/>
+              ☐ 2-way Web ↔ Desktop sync for Custom Agents &amp; Workflows<br/>
+              ☐ <strong>North Star:</strong> Sub-10s preview &amp; 1-click live custom-domain publish
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Track 2<br/>Pareto Router &amp; `/v1` Speed</strong><br/><code>mozart-linden</code></td>
+            <td>
+              ☑ 48/48 task groups Pareto-dominant<br/>
+              ☑ 95.4% cheaper vs Frontier, 22.4% faster vs OR<br/>
+              ☑ 32-slot worker + SIGTERM drain<br/>
+              ☑ &lt;120ms pre-stream 5xx failover
+            </td>
+            <td>
+              ☐ Expand router benchmark from <strong>48 → 96</strong> workload groups<br/>
+              ☐ Add `/v1` prefix-cache hit telemetry &amp; push hit rate &gt;80%<br/>
+              ☐ Cut p95 first-token latency (TTFT) below <strong>380ms</strong>
+            </td>
+            <td>
+              ☐ 150 → 200+ workload groups<br/>
+              ☐ Rolling real-time provider speed/health auto-weights<br/>
+              ☐ <strong>North Star:</strong> Sub-250ms p95 TTFT + 85%+ cache hit across agent loops
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Track 3<br/>Marketplace, Billing &amp; 850+ Apps</strong><br/><code>mozart-marketplace</code></td>
+            <td>
+              ☑ 35 NestJS modules + 65 Neon tables<br/>
+              ☑ 109/109 specs green, 0 DB deadlocks<br/>
+              ☑ $5 signed IP trial lock + COGS strip<br/>
+              ☑ Branded $5 / $15 / $99 pricing suite
+            </td>
+            <td>
+              ☐ Live dry-run &amp; key-check probes for Top 25 SaaS apps (Stripe, Gmail, Slack, QuickBooks, HubSpot, Linear, Neon)<br/>
+              ☐ 500-RPS queue concurrency soak test
+            </td>
+            <td>
+              ☐ 1,000-RPS burst soak + zero-drift automated wallet ledger audit<br/>
+              ☐ <strong>North Star:</strong> Multi-region Neon read scaling + 1-click OAuth airlocks across top connectors
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Track 4<br/>$0 Qwen Swarm &amp; Adversarial QA</strong><br/><code>project-mozart</code></td>
+            <td>
+              ☑ 4 isolated `mozart-*` forks (`upstream` locked)<br/>
+              ☑ 5 local Qwen/OSS models live ($0 GPU)<br/>
+              ☑ 29/29 5-Squad Chaos/Browser Gatekeeper
+            </td>
+            <td>
+              ☐ Auto-run L2 (`railcall-fast`) + L4 (`railcall-core` 30B) audit before every QA Gate<br/>
+              ☐ Ratchet automated tests from <strong>1,081 → 1,250+</strong>
+            </td>
+            <td>
+              ☐ Offload 75%+ of test authoring &amp; lint sweeps to $0 local GPU<br/>
+              ☐ <strong>North Star:</strong> 1,500+ assertions &amp; continuous battle-tested PR packs ready for Sami
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="sheet-footer">
+        <span>RAILCALL MASTER ARCHITECTURAL PLANS · CONFIDENTIAL</span>
+        <span>SHEET 07 — MASTER BUILD MATRIX &amp; ROADMAP</span>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- SHEET 8 OF 8: PRINTABLE EXECUTIVE WORKSHEET & SIGN-OFF             -->
+    <!-- ================================================================== -->
+    <section class="sheet" id="sheet-8">
+      <div class="title-block">
+        <div>
+          <div class="sheet-kicker">Action &amp; Markup Sheet · Pen &amp; Paper Planning</div>
+          <div class="sheet-title">8. Architectural Action Checklist, Launch Alignment &amp; Notes</div>
+          <div class="sheet-subtitle">Check off priorities to build next, review Sami merge candidates, and sketch architectural adjustments.</div>
+        </div>
+        <div class="stamp-box">
+          <div class="stamp-num">SHEET 08 OF 08</div>
+          <div class="stamp-meta">OWNER SIGN-OFF &amp; NOTES</div>
+        </div>
+      </div>
+
+      <div class="grid-2" style="margin-bottom: 12px;">
+        <div class="arch-box">
+          <div class="box-head">
+            <span class="box-title">A. Select Next Mozart Build Priorities (`mozart/v2-autonomous`)</span>
+          </div>
+          <div class="box-body" style="line-height: 1.75;">
+            <div><span class="chk">☐</span> <strong>Priority 1:</strong> Web App Workflows &amp; Agents Tabbed Parity (match Desktop cleanup)</div>
+            <div><span class="chk">☐</span> <strong>Priority 2:</strong> Visual Checkout &amp; Industry Website Starter Kits (&lt;15s preview)</div>
+            <div><span class="chk">☐</span> <strong>Priority 3:</strong> Linden Router 48 → 96 Task Groups + Prefix-Cache Telemetry</div>
+            <div><span class="chk">☐</span> <strong>Priority 4:</strong> Top-25 Business Connector Dry-Run &amp; OAuth Airlock Suite</div>
+            <div><span class="chk">☐</span> <strong>Priority 5:</strong> $0 Qwen 30B/79.7B Automated Test-Ratchet Runner (1,250+ tests)</div>
+          </div>
+        </div>
+
+        <div class="arch-box">
+          <div class="box-head">
+            <span class="box-title">B. Ready for Sami Review / Production Launch Checklist</span>
+          </div>
+          <div class="box-body" style="line-height: 1.75;">
+            <div><span class="chk">☑</span> Isolated forks live (`patl4588/mozart-*`), `upstream` push = `DISABLED`</div>
+            <div><span class="chk">☑</span> Desktop Workflows/Agents cleanup + Visual Build Override (`f2c2961`)</div>
+            <div><span class="chk">☑</span> Official Branded Pricing Infographic ($5 / $15 / $99) + X Ads Suite</div>
+            <div><span class="chk">☐</span> Sami cherry-picks verified Desktop/Website commits from Mozart Hub</div>
+            <div><span class="chk">☐</span> Show HN organic engineering post + X (Twitter) founder video ad test</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="arch-box" style="margin-bottom: 12px;">
+        <div class="box-head">
+          <span class="box-title">C. Quick Command Reference (Local Mac Terminal &amp; Antigravity)</span>
+        </div>
+        <div class="box-body">
+          <table>
+            <tbody>
+              <tr>
+                <td style="width: 32%;"><strong>Run $0 Local Qwen Sub-Agent Sweep</strong></td>
+                <td><code>python3 ~/Desktop/railcall-continuous-improvements/mozart_local_swarm.py</code></td>
+              </tr>
+              <tr>
+                <td><strong>Ask 30.5B Local Qwen Coder Directly</strong></td>
+                <td><code>python3 ~/Desktop/railcall-continuous-improvements/mozart_local_swarm.py --subagent core --prompt "..."</code></td>
+              </tr>
+              <tr>
+                <td><strong>Run Full 5-Squad Adversarial QA Gate</strong></td>
+                <td><code>node ~/Desktop/railcall-continuous-improvements/qa-gate/run-qa-gate.mjs</code></td>
+              </tr>
+              <tr>
+                <td><strong>Launch Desktop App (`mozart/v2-autonomous`)</strong></td>
+                <td><code>cd ~/mozart-delegated-lane/railcall-chat &amp;&amp; npm start</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div>
+        <div style="font-family: var(--mono); font-size: 10.5px; font-weight: 800; text-transform: uppercase; color: var(--ink);">D. Handwritten Architectural Notes, Edits &amp; New Goals</div>
+        <div class="notes-grid"></div>
+      </div>
+
+      <div class="sheet-footer">
+        <span>RAILCALL MASTER ARCHITECTURAL PLANS · CONFIDENTIAL</span>
+        <span>SHEET 08 — EXECUTIVE WORKSHEET &amp; SIGN-OFF</span>
+      </div>
     </section>
 
   </main>
 
-  <script>
-    const NODES = {
-      website: {
-        badge: "Next.js 15 · Port 3000 / Cloud",
-        title: "railcall-website (Web App & BFF)",
-        repo: "Fork: patl4588/mozart-railcall-website (upstream: patl4588/railcall-website · push DISABLED)",
-        desc: "Unified marketing site, WebChat SSE streaming workspace, departmental Agents & Workflows studios, browser DAG canvas, public /v1 OpenAI-compatible edge routes, and client-side Ed25519 /verify inspector.",
-        files: [
-          "app/chat/[id]/ChatClient.tsx — Streaming SSE chat & live artifact split view",
-          "app/chat/agents/AgentsHome.tsx — Departmental specialist presets & builder",
-          "app/workspace/workflows/WorkflowsClient.tsx — Starter blueprints & MyWorkflows",
-          "app/workspace/canvas/ — Browser DAG editor + localStorage sync",
-          "app/v1/{chat,models,images,videos} — Task-profile Direct + OR backup /v1 API",
-          "app/api/workspace/* — 25 BFF endpoints (session, credits, runs, folio-pdf, browse)"
-        ],
-        specs: [
-          "161/161 Next.js static & dynamic pages generated cleanly",
-          "67/67 QA specs + 29/29 integration specs passing",
-          "Client-side Ed25519 receipt verification at /workspace/verify"
-        ]
-      },
-      desktop: {
-        badge: "Electron 33.4.11 · Native Mac App v0.12.47",
-        title: "railcall-chat (Desktop App)",
-        repo: "Fork: patl4588/mozart-railcall-chat (upstream: SamyBchaalia/railcall-chat · push DISABLED)",
-        desc: "Local-first macOS desktop workspace combining streaming AI chat, 1-pass website/app scaffold workbench, tabbed Specialized Agents & Workflows hubs, embedded n8n visual canvas, native PDF/DOCX export, and airlocked computer/browser tools.",
-        files: [
-          "main.js + preload.js — 68 governed ContextBridge IPC handlers",
-          "agent.js (12.7K LOC) — Autonomous goal & tool loop with anti-loop guards",
-          "renderer/chat.js (15.5K LOC) — Visual build override guard + tabbed hubs",
-          "renderer/artifact-workbench.js — Sandboxed 390px/1440px live preview & ZIP export",
-          "renderer/workflow-studio-dock.js + n8n_canvas.html — Visual DAG studio",
-          "pdf.js, docx-export.js, website-screenshot.js, devbox-tools.js, subagent-tools.js"
-        ],
-        specs: [
-          "828/828 automated node:test desktop assertions passing (9 suites)",
-          "Strict iframe sandbox='allow-scripts allow-forms' (no allow-same-origin)",
-          "Automatic visual build override prevents Automation Mode from hijacking site builds"
-        ]
-      },
-      v1sdk: {
-        badge: "OpenAI-Compatible /v1 + CLI + MCP",
-        title: "Public /v1 API, SDKs & Extensions",
-        repo: "Endpoints: https://railcall.ai/v1 & http://127.0.0.1:8799/v1",
-        desc: "Drop-in OpenAI SDK replacement allowing Python, TypeScript, Cursor, Claude Code, VS Code, and MCP clients to route through RailCall's Pareto engine (84%–95% lower cloud compute or $0.00 local Mac execution) with cryptographic receipts.",
-        files: [
-          "railcall-marketplace/src/v1/linden-v1.controller.ts — Cloud /v1 ingress",
-          "railcall-website/app/v1/chat/completions/route.ts — Edge task-profile router",
-          "linden/apps/station/server/mcp/ — Local MCP server & /v1 loopback endpoint",
-          "public/railcall-vscode.vsix & railcall.dxt — Editor & desktop extensions"
-        ],
-        specs: [
-          "Supports streaming SSE, JSON schema mode, tool calling, images & video",
-          "Bearer rc_sk_* API key auth + automatic receipt_id header/body injection"
-        ]
-      },
-      marketplace: {
-        badge: "NestJS + Prisma · 35 Backend Modules",
-        title: "railcall-marketplace (Control Plane)",
-        repo: "Fork: patl4588/mozart-railcall-marketplace (upstream: patl4588/railcall-marketplace · push DISABLED)",
-        desc: "Central NestJS backend governing authentication, organization RBAC/SCIM, workspace project/canvas persistence, lock-free AssistantJob queueing for the 32-slot worker fleet, 850+ connector metadata, and module marketplace commerce.",
-        files: [
-          "src/assistant/ — Lock-free AssistantJob queue, monitor watchdog & admission policies",
-          "src/workspace/ (135 files) — Projects, files, conversations, canvas & images",
-          "src/auth/ + src/org/ + src/scim/ — JWT, OAuth, SSO, enterprise SCIM provisioning",
-          "src/listings/ + src/purchases/ + src/escrow/ + src/payouts/ — Creator marketplace",
-          "src/receipts/ + src/witness/ + src/transparency/ — Ed25519 & Merkle STH ledger"
-        ],
-        specs: [
-          "79/79 core unit specs + 30/30 adversarial QA specs passing",
-          "Zero-deadlock worker contention verified in worker-contention-and-deadlock.spec.ts"
-        ]
-      },
-      patsum: {
-        badge: "Atomic Credit & Allowance Engine",
-        title: "Patsum Metering & Gateway",
-        repo: "linden/apps/gateway + marketplace/src/assistant/patsum.policy.ts",
-        desc: "Enforces pre-execution credit reservation, per-turn cost caps ($≤ slider), signed per-IP $5.00 launch_metered guest allowances, atomic post-turn settlement, and wholesale operator_cogs_usd redaction.",
-        files: [
-          "linden/apps/gateway/src/ — Standalone NestJS atomic credit gateway",
-          "marketplace/src/assistant/patsum.policy.ts — Allowance & admission gates",
-          "marketplace/src/assistant/provider-metering.ts — Retail token settlement & COGS strip",
-          "railcall-chat/run-tokens.js — Client Run Token display & budget cap parser"
-        ],
-        specs: [
-          "401 auth gates enforced on unauthenticated image/video/v1 endpoints",
-          "Zero unmetered fallback paths; exact idempotent settlement per turnId"
-        ]
-      },
-      neon: {
-        badge: "Serverless PostgreSQL · 65 Prisma Models",
-        title: "Neon / PostgreSQL Database",
-        repo: "Schema: railcall-marketplace/prisma/schema.prisma",
-        desc: "Serverless PostgreSQL persistence backing accounts, organizations, API keys, wallet transactions, lock-free assistant jobs, workspace projects/images, canvas DAG revisions, and cryptographic receipts.",
-        files: [
-          "Identity: User, Organization, Membership, ApiKey, GuestSession, RefreshToken",
-          "Execution: AssistantJob, AssistantWorker, WorkspaceProject, WorkspaceImage, CanvasExecution",
-          "Ledger: WalletTransaction, Purchase, Subscription, EscrowHold, Payout",
-          "Trust: Receipt, WitnessAnchor, IssuanceLogEntry, IssuanceSth"
-        ],
-        specs: [
-          "Prisma schema validated & generated cleanly (including WorkspaceImage)",
-          "Instant serverless branching & connection pooling ready"
-        ]
-      },
-      router: {
-        badge: "48-Group Pareto Router · 32 Worker Slots",
-        title: "linden / cloud-router",
-        repo: "Fork: patl4588/mozart-linden/apps/cloud-router",
-        desc: "Evaluates incoming prompts across 48 task micro-groups and routes across Speed × Quality × Cost weightings, paired with a 32-slot concurrent job worker, pre-stream failover, research synthesis, and automated quality review.",
-        files: [
-          "src/router.js + predictive-routing-index.js + task-rating-algo.js",
-          "src/provider-failover.js — Pre-stream 5xx & TTFT timeout failover (<120ms)",
-          "src/marketplace-worker.js — 32-slot concurrent runner with SIGTERM drain",
-          "src/action-workflow.js + workflow-proposal.js — v2 workflow DAG synthesis",
-          "src/visual-qa-edge.js + answer-review.js — Automated rubric verification"
-        ],
-        specs: [
-          "48/48 micro-groups evaluated: 100% Pareto-dominant",
-          "22.4% faster & 16.1% cheaper than OpenRouter; 95.4% cheaper than Frontier"
-        ]
-      },
-      providers: {
-        badge: "Low-Latency Direct + Fallback Mesh",
-        title: "Multi-Provider Inference Mesh",
-        repo: "linden/apps/cloud-router/src/providers/",
-        desc: "Connects directly to ultra-fast wafer-scale/LPU and frontier model endpoints with prefix-caching, falling back to OpenRouter within <120ms if an upstream returns 5xx or stalls before first token.",
-        files: [
-          "Direct high-speed lanes (Cerebras, Groq, DeepSeek, Fireworks, Together)",
-          "Direct frontier & multimodal lanes (Gemini, Anthropic, OpenAI, FLUX image, Video)",
-          "OpenRouter universal backup lane with automatic model mapping",
-          "Prefix-cache key affinity for multi-turn agent & code loops"
-        ],
-        specs: [
-          "Squad 3 & Squad 4 chaos proxy tests verify 0 dropped streams on upstream 502/504"
-        ]
-      },
-      receipts: {
-        badge: "Ed25519 Signatures + Merkle Transparency",
-        title: "Cryptographic Receipts & /verify",
-        repo: "cloud-router/src/job-evidence.js + marketplace/src/transparency/",
-        desc: "Every AI turn, workflow node, web search, and artifact build produces a tamper-evident receipt containing model route, token counts, hashes, blast-radius summary, and an Ed25519 signature.",
-        files: [
-          "cloud-router/src/job-evidence.js — Canonical receipt hashing & Ed25519 signing",
-          "marketplace/src/receipts/ & transparency/ — IssuanceLogEntry + Signed Tree Head (STH)",
-          "website/app/workspace/verify/ — Public zero-trust signature verifier",
-          "railcall-chat/renderer/chat.js — Desktop Receipts Ledger view & badge counter"
-        ],
-        specs: [
-          "Tampered payload bytes immediately fail Ed25519 verification in Squad 4 QA Gate"
-        ]
-      },
-      station: {
-        badge: "Python Sovereign Daemon · 127.0.0.1:8799",
-        title: "linden / station (Local Mac HQ)",
-        repo: "linden/apps/station/server/hq_server.py",
-        desc: "Runs locally on 127.0.0.1:8799, exposing a local OpenAI /v1 endpoint, MCP server, local credential vault for 850+ integrations, and the governed DAG executor with plan_root pinning and human approval gates.",
-        files: [
-          "server/hq_server.py & railcall_hq.py — Local HTTP & /v1 loopback server",
-          "internal_modules/ — Built-in local_reason, search, docgen & connector runners",
-          "workflows/ — Deterministic DAG planner, blast_radius calculator & live whitelist",
-          "transaction_runs/ — Local Ed25519 node receipts & execution logs"
-        ],
-        specs: [
-          "Loopback-only binding (127.0.0.1); external sends halt until explicit approval"
-        ]
-      },
-      ollama: {
-        badge: "Apple Silicon Unified Memory · 127.0.0.1:11434",
-        title: "5-Tier Local Qwen / Ollama GPU Fleet",
-        repo: "mozart_local_swarm.py + railcall-chat/whitelabel-autopull.js",
-        desc: "Zero-marginal-cost ($0.00) local inference and sub-agent fleet running natively on Metal/llamacpp with up to 262,144-token context windows and native tool calling.",
-        files: [
-          "L1 railcall-router:latest (qwen3.5:0.8b · 1.0GB) — 258.3 tok/s triage",
-          "L2 railcall-fast:latest (qwen3.5:4b · 3.4GB) — 130.0 tok/s selector/JSON lint",
-          "L3 gpt-oss:20b (13GB) — 108.7 tok/s security & edge-case fuzzing",
-          "L4 railcall-core:latest (qwen3-coder:30b MoE · 18GB · 262K ctx) — 118.9 tok/s",
-          "L5 railcall-coder:latest (qwen3-coder-next 79.7B · 51GB · 262K ctx) — Deep AST audit"
-        ],
-        specs: [
-          "whitelabel-autopull.js sizes downloads safely by machine RAM & free disk headroom"
-        ]
-      },
-      mozart: {
-        badge: "Air-Gapped Autonomous Engineering Hub",
-        title: "Project Mozart v2 & 5-Squad QA Gatekeeper",
-        repo: "patl4588/project-mozart (main) → patl4588/mozart-* (mozart/v2-autonomous)",
-        desc: "Orchestrates continuous improvements across isolated forks with upstream pushes disabled, backed by local Qwen sub-agents and a fail-closed 5-Squad Adversarial QA Gatekeeper.",
-        files: [
-          "mozart_local_swarm.py — 5-tier $0 RailCall/Qwen sub-agent CLI & telemetry sweep",
-          "qa-gate/run-qa-gate.mjs — Split-Brain, DB Lock, SSE Chaos, Pareto & Chromium Gate",
-          "qa-gate/build-repo-commits-feed.mjs — Inline SHA, stat & patch feed builder",
-          "publish_hourly.sh — Fail-closed verifier & GitHub Pages publisher"
-        ],
-        specs: [
-          "29/29 adversarial QA gate checks + 1,033+ repo unit/integration tests enforced"
-        ]
-      }
-    };
-
-    const FLOWS = [
-      [
-        { num: "STEP 01 · INTENT GUARD", title: "Visual Build Override", detail: "User types 'make me a visual checkout page...' in Chat. chat.js matches BUILD_RX (websites, checkout/pricing pages, dashboards) and automatically clears any stale workflowActive state." },
-        { num: "STEP 02 · PARALLEL SCAFFOLD", title: "t=0 Asset Pre-Warm + 1-Pass Bundle", detail: "project:start creates an isolated project folder, overlaps parallel FLUX hero/card imagery at t=0, and synthesizes HTML/CSS/JS in a single unifiedScaffold pass." },
-        { num: "STEP 03 · RENDER & QA PROBE", title: "390px & 1440px Headless Verification", detail: "render-check.js + qa-contract.js inspect layout, links, and interactive formulas at mobile (390px) and desktop (1440px). If any check fails, auto-repair.js patches surgically." },
-        { num: "STEP 04 · SANDBOXED PREVIEW", title: "Workbench Dock + Signed Receipt", detail: "artifact-workbench.js streams draft & verified preview inside strict sandbox='allow-scripts allow-forms', enables Point & Edit + .zip export, and logs an Ed25519 receipt." }
-      ],
-      [
-        { num: "STEP 01 · AUTH & SEAL", title: "Bearer Key or Stateless HMAC", detail: "Request hits /v1/chat/completions or /api/workspace/runs. Marketplace validates rc_sk_* API key or stateless rc_ws HMAC cookie + signed visitor IP allowance." },
-        { num: "STEP 02 · ATOMIC RESERVE", title: "Patsum Credit Pre-Authorization", detail: "patsum.policy.ts verifies wallet balance or $5 trial cap and atomically reserves budget before enqueueing an AssistantJob in Neon Postgres." },
-        { num: "STEP 03 · PARETO + FAILOVER", title: "32-Slot Claim & 48-Group Router", detail: "cloud-router claims the job lock-free, classifies into 1 of 48 task micro-groups, picks the Pareto-optimal provider, and fails over in <120ms on pre-stream 5xx/timeout." },
-        { num: "STEP 04 · SETTLE & SIGN", title: "SSE Stream, COGS Strip & Ed25519", detail: "Tokens stream over SSE with heartbeat watchdogs. provider-metering.ts settles exact spend, strips operator_cogs_usd, and attaches the Ed25519 Receipt + Merkle STH." }
-      ],
-      [
-        { num: "STEP 01 · DAG SYNTHESIS", title: "Plain-English or Canvas to v2 Spec", detail: "User builds in the tabbed Workflows Hub (Studio & AI Builder or embedded n8n Visual Canvas). workflow-proposal.js compiles a typed v2 trigger → steps → condition spec." },
-        { num: "STEP 02 · SETUP & BLAST RADIUS", title: "Readiness & Dry-Run Contract", detail: "Station (:8799) computes connected-app readiness, missing required fields, egress_domains, systems_touched, and spend_cents—nothing leaves the machine during dry-run." },
-        { num: "STEP 03 · PLAN-ROOT PINNING", title: "Cryptographic Plan Hash Lock", detail: "Approving a workflow pins its exact plan_root hash in Station policy. Any subsequent edit to steps or connectors invalidates the pin and requires re-approval." },
-        { num: "STEP 04 · AIRLOCKED EXECUTION", title: "Reads Run Now · Writes Ask Approval", detail: "Read connectors execute immediately; external writes (email, Slack, Stripe, DB mutation) pause at a human approval card and emit per-node Ed25519 receipts." }
-      ],
-      [
-        { num: "STEP 01 · HARDWARE SIZING", title: "RAM & Disk-Aware Provisioning", detail: "whitelabel-autopull.js inspects Apple Silicon unified RAM and free disk headroom to provision matching Qwen GGUF tiers into 127.0.0.1:11434 with zero vendor jargon." },
-        { num: "STEP 02 · LOOPBACK ROUTING", title: "Station :8799/v1 or Fastpath", detail: "When Price=$0 or offline mode is active, station.js / local-ollama-fastpath.js routes prompts strictly over 127.0.0.1 to railcall-router, railcall-fast, core (30B), or coder (79.7B)." },
-        { num: "STEP 03 · SUB-AGENT SWARM", title: "Mozart & Desktop Parallel Dispatch", detail: "mozart_local_swarm.py and subagent-tools.js fan out triage (258 tok/s), lint (130 tok/s), security fuzzing (109 tok/s), and 262K-ctx code synthesis (119 tok/s) at $0.00 COGS." },
-        { num: "STEP 04 · LOCAL LEDGER", title: "Zero-Egress Audit Trail", detail: "Station signs local node receipts in transaction_runs/ and appends turn metrics to run_ledger.jsonl—zero prompt or file bytes ever leave the Mac." }
-      ]
-    ];
-
-    function inspectNode(key, btnEl) {
-      document.querySelectorAll('.node-card').forEach(el => el.classList.remove('active'));
-      if (btnEl) btnEl.classList.add('active');
-      const d = NODES[key];
-      if (!d) return;
-      document.getElementById('insp-badge').textContent = d.badge;
-      document.getElementById('insp-title').textContent = d.title;
-      document.getElementById('insp-repo').textContent = d.repo;
-      document.getElementById('insp-desc').textContent = d.desc;
-      document.getElementById('insp-files').innerHTML = d.files.map(f => `<li>${f}</li>`).join('');
-      document.getElementById('insp-specs').innerHTML = d.specs.map(s => `<li>${s}</li>`).join('');
-    }
-
-    function selectFlow(idx, btnEl) {
-      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-      if (btnEl) btnEl.classList.add('active');
-      const steps = FLOWS[idx] || [];
-      document.getElementById('flow-container').innerHTML = steps.map(s => `
-        <div class="step-box">
-          <div class="step-num">${s.num}</div>
-          <div class="step-title">${s.title}</div>
-          <div class="step-detail">${s.detail}</div>
-        </div>
-      `).join('');
-    }
-
-    inspectNode('website', document.querySelector('.node-card'));
-    selectFlow(0, document.querySelector('.tab-btn'));
-  </script>
 </body>
 </html>
