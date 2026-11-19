@@ -560,11 +560,20 @@ async function runSquad5LiveWebsiteScreenshots() {
   let passed = 0;
   fs.mkdirSync(SCREENSHOTS_DIR, { recursive: true });
 
-  // 1. Verify all 4 repos are strictly on `delegated/continuous-improvements` (NEVER main!)
+  // 1. Verify all 4 repos are strictly on `mozart/v2-autonomous` inside isolated `mozart-*` forks with upstream push DISABLED
   for (const [name, repoPath] of Object.entries(REPOS)) {
     const br = gitBranch(repoPath);
-    if (br === "delegated/continuous-improvements") passed++;
-    else failures.push(`${name} is on branch '${br}' instead of 'delegated/continuous-improvements'`);
+    let upstreamPush = "";
+    try {
+      upstreamPush = execFileSync("git", ["-C", repoPath, "remote", "get-url", "--push", "upstream"], {
+        encoding: "utf8",
+        timeout: 4000,
+      }).trim();
+    } catch {
+      upstreamPush = "";
+    }
+    if (br === "mozart/v2-autonomous" && upstreamPush === "DISABLED") passed++;
+    else failures.push(`${name} governance check failed (branch='${br}', upstreamPush='${upstreamPush}'; expected branch='mozart/v2-autonomous' & upstreamPush='DISABLED')`);
   }
 
   // 2. Capture real live external website screenshots via Playwright Chromium into screenshots/

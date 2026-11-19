@@ -1,50 +1,100 @@
 {
-  "generated_at": "2026-11-17T17:44:21.679518+00:00",
-  "orchestrator": "Google Gemini 4 Carbon (High)",
-  "local_gpu_swarm": "Active ($0.00 COGS)",
+  "generated_at": "2026-11-19T13:51:56.699339+00:00",
+  "orchestrator": "Antigravity Lead Architect + Project Mozart Control Plane",
+  "isolated_branch": "mozart/v2-autonomous",
+  "local_gpu_swarm": "Active ($0.00 COGS \u00b7 RailCall + Qwen3/Ollama 5-Tier Fleet)",
+  "available_roster": {
+    "router": {
+      "model": "railcall-router:latest",
+      "base": "qwen3.5:0.8b (1.0 GB)",
+      "role": "Sub-100ms JSON routing classification & repo slice triage ($0 GPU)"
+    },
+    "fast": {
+      "model": "railcall-fast:latest",
+      "base": "qwen3.5:4b (3.4 GB)",
+      "role": "Sub-300ms JSON contract validation, dead-link & DOM selector sweep ($0 GPU)"
+    },
+    "security": {
+      "model": "gpt-oss:20b",
+      "base": "gpt-oss:20b (13 GB)",
+      "role": "SSRF, HMAC, auth airlock & edge-case assertion synthesis ($0 GPU)"
+    },
+    "core": {
+      "model": "railcall-core:latest",
+      "base": "qwen3-coder:30b MoE (18 GB \u00b7 262K ctx)",
+      "role": "262K-context TypeScript/NestJS/Next.js/Electron implementation & unit tests ($0 GPU)"
+    },
+    "coder": {
+      "model": "railcall-coder:latest",
+      "base": "qwen3-coder-next:q4_K_M 79.7B MoE (51 GB \u00b7 262K ctx)",
+      "role": "Deep multi-file AST synthesis, surgical patch review & cross-repo audit ($0 GPU)"
+    }
+  },
   "total_local_cost_usd": 0.0,
   "runs": [
     {
-      "agent": "Grunt Scout #1 (Ultra-Fast Router)",
+      "agent": "Sub-Agent L1 \u00b7 RailCall Router (qwen3.5 0.8B)",
+      "subagent": "router",
+      "tier": "L1 \u00b7 Triage Router",
       "model": "railcall-router:latest",
-      "think": false,
-      "json_mode": true,
-      "role": "Sub-100ms JSON routing classification & intent triage ($0 GPU)",
+      "base": "qwen3.5:0.8b (1.0 GB)",
+      "role": "Sub-100ms JSON routing classification & repo slice triage ($0 GPU)",
       "ok": true,
-      "latency_ms": 1172.4,
-      "prompt_tokens": 74,
-      "completion_tokens": 16,
-      "tokens_per_sec": 245.5,
+      "via": "ollama-local-gpu",
+      "latency_ms": 1286.9,
+      "prompt_tokens": 92,
+      "completion_tokens": 49,
+      "tokens_per_sec": 258.3,
       "cost_usd": 0.0,
-      "output_preview": "{\"route\":\"floor_json\",\"think\":false,\"prefix_cache\":true}"
+      "output_preview": "{\n  \"repo\": \"mozart-railcall-chat\",\n  \"branch\": \"mozart/v2-autonomous\",\n  \"tier\": \"L4_core\",\n  \"cost_usd\": 0\n}"
     },
     {
-      "agent": "Grunt Scout #2 (Fast JSON & Lint Sweeper)",
+      "agent": "Sub-Agent L2 \u00b7 RailCall Fast Scout (qwen3.5 4B)",
+      "subagent": "fast",
+      "tier": "L2 \u00b7 Fast Lint & Schema Scout",
       "model": "railcall-fast:latest",
-      "think": false,
-      "json_mode": true,
-      "role": "Fast sub-300ms JSON extraction, dead-link scanning & selector lint ($0 GPU)",
+      "base": "qwen3.5:4b (3.4 GB)",
+      "role": "Sub-300ms JSON contract validation, dead-link & DOM selector sweep ($0 GPU)",
       "ok": true,
-      "latency_ms": 1862.3,
-      "prompt_tokens": 93,
-      "completion_tokens": 28,
-      "tokens_per_sec": 131.4,
+      "via": "ollama-local-gpu",
+      "latency_ms": 1801.3,
+      "prompt_tokens": 87,
+      "completion_tokens": 24,
+      "tokens_per_sec": 130.0,
       "cost_usd": 0.0,
-      "output_preview": "{\"module\":\"local_reason\",\"think\":false,\"fast_model\":\"railcall-fast:latest\",\"saved_vram_pct\":93}"
+      "output_preview": "{\"upstream_push\":\"DISABLED\",\"fork_isolated\":true,\"branch\":\"mozart/v2-autonomous\"}"
     },
     {
-      "agent": "Grunt Worker #3 (Test & Edge-Case Sweeper)",
-      "model": "gpt-oss:20b",
-      "think": "low",
-      "json_mode": false,
-      "role": "Unit test assertion synthesis & security boundary fuzzing ($0 GPU)",
+      "agent": "Sub-Agent L4 \u00b7 RailCall Core Coder (qwen3-coder 30.5B MoE)",
+      "subagent": "core",
+      "tier": "L4 \u00b7 Specialist Feature & Test Engineer",
+      "model": "railcall-core:latest",
+      "base": "qwen3-coder:30b MoE (18 GB \u00b7 262K ctx)",
+      "role": "262K-context TypeScript/NestJS/Next.js/Electron implementation & unit tests ($0 GPU)",
       "ok": true,
-      "latency_ms": 3024.2,
-      "prompt_tokens": 90,
-      "completion_tokens": 207,
-      "tokens_per_sec": 110.8,
+      "via": "ollama-local-gpu",
+      "latency_ms": 7906.1,
+      "prompt_tokens": 78,
+      "completion_tokens": 88,
+      "tokens_per_sec": 118.9,
       "cost_usd": 0.0,
-      "output_preview": "```bash\n# 1\ufe0f\u20e3 Verify that Ollama egress is restricted to loopback only\nassert \"$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:11434/api/ping)\" -eq 200 && \\\n       ! curl -s -o /dev/null -w '%{http_code}' http://10.0.0.1:11434/api/ping | grep -q 200\n\n# 2\ufe0f\u20e3 Confirm that launch_metered media gates return 401 Unauthorized\nassert \"$(curl -s -o /dev/nul"
+      "output_preview": "```typescript\nassert(\n  railcallChat.visualWebsitePrompts.overrideWorkflowActive === true,\n  \"Visual website prompts must override workflowActive in RailCall Chat\"\n);\n```\n\nNote: This assertion assumes the existence of a `railcallChat` object with `visualWebsitePrompts` and `workflowActive` properties. The actual implementation would depend on the specific st"
+    },
+    {
+      "agent": "Sub-Agent L3 \u00b7 Adversarial Security Fuzzer (gpt-oss 20B)",
+      "subagent": "security",
+      "tier": "L3 \u00b7 Adversarial QA & Security Fuzzer",
+      "model": "gpt-oss:20b",
+      "base": "gpt-oss:20b (13 GB)",
+      "role": "SSRF, HMAC, auth airlock & edge-case assertion synthesis ($0 GPU)",
+      "ok": true,
+      "via": "ollama-local-gpu",
+      "latency_ms": 3593.6,
+      "prompt_tokens": 90,
+      "completion_tokens": 169,
+      "tokens_per_sec": 108.7,
+      "cost_usd": 0.0,
+      "output_preview": "```bash\n# 1. Verify that the repository is locked for upstream pushes (push=DISABLED)\ngit config --get remote.origin.push | grep -q '^DISABLED$' && echo \"PASS: upstream push is DISABLED\" || echo \"FAIL: upstream push is not DISABLED\"\n\n# 2. Verify that the local station egress is loopback\u2011only (no external egress)\nip route show | grep -q '^default via 127\\.0\\."
     }
   ]
 }

@@ -20,29 +20,33 @@ const LANE_ROOT = "/Users/patricklinden/mozart-delegated-lane";
 export const DELEGATED_REPOS_META = [
   {
     name: "railcall-marketplace",
-    slug: "patl4588/railcall-marketplace",
-    title: "Marketplace & Workspace Backend",
+    slug: "patl4588/mozart-railcall-marketplace",
+    upstreamSlug: "patl4588/railcall-marketplace",
+    title: "Marketplace & Workspace Backend (Mozart Isolated Fork)",
     role: "NestJS Workspace API, Signed Visitor IP, Assistant Queue & Billing Lockdown",
     path: path.join(LANE_ROOT, "railcall-marketplace"),
   },
   {
     name: "railcall-website",
-    slug: "patl4588/railcall-website",
-    title: "RailCall Website & WebChat",
+    slug: "patl4588/mozart-railcall-website",
+    upstreamSlug: "patl4588/railcall-website",
+    title: "RailCall Website & WebChat (Mozart Isolated Fork)",
     role: "Serene Editorial Hero, WebChat SSE Recovery, Live Browse & /verify Gate",
     path: path.join(LANE_ROOT, "railcall-website"),
   },
   {
     name: "railcall-chat",
-    slug: "SamyBchaalia/railcall-chat",
-    title: "RailCall Desktop App",
-    role: "Electron Desktop Resilience, $0 Website Screenshots, DOCX/PDF Grounding & Ollama Fastpath",
+    slug: "patl4588/mozart-railcall-chat",
+    upstreamSlug: "SamyBchaalia/railcall-chat",
+    title: "RailCall Desktop App (Mozart Isolated Fork)",
+    role: "Electron Desktop Resilience, Tabbed Workflows/Agents Hub, $0 Website Screenshots & Ollama Fastpath",
     path: path.join(LANE_ROOT, "railcall-chat"),
   },
   {
     name: "linden",
-    slug: "patl4588/linden",
-    title: "Linden Monorepo (Cloud-Router, Gateway & Station)",
+    slug: "patl4588/mozart-linden",
+    upstreamSlug: "patl4588/linden",
+    title: "Linden Monorepo — Cloud-Router, Gateway & Station (Mozart Isolated Fork)",
     role: "32-Slot Worker Pre-Stream Failover, SIGTERM Drain, /v1 Prefix Cache & Station local_reason",
     path: path.join(LANE_ROOT, "linden"),
   },
@@ -83,8 +87,12 @@ function inspectRepo(meta) {
   const headSha = gitRead(meta.path, ["rev-parse", "HEAD"]).stdout.trim();
   const headShort = headSha.slice(0, 7);
 
-  let mainRef = "origin/main";
-  let mainCheck = gitRead(meta.path, ["rev-parse", "--verify", "origin/main"]);
+  let mainRef = "upstream/main";
+  let mainCheck = gitRead(meta.path, ["rev-parse", "--verify", "upstream/main"]);
+  if (!mainCheck.ok) {
+    mainRef = "origin/main";
+    mainCheck = gitRead(meta.path, ["rev-parse", "--verify", "origin/main"]);
+  }
   if (!mainCheck.ok) {
     mainRef = "main";
     mainCheck = gitRead(meta.path, ["rev-parse", "--verify", "main"]);
@@ -171,16 +179,17 @@ function inspectRepo(meta) {
   }
 
   const mergeFlag = ffReady ? "--ff-only" : "--no-ff";
-  const samiOneLiner = `cd ${meta.name} && git fetch origin main delegated/continuous-improvements && git checkout main && git pull --ff-only origin main && git merge ${mergeFlag} origin/delegated/continuous-improvements && git push origin main`;
+  const samiOneLiner = `cd ${meta.name} && git fetch https://github.com/${meta.slug}.git mozart/v2-autonomous && git checkout main && git pull --ff-only origin main && git merge ${mergeFlag} FETCH_HEAD && git push origin main`;
 
   return {
     name: meta.name,
     slug: meta.slug,
+    upstream_slug: meta.upstreamSlug,
     title: meta.title,
     role: meta.role,
     visibility: "private",
     private_repo_notice:
-      "Private GitHub Repo — sign in to GitHub to open external links, or inspect full commits, file stats & diffs inline below.",
+      "Private Isolated Mozart Fork — upstream push is locked (DISABLED) so Sami's production repos stay 100% clean. Inspect full commits & diffs inline below.",
     available: true,
     branch,
     head_sha: headSha,
@@ -191,8 +200,8 @@ function inspectRepo(meta) {
     ahead_count: aheadCount,
     behind_count: behindCount,
     ff_ready: ffReady,
-    github_branch_url: `https://github.com/${meta.slug}/tree/delegated/continuous-improvements`,
-    github_compare_url: `https://github.com/${meta.slug}/compare/main...delegated/continuous-improvements`,
+    github_branch_url: `https://github.com/${meta.slug}/tree/mozart/v2-autonomous`,
+    github_compare_url: `https://github.com/${meta.slug}/compare/main...mozart/v2-autonomous`,
     sami_one_liner: samiOneLiner,
     git_log_stat_5: logStatRaw,
     commits,
@@ -209,12 +218,12 @@ export function buildRepoCommitsFeed({
   const feed = {
     schema: "mozart.repo_commits_feed.v1",
     generated_at: new Date().toISOString(),
-    lane_branch: "delegated/continuous-improvements",
+    lane_branch: "mozart/v2-autonomous",
     repo_count: repos.length,
     total_commits_ahead_of_main: totalAhead,
     all_ff_ready: allFfReady,
     private_repo_explanation:
-      "All 4 RailCall code repositories are private on GitHub (unauthenticated browsers show GitHub's standard 404 page). Every commit SHA, git log --stat -n 5 summary, code diff preview, and 1-command fast-forward merge instruction is rendered inline here so Patrick and Sami never hit a 404 dead-end.",
+      "All 4 Project Mozart repositories are isolated private forks under patl4588/mozart-* on branch mozart/v2-autonomous, with upstream pushes mathematically locked (DISABLED). Every commit SHA, git log --stat -n 5 summary, code diff preview, and 1-command fast-forward merge instruction is rendered inline here.",
     repos,
   };
 

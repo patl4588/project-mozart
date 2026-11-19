@@ -29,8 +29,8 @@ else
   echo "[QA-GATE] HARD BLOCK: $GATE_RUNNER not yet present; skipping code push until QA Gatekeeper passes." >&2
 fi
 
-# 4. Push isolated `delegated/continuous-improvements` branches ONLY when QA Gate passed on exact HEAD SHA
-#    Strictly pushes ONLY to delegated/continuous-improvements on the shared test git repos (NEVER main!)
+# 4. Push isolated `mozart/v2-autonomous` branches ONLY to the dedicated `patl4588/mozart-*` fork repos
+#    (Upstream production repos have push=DISABLED locked so Sami's repos are never touched!)
 if [ "$GATE_OK" -eq 1 ] && [ -f "$SCORECARD" ]; then
   for repo in /Users/patricklinden/mozart-delegated-lane/railcall-marketplace \
               /Users/patricklinden/mozart-delegated-lane/railcall-website \
@@ -39,19 +39,20 @@ if [ "$GATE_OK" -eq 1 ] && [ -f "$SCORECARD" ]; then
     [ -e "$repo/.git" ] || continue
     name="$(basename "$repo")"
     branch="$(git -C "$repo" branch --show-current)"
+    upstream_push="$(git -C "$repo" remote get-url --push upstream 2>/dev/null || true)"
     head_sha="$(git -C "$repo" rev-parse HEAD)"
     verified_sha="$(python3 -c "import json; d=json.load(open('$SCORECARD')); print(d.get('verified_commits',{}).get('$name','') if d.get('gate_passed') else '')" 2>/dev/null || true)"
-    if [ "$branch" = "delegated/continuous-improvements" ] && [ -n "$verified_sha" ] && [ "$head_sha" = "$verified_sha" ]; then
-      perl -e 'alarm 30; exec @ARGV' git -C "$repo" fetch origin delegated/continuous-improvements --quiet 2>/dev/null || true
-      perl -e 'alarm 60; exec @ARGV' git -C "$repo" -c http.lowSpeedLimit=1000 -c http.lowSpeedTime=20 push -u origin delegated/continuous-improvements \
-        || perl -e 'alarm 60; exec @ARGV' git -C "$repo" -c http.lowSpeedLimit=1000 -c http.lowSpeedTime=20 push --force-with-lease -u origin delegated/continuous-improvements \
+    if [ "$branch" = "mozart/v2-autonomous" ] && [ "$upstream_push" = "DISABLED" ] && [ -n "$verified_sha" ] && [ "$head_sha" = "$verified_sha" ]; then
+      perl -e 'alarm 30; exec @ARGV' git -C "$repo" fetch origin mozart/v2-autonomous --quiet 2>/dev/null || true
+      perl -e 'alarm 60; exec @ARGV' git -C "$repo" -c http.lowSpeedLimit=1000 -c http.lowSpeedTime=20 push -u origin mozart/v2-autonomous \
+        || perl -e 'alarm 60; exec @ARGV' git -C "$repo" -c http.lowSpeedLimit=1000 -c http.lowSpeedTime=20 push --force-with-lease -u origin mozart/v2-autonomous \
         || echo "[QA-GATE] Push failed for $name ($head_sha)" >&2
     else
-      echo "[QA-GATE] BLOCKED push for $name (branch=$branch head=$head_sha verified=$verified_sha)" >&2
+      echo "[QA-GATE] BLOCKED push for $name (branch=$branch upstream_push=$upstream_push head=$head_sha verified=$verified_sha)" >&2
     fi
   done
 else
-  echo "[QA-GATE] Zero code commits pushed to delegated/continuous-improvements (awaiting green QA Gatekeeper scorecard)." >&2
+  echo "[QA-GATE] Zero code commits pushed to mozart/v2-autonomous (awaiting green QA Gatekeeper scorecard)." >&2
 fi
 
 # 5. Refresh inline 4-repo commits & diff feed (`repo_commits_feed.json`) so GitHub Pages always mirrors latest SHAs & stats
